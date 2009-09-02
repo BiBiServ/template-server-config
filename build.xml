@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This project can be used to configure an existing Glassfish Application Server in a BiBiServ2 compatible way.
+     The build file <auswerten> the following environment  variables :
+     
+     $CATALINA_HOME :: 
+     $DOMAIN_HOME :: 
+     
+     and <beruecksichtigt> the following Java Properties (given with -D option to this build file)
+
+
+
+    You will prompted if some information are missing.
+-->
+
+<project name="appserver_config">
+    
+    <!-- include ant-contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    
+    <!-- Make enviroment accessible by this script -->
+    <property environment="env"/>
+    
+    
+    <target name="check_environment">
+        <!-- catalina root -->
+        <if>
+            <isset property="env.CATALINA_HOME"/>
+            <then>
+                <property name="catalina.home" value="${env.CATALINA_HOME}"/>
+            </then>
+        </if>
+        <input message="Enter Glassfish root !" addproperty="catalina.home"/>
+        
+        <!-- domain root -->
+        <if>
+             <isset property="env.DOMAIN_HOME"/> 
+             <then>
+                 <property name="domain.home" value="${env.DOMAIN_HOME}"/>
+             </then>
+         </if>    
+        <input message="Enter domain root !" addproperty="domain.home"/>
+        
+        <!-- domain name -->
+        <input message="Enter domain name !" addproperty="domain.name"/>
+        <!-- spool dir -->
+        <input message="Enter spool dir ! [e.g. /var/tmp/spool ]" addproperty="spool.dir"/>
+        
+        <!-- executable root dir -->
+        <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="execucable.dir"/>
+        
+        
+        <!-- admin user -->
+        <input message="Enter admin user [e.g. admin] !" addproperty="admin.user"/>
+        
+        <!-- password -->
+        <input message="Enter admin user password [e.g. adminadmin] !" addproperty="admin.password"/>
+            
+        
+        <!-- write local configuration file -->
+        <propertyfile file="local.configuration" comment="local bibiserv2 startup properties">
+            <entry key="catalina.home" value="${catalina.home}"/>
+            <entry key="domain.dir" value="${domain.home}"/>
+            <entry key="domain" value="${domain.name}"/>
+            <entry key="admin.user" value="${admin.user}"/>
+        </propertyfile>
+        
+        <!-- write password file -->
+        <propertyfile file="local.passwordfile">
+            <entry key="AS_ADMIN_PASSWORD" value="${admin.password}"/>
+        </propertyfile>
+        
+        <!-- change permission on password file -->
+        <chmod file="local.passwordfile" perm="600"/>
+        
+        
+    </target>
+    
+    
+    <target name="configure" depends="check_environment" description="configures an existing Glassfish Application server installation!">
+        <!-- copy bibiserv_properties file -->
+    </target>
+
+    <target name="start" description="start the Glassfish AND the JavaDB Server">
+    <!-- check if configuration file exists -->
+        <available file="local.configuration" property="config.present" value="true"/>
+        <if>
+            <not>
+                <isset property="config.present"/>
+            </not>
+            <then>
+                <antcall target="configure"/>
+            </then>
+        </if>
+     <!-- load configuration -->
+        <property file="local.configuration"/>    
+     <!-- start database on localhost:1527-->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="start-database"/>
+            <arg value="--dbhome=${domain.home}/${domain}/db"/>
+        </exec>
+     <!-- start glassfish -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="start-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=local.passwordfile"/>
+            <arg value="${domain}"/>
+        </exec>
+    </target>
+    
+    <target name="stop" description="stop the Glassfish AND JavaDB Server">
+        <!-- check if configuration file exists -->
+        <available file="local.configuration" property="config.present" value="true"/>
+        <if>
+            <not>
+                <isset property="config.present"/>
+            </not>
+            <then>
+                <antcall target="configure"/>
+            </then>
+        </if>
+        <!-- load configuration -->
+        <property file="local.configuration"/>
+        <!-- stop glassfish -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            
+            <arg value="stop-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="${domain}"/>
+        </exec>
+        <!-- stop database -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="stop-database"/>
+        </exec>
+    
+    </target>
+
+</project>
