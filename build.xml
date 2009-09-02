@@ -14,8 +14,14 @@
 
 <project name="appserver_config">
     
+    <property name="src" value="src"/>
+    <property name="classes" value="classes"/>
+    <property name="dist" value="dist"/>
+    
     <!-- include ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    
+    
     
     <!-- Make enviroment accessible by this script -->
     <property environment="env"/>
@@ -133,6 +139,13 @@
             <arg value="stop-database"/>
         </exec>
     
+    </target>
+    
+    <target name="build">
+        <javac srcdir="${src}" destdir="${classes}"/>
+        <copy file="${src}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" tofile="${classes}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties"/>
+        <jar basedir="${classes}" destfile="appserver_config_task.jar" includes="**/*"/>
+        
     </target>
 
 </project>
