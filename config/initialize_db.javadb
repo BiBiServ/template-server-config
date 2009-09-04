@@ -1,0 +1,16 @@
+connect 'jdbc:derby:bibiserv2;create=true' as BIBISERV2;
+
+create table status (
+    id varchar(100),
+    toolname varchar(100),
+    statuscode int,
+    description varchar(10000),
+    internaldescription varchar(10000),
+    drmaaid varchar(100),
+    created timestamp,
+    lastmod timestamp,
+    stdout varchar(1000),
+    stderr varchar(1000)
+);
+
+disconnect BIBISERV2;
