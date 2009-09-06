@@ -14,11 +14,16 @@
     <!-- include ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
-    
-    
     <!-- Make enviroment accessible by this script -->
     <property environment="env"/>
-    
+
+    <!-- default classpath -->
+    <path id="classpath">
+        <fileset dir="${lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
     
     <target name="configure" description="check environment and configure an existing glassfish domain.">
 
@@ -113,7 +118,13 @@
         </if>
 
         <!--<taskdef resource="de.unibi.techfak.bibiserv.util.appserver_config.appserver_config.properties" classpath="${classes}"/>-->
-        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${classes}"/>
+        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${classes}"/>
+            </classpath>
+        </taskdef>
+      
 
          <!-- load configuration -->
         <property file="local.configuration"/>
@@ -156,10 +167,11 @@
         </if>
 
         <!-- modify domain.xml of glassfish domain -->
-        <sun-domain file="${domain.dir}/${domain}/config/domain.xml">
-            
-            
-        </sun-domain>
+        <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
+        <sunapp_domain file="domain.xml">
+            <sunapp_property key="Dies.ist.ein.Test.Property!" value="Irgendein Schoener Wert!"/>
+            <sunapp_property key="Und.ein.weiterer.test" value="Blabla"/>
+        </sunapp_domain>
 
         <!-- append Connection Pool for previous generated DB -->
 
@@ -224,7 +236,7 @@
     <target name="build">
         <mkdir dir="${classes}"/>
         <mkdir dir="${dist}"/>
-        <javac srcdir="${src}" destdir="${classes}" debug="true"/>
+        <javac srcdir="${src}" destdir="${classes}" debug="true" classpathref="classpath"/>
         <copy file="${src}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" tofile="${classes}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties"/>
         <jar basedir="${classes}" destfile="${dist}/appserver_config_task.jar" includes="**/*"/>
     </target>
@@ -246,13 +258,13 @@
         <http url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivysettings.xml" errorsbeginat="300"/>
         <then>
             <echo>Loading Ivy Settings from BiBiServ ... </echo>
-            <ivy:settings url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivysettings.xml"/> 
+            <ivy:settings url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivysettings.xml"/>
         </then>
         <else>
             <echo>BiBiserv not available, load Ivy settings from ${user.home}/ivy-rep/ivy-settings.xml or if this file does not exist load default settings file</echo>
             <ivy:settings file="${user.home}/ivy-rep/ivysettings.xml"/>
         </else>
-    </if> 
+    </if>
     
     <!-- use ivy to resolve  library dependencies -->
     <target name="resolve" description="retrieve dependencies with ivy">

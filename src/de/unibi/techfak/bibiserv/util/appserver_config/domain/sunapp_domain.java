@@ -49,8 +49,11 @@ public class sunapp_domain extends Task {
             try {
                 JAXBContext jaxbc = JAXBContext.newInstance(generated.Domain.class);
                 Unmarshaller um = jaxbc.createUnmarshaller();
-                JAXBElement<Domain> jaxbe = (JAXBElement) um.unmarshal(file);
-                domain = jaxbe.getValue();
+                domain = (Domain) um.unmarshal(file);
+                // create a copy of current desription in a file named ${fn}.old
+                // @TODO : instead of .old use current date (yy_mm_dd_hh_mm) !
+                marshallToFile(new File(fn+".old"), domain);
+
             } catch (JAXBException e) {
                 System.err.println("An JAXBException occured (fn :" + file.toString() + "):");
                 throw new BuildException(e);
@@ -60,21 +63,30 @@ public class sunapp_domain extends Task {
             domain = new Domain();
         }
 
+        // now modify file
 
 
-        // last, marschall JAXB object to file
+        
+        // and write on disk
         try {
+            marshallToFile(file, domain);
+        } catch (JAXBException e){
+            System.err.println("An JAXNException occurred while marshal current domain to file!");
+            throw new BuildException(e);
+        }
+    }
+
+    private void marshallToFile(File file, Domain domain) throws JAXBException {
+
             JAXBContext jaxbc = JAXBContext.newInstance(generated.Domain.class);
             Marshaller m = jaxbc.createMarshaller();
             m.marshal(domain, file);
+            System.out.println("Write "+file.toString()+ " ...");
 
-        } catch (JAXBException e){
-            System.err.println("An JAXBException occured (fn :" + file.toString() + "):");
-            throw new BuildException(e);
-        }
-
+       
 
     }
+
     // JdbcConnectionPool subelement(s)
     List<JdbcConnectionPool> list_of_jdbcconnectionpool = new ArrayList<JdbcConnectionPool>();
 
