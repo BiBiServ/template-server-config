@@ -1,5 +1,7 @@
 package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 
+import generated.Property;
+
 /**
  * A simple representation of the property tag used within sunapp-domain.xml
  *
@@ -7,28 +9,39 @@ package de.unibi.techfak.bibiserv.util.appserver_config.domain;
  */
 public class sunapp_property {
 
-    private String key = null;
 
-    private String value = null;
+    Property property = new Property();
 
     /** simple constructor */
     public sunapp_property(){}
 
 
+    public Property getProperty(){
+        return property;
+    }
+
     public void setKey(String key){
-        this.key = key;
+       property.setName(key);
+    }
+
+    public void setName(String key){
+        property.setName(key);
     }
 
     public String getKey(){
-        return key;
+        return property.getName();
+    }
+
+    public String getName(){
+        return property.getName();
     }
 
     public void setValue(String value){
-        this.value = value;
+        property.setValue(value);
     }
 
     public String getValue(){
-        return value;
+        return property.getValue();
     }
 
 
