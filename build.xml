@@ -50,10 +50,10 @@
                 <if>
                     <isset property="env.DOMAIN_HOME"/>
                     <then>
-                        <property name="domain.home" value="${env.DOMAIN_HOME}"/>
+                        <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter domain root !" addproperty="domain.home"/>
+                <input message="Enter domain root !" addproperty="domain.dir"/>
 
         <!-- domain name -->
                 <input message="Enter domain name !" addproperty="domain.name"/>
@@ -66,9 +66,11 @@
                        <!-- write local configuration file -->
                 <propertyfile file="${local.configuration}" comment="local bibiserv2 startup properties">
                     <entry key="catalina.home" value="${catalina.home}"/>
-                    <entry key="domain.dir" value="${domain.home}"/>
+                    <entry key="domain.dir" value="${domain.dir}"/>
                     <entry key="domain" value="${domain.name}"/>
                     <entry key="admin.user" value="${admin.user}"/>
+                    <entry key="spool.dir" value="${spool.dir}"/>
+                    <entry key="executable.dir" value="${excutable.dir}"/>
                 </propertyfile>
 
             </then>
@@ -148,12 +150,12 @@
             </else>
         </if>
         
-        <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv.properties.present" value="true"/>
+        <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv_config.xml" value="true"/>
 
         <if>
             <isset property="bibiserv.properties.present"/>
             <then>
-                <input message="BiBiServ Properties file (${domain.dir}/${domain}/config/bibiserv.properties.xml) is present! Overwrite (Y/N)?" validargs="Y,y,N,n" addproperty="overwrite"/>
+                <input message="BiBiServ Properties file (${domain.dir}/${domain}/config/bibiserv_config.xml) is present! Overwrite (Y/N)?" validargs="Y,y,N,n" addproperty="overwrite"/>
             </then>
         </if>
 
@@ -162,32 +164,41 @@
                 <not>
                     <isset property="bibiserv.properties.present"/>
                 </not>
-
+                <isset property="overwrite"/>
             </or>
+            <then>
+                <!-- copy xml property -->
+                <XML2Property src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+
+                <propertyfile file="bibiserv_config.properties">
+                    <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
+                    <entry key="spooldir.base" value="${spool.dir}"/>
+                    <entry key="tmpdir.base" value="${spool.dir}/tmp"/>
+                    <entry key="executable.root.path" value="${executable.dir}"/>
+                </propertyfile>
+                
+                <Property2XML src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+                
+                <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'. Feel
+                free to modify this configuration. Some things you MAY/SHOULD change in an production environment.
+                - lsub.bin, qsub.bin
+                - lsub.cpu and lsub.mem : the predefined values consider only VERY small jobs, if you run the Appserver on a high powered
+                  machine or the runnings jobs have other constraints you may increase these values.
+                - spooldir.base must be accessible from all (compute grid) knots (if you use SGE compute grid to distribute your jobs)
+                </echo>
+
+            </then>
         </if>
+
+        <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
+        <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
 
         <!-- modify domain.xml of glassfish domain -->
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
         <sunapp_domain file="domain.xml">
             <!-- append System Property : de.unibi.techfak.bibiserv.config -->
-            <sunapp_property key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config"/>
+            <sunapp_property key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
             <!-- append Connection Pool for previous generated DB -->
-
-            <!-- original copy from "domain.xml"
-
-            <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="false" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="bibiserv2_derby" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-                <property name="TraceFileAppend" value="false"/>
-                <property name="RetrieveMessageText" value="true"/>
-                <property name="SecurityMechanism" value="4"/>
-                <property name="DatabaseName" value="bibiserv2"/>
-                <property name="Password" value="APP"/>
-                <property name="LoginTimeout" value="0"/>
-                <property name="User" value="APP"/>
-                <property name="PortNumber" value="1527"/>
-                <property name="ServerName" value="localhost"/>
-                <property name="TraceLevel" value="-1"/>
-            </jdbc-connection-pool> -->
-
             <sunapp_jdbc_connection_pool
                         allownoncomponentcallers="false"
                         associatewiththread="false"
@@ -227,28 +238,12 @@
                 <sunapp_property name="TraceLevel" value="-1"/>
             </sunapp_jdbc_connection_pool>
             <!-- append JDBC Resource named jdbc/bibiserv2 associated with Connection Pool -->
-
-            <!-- original from domain.xml
-
-            <jdbc-resource enabled="true" jndi-name="bibiserv2" object-type="user" pool-name="pi.postgresql_bibiserv2"> -->
-
             <sunapp_jdbc_resource
                         enabled="true"
                         jndiname="jdbc/bibiserv2"
                         objecttype="user"
                         poolname="bibiserv2_derby"/>
-
-
-
-
         </sunapp_domain>
-
-
-
-        
-
-        
-        
     </target>
     
 
