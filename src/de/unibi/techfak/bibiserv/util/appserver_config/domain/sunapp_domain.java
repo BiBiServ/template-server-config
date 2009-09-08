@@ -16,6 +16,8 @@ import generated.Server;
 import generated.Servers;
 import java.io.File;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
@@ -62,7 +64,7 @@ public class sunapp_domain extends Task {
                 // @TODO : instead of .old use current date (yy_mm_dd_hh_mm) !
                 marshallToFile(new File(fn + ".old"), domain);
 
-            } catch (JAXBException e) {
+            } catch (Exception e) {
                 System.err.println("An JAXBException occured (fn :" + file.toString() + "):");
                 throw new BuildException(e);
             }
@@ -202,8 +204,8 @@ public class sunapp_domain extends Task {
         // and write on disk
         try {
             marshallToFile(file, domain);
-        } catch (JAXBException e) {
-            System.err.println("An JAXBException occurred while marshal current domain to file!");
+        } catch (Exception e) {
+            System.err.println("An Exception occurred while marshal current domain to file!");
             throw new BuildException(e);
         }
     }
@@ -215,12 +217,21 @@ public class sunapp_domain extends Task {
      * @param domain
      * @throws JAXBException
      */
-    private void marshallToFile(File file, Domain domain) throws JAXBException {
+    private void marshallToFile(File file, Domain domain) throws JAXBException, IOException {
 
         JAXBContext jaxbc = JAXBContext.newInstance(generated.Domain.class);
         Marshaller m = jaxbc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        m.marshal(domain, file);
+        m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        m.setProperty(Marshaller.JAXB_FRAGMENT, true);
+        // the following Property add a doctype declaration ... this seems not the regular way to do
+        // this, because this is not mentioned in the 'official' documention. Maybe it will not
+        // work on the next releases ...
+        FileOutputStream out = new FileOutputStream(file);
+        out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
+        out.write("<!DOCTYPE domain PUBLIC \"-//Sun Microsystems Inc.//DTD Application Server 9.1 Domain//EN\" \"http://www.sun.com/software/appserver/dtds/sun-domain_1_3.dtd\">\n".getBytes("UTF-8"));
+
+        m.marshal(domain, out);
         System.out.println("Write " + file.toString() + " ...");
     }
 
