@@ -41,8 +41,7 @@ public class sunapp_jdbc_connection_pool extends Task{
 
         // iterate over all property sub elements ...
         List<Property> list_of_properties = jdbcconnectionpool.getProperty();
-        System.out.println("Found "+properties.size()+" subelements ... ");
-
+        
         for (Property prop : properties  ){
             list_of_properties.add(prop);
         }
@@ -68,7 +67,6 @@ public class sunapp_jdbc_connection_pool extends Task{
             throw new BuildException("Attribute 'connectionValidationMethod' of Element 'sunapp_jdbc_connection_pool' must be  one of (auto-commit | meta-data | table) - was "+jdbcconnectionpool.getConnectionValidationMethod());
         }
 
-        System.out.println("end");
     }
 
 

@@ -24,11 +24,11 @@ public class Property2XML extends Task {
     private String dest = null;
     private File dest_file = null;
 
-    private void setSrc(String src) {
+    public void setSrc(String src) {
         this.src = src;
     }
 
-    private void setDest(String dest) {
+    public void setDest(String dest) {
         this.dest = dest;
     }
 

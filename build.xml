@@ -57,11 +57,15 @@
 
         <!-- domain name -->
                 <input message="Enter domain name !" addproperty="domain.name"/>
+
+        <!-- admin user -->
+                <input message="Enter admin user [e.g. admin] !" addproperty="admin.user"/>
+
         <!-- spool dir -->
                 <input message="Enter spool dir ! [e.g. /var/tmp/spool ]" addproperty="spool.dir"/>
 
         <!-- executable root dir -->
-                <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="execucable.dir"/>
+                <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="executable.dir"/>
 
                        <!-- write local configuration file -->
                 <propertyfile file="${local.configuration}" comment="local bibiserv2 startup properties">
@@ -87,8 +91,7 @@
             <then>
                 <echo>Passwordfile not present. Create a new one ... </echo>
         
-        <!-- admin user -->
-                <input message="Enter admin user [e.g. admin] !" addproperty="admin.user"/>
+
         
         <!-- password -->
                 <input message="Enter admin user password [e.g. adminadmin] !" addproperty="admin.password"/>
@@ -140,6 +143,7 @@
             </not>
             <then>
                 <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with table 'status'</echo>
+                <mkdir dir="${domain.dir}/${domain}/db"/>
                 <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
                     <arg value="${basedir}/config/initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
@@ -168,7 +172,7 @@
             </or>
             <then>
                 <!-- copy xml property -->
-                <XML2Property src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+                <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
 
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
@@ -177,7 +181,7 @@
                     <entry key="executable.root.path" value="${executable.dir}"/>
                 </propertyfile>
                 
-                <Property2XML src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+                <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
                 
                 <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'. Feel
                 free to modify this configuration. Some things you MAY/SHOULD change in an production environment.
@@ -195,7 +199,7 @@
 
         <!-- modify domain.xml of glassfish domain -->
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
-        <sunapp_domain file="domain.xml">
+        <sunapp_domain file="${domain.dir}/${domain}/config/domain.xml">
             <!-- append System Property : de.unibi.techfak.bibiserv.config -->
             <sunapp_property key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
             <!-- append Connection Pool for previous generated DB -->
