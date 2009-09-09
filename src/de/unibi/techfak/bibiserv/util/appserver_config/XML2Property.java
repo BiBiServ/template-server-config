@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.unibi.techfak.bibiserv.util.appserver_config;
 
 import java.io.File;
@@ -15,8 +11,16 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * Simple Ant task that convert an XML Java Property file to an Java property file.
  *
- * @author jkrueger
+ * Using :
+ *
+ * <pre>
+ *  &lt;xml2prop src="..." dest="..."/&gt;
+ * </pre>
+ *
+ *
+ * @author Jan Krueger (jkrueger(at)cebitec.uni-bielefeld.de)
  */
 public class XML2Property extends Task {
 
@@ -35,11 +39,19 @@ public class XML2Property extends Task {
 
     @Override
     public void execute() throws BuildException {
-        if (src != null) {
+         if (src != null) {
             src_file = new File(src);
             if (!src_file.isFile()) {
-                throw new BuildException("Srcfile +'" + src_file + " not found .");
+                throw new BuildException("'src'file +'" + src_file + " not found .");
             }
+        } else {
+            throw new BuildException("No 'src' source defined! A source property file must be defined! ");
+        }
+
+        if (dest != null) {
+            dest_file = new File(dest);
+        } else {
+            throw new BuildException("No 'dest' destination defined! A destinion file path must be defined! ");
         }
 
         Properties prop = new Properties();

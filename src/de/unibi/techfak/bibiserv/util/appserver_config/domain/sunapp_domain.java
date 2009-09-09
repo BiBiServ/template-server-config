@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 
 import generated.Config;
@@ -28,8 +24,14 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * public class sunapp_domain represents an ant task (sunapp_domain)
+ * element. The only attribute 'file' is required. If 'file' link to
+ * an existing sun glassfish domain configuration, additional information
+ * will be append , otherwise an new configuration will be created.
  *
- * @author jkrueger
+ *
+ *
+ * @author Jan Krueger (jkrueger(at)cebitec.uni-bielefeld.de)
  */
 public class sunapp_domain extends Task {
 
@@ -130,10 +132,7 @@ public class sunapp_domain extends Task {
             }
 
         }
-
-
-
-
+        
         // now modify file
         System.out.println("add " + list_of_systemproperties.size() + " appserver system propert(y|ies)!");
         List<Property> l_o_P = config.getProperty();
@@ -224,9 +223,6 @@ public class sunapp_domain extends Task {
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         m.setProperty(Marshaller.JAXB_FRAGMENT, true);
-        // the following Property add a doctype declaration ... this seems not the regular way to do
-        // this, because this is not mentioned in the 'official' documention. Maybe it will not
-        // work on the next releases ...
         FileOutputStream out = new FileOutputStream(file);
         out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
         out.write("<!DOCTYPE domain PUBLIC \"-//Sun Microsystems Inc.//DTD Application Server 9.1 Domain//EN\" \"http://www.sun.com/software/appserver/dtds/sun-domain_1_3.dtd\">\n".getBytes("UTF-8"));
@@ -242,7 +238,7 @@ public class sunapp_domain extends Task {
      * @param m
      * @param l_o_O
      * @param value
-     * @return true, if resource exists 
+     * @return the object itself or null
      * @throws BuildException
      */
     private Object resourceexists(Class c, java.lang.reflect.Method m, List<?> l_o_O, String value) throws BuildException {
@@ -261,17 +257,56 @@ public class sunapp_domain extends Task {
         }
         return null;
     }
-    // JdbcResources subelement(s)
-    List<JdbcResource> list_of_jdbcresources = new ArrayList<JdbcResource>();
 
+    // JdbcResources subelement(s)
+    private List<JdbcResource> list_of_jdbcresources = new ArrayList<JdbcResource>();
+
+
+    /**
+     * Each <b>domain</b> can have one or more jdbc_resource (child)child elements.
+     *
+      <pre>
+      &lt;domain&gt;
+        &lt;resources&gt;
+            ...
+            &lt;jdbc-resource .../&gt;
+            ...
+        &lt;/resource&gt;
+      &lt;/domain&gt;
+      </pre>
+     *
+     * This method collect all sunap_jdbc_resources in a list.
+     *
+     * @return Returns current sunapp_jdbc_resource.
+     */
     public sunapp_jdbc_resource createSunapp_jdbc_resource() {
         sunapp_jdbc_resource tmp = new sunapp_jdbc_resource();
         list_of_jdbcresources.add(tmp.getJdbcResource());
         return tmp;
     }
     // JdbcConnectionPool subelement(s)
-    List<sunapp_jdbc_connection_pool> list_of_jdbcconnectionpool = new ArrayList<sunapp_jdbc_connection_pool>();
+    private List<sunapp_jdbc_connection_pool> list_of_jdbcconnectionpool = new ArrayList<sunapp_jdbc_connection_pool>();
 
+     /**
+     * Each <b>domain</b> can have one or more jdbc_resource (child)child elements.
+     *
+      <pre>
+      &lt;domain&gt;
+        &lt;resources&gt;
+            ...
+            &lt;jdbc-connection-pool ...&gt;
+                ...
+            &lt;/jdbc-connection-pool ...&gt;
+
+            ...
+        &lt;/resource&gt;
+      &lt;/domain&gt;
+      </pre>
+     *
+     * This method collect all sunap_jdbc_resources in a list.
+     *
+     * @return Returns current sunapp_jdbc_connection_pool.
+     */
     public sunapp_jdbc_connection_pool createSunapp_jdbc_connection_pool() {
 
         sunapp_jdbc_connection_pool tmp = new sunapp_jdbc_connection_pool();
@@ -279,8 +314,21 @@ public class sunapp_domain extends Task {
         return tmp;
     }
     // Systemproperty subelement(s)
-    List<sunapp_property> list_of_systemproperties = new ArrayList<sunapp_property>();
+    private List<sunapp_property> list_of_systemproperties = new ArrayList<sunapp_property>();
 
+    /**
+     * Each <b>domain</b> can have one or more system property child elements.
+     *
+      <pre>
+      &lt;domain&gt;
+        ...
+        &lt;property key="..." value="..."/&gt;
+        ...
+      &lt;domain&gt;
+      </pre>
+     *
+     * @return
+     */
     public sunapp_property createSunapp_property() {
         sunapp_property tmp = new sunapp_property();
         list_of_systemproperties.add(tmp);

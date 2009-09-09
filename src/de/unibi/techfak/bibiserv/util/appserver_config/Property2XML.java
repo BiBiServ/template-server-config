@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.unibi.techfak.bibiserv.util.appserver_config;
 
 import java.io.File;
@@ -14,8 +10,16 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * Simple Ant task that convert an Java Property file to an XML Java property file.
  *
- * @author jkrueger
+ * Using :
+ * 
+ * <pre>
+ *  &lt;prop2xml src="..." dest="..."/&gt;
+ * </pre>
+ *
+ *
+ * @author Jan Krueger (jkrueger(at)cebitec.uni-bielefeld.de)
  */
 public class Property2XML extends Task {
 
@@ -37,8 +41,16 @@ public class Property2XML extends Task {
         if (src != null) {
             src_file = new File(src);
             if (!src_file.isFile()) {
-                throw new BuildException("Srcfile +'" + src_file + " not found .");
+                throw new BuildException("'src'file +'" + src_file + " not found .");
             }
+        } else {
+            throw new BuildException("No 'src' source defined! A source property file must be defined! ");
+        }
+
+        if (dest != null) {
+            dest_file = new File(dest);
+        } else {
+            throw new BuildException("No 'dest' destination defined! A destinion file path must be defined! ");
         }
 
         Properties prop = new Properties();
@@ -53,7 +65,7 @@ public class Property2XML extends Task {
 
         // write properties to file
         try {
-            prop.storeToXML(new FileOutputStream(new File(dest)), "converted by " + getClass().getName());
+            prop.storeToXML(new FileOutputStream(dest_file), "converted by " + getClass().getName());
         } catch (FileNotFoundException e) {
             throw new BuildException("Dest '" + src + "' not found ... ", e);
         } catch (IOException e) {

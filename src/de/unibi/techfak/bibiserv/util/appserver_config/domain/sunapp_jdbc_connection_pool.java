@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 
 import generated.Isolation;
@@ -12,31 +7,45 @@ import generated.Property;
 import java.util.List;
 import java.util.ArrayList;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
+ * public class sunapp_jdbc_connection_pool represents an ant task (sunapp_domain)
+ * childelement. It defines Bean methods for all attributes supported by
+ * the sunapp_jdbc_connection_pool.
  *
- * @author jkrueger
+ * This class uses the JAXB representation of an jdbc-connection-pool element defined
+ * by http://www.sun.com/software/appserver/dtds/sun-domain_1_3.dtd.
+ *
+ *
+ * @author Jan Krueger (jkrueger(at)cebitec.uni-bielefeld.de)
  */
-public class sunapp_jdbc_connection_pool extends Task{
-
-
+public class sunapp_jdbc_connection_pool{
 
     /** simple Constructor */
     public sunapp_jdbc_connection_pool() {};
 
-
-
      /** internal properties representation of subelements **/
     private List<Property> properties = new ArrayList<Property>();
 
+    /** internal used JAXb representation of an jadbc connection pool */
     private JdbcConnectionPool jdbcconnectionpool = new JdbcConnectionPool();
 
+    /**
+     * Return a JAXB representation of the described jdbc connection pool object.
+     *
+     * @return
+     */
     public JdbcConnectionPool getJdbcConnectionPool() {
         return jdbcconnectionpool;
     }
 
-    @Override
+    /**
+     * Execute method - more or less with same intention like the Task class.
+     * Do some further check on the given Attributes. and collect all data into
+     * a single JAXB object.
+     *
+     * @throws BuildException
+     */
     public void execute() throws BuildException{
 
         // iterate over all property sub elements ...
@@ -74,7 +83,7 @@ public class sunapp_jdbc_connection_pool extends Task{
 
 
     /**
-     * Each <b>jdbc-connection-pool</b> can one or more property child elements.
+     * Each <b>jdbc-connection-pool</b> can have one or more property child elements.
      *
       <pre>
       &lt;jdb-connection-pool&gt;
@@ -92,6 +101,7 @@ public class sunapp_jdbc_connection_pool extends Task{
     }
 
 
+    /* Getter/Setter methods for all attributes supported by jdbc_connection_pool entry */
     
     public boolean getAllownoncomponentcallers() {
         return Boolean.parseBoolean(jdbcconnectionpool.getAllowNonComponentCallers());
