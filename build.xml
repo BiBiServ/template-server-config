@@ -183,8 +183,8 @@
                 
                 <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
                 
-                <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'. Feel
-                free to modify this configuration. Some things you MAY/SHOULD change in an production environment.
+                <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'. 
+                Feel free to modify this configuration. Some things you MAY/SHOULD change in an production environment.
                 - lsub.bin, qsub.bin
                 - lsub.cpu and lsub.mem : the predefined values consider only VERY small jobs, if you run the Appserver on a high powered
                   machine or the runnings jobs have other constraints you may increase these values.
@@ -201,7 +201,7 @@
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
         <sunapp_domain file="${domain.dir}/${domain}/config/domain.xml">
             <!-- append System Property : de.unibi.techfak.bibiserv.config -->
-            <sunapp_property key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+            <sunapp_systemproperty key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
             <!-- append Connection Pool for previous generated DB -->
             <sunapp_jdbc_connection_pool
                         allownoncomponentcallers="false"
@@ -222,7 +222,7 @@
                         maxconnectionusagecount="0"
                         maxpoolsize="32"
                         maxwaittimeinmillis="60000"
-                        name="bibiserv2derby"
+                        name="bibiserv2_derby"
                         nontransactionalconnections="false"
                         poolresizequantity="2"
                         restype="javax.sql.DataSource"

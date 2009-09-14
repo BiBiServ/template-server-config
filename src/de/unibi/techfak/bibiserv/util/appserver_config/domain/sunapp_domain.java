@@ -10,6 +10,7 @@ import generated.ResourceRef;
 import generated.Resources;
 import generated.Server;
 import generated.Servers;
+import generated.SystemProperty;
 import java.io.File;
 
 import java.io.FileOutputStream;
@@ -135,9 +136,9 @@ public class sunapp_domain extends Task {
         
         // now modify file
         System.out.println("add " + list_of_systemproperties.size() + " appserver system propert(y|ies)!");
-        List<Property> l_o_P = config.getProperty();
+        List<SystemProperty> l_o_P = config.getSystemProperty();
         try {
-            for (sunapp_property prop : list_of_systemproperties) {
+            for (sunapp_systemproperty prop : list_of_systemproperties) {
                 if (resourceexists(Property.class, Property.class.getMethod("getName"), l_o_P, prop.getName()) == null) {
                     l_o_P.add(prop.getProperty());
                 } else {
@@ -162,12 +163,6 @@ public class sunapp_domain extends Task {
                         pool.getName()) == null) {
 
                     list_of_resources.add(pool);
-                    // add resource ref for pool
-                    ResourceRef resource_ref = new ResourceRef();
-                    resource_ref.setEnabled("true");
-                    resource_ref.setRef(pool.getName());
-                    server.getResourceRef().add(resource_ref);
-
                 } else {
                     System.out.println("jdbc-connection-pool with name '" + pool.getName() + "' exists ... ignore entry");
                 }
@@ -314,7 +309,7 @@ public class sunapp_domain extends Task {
         return tmp;
     }
     // Systemproperty subelement(s)
-    private List<sunapp_property> list_of_systemproperties = new ArrayList<sunapp_property>();
+    private List<sunapp_systemproperty> list_of_systemproperties = new ArrayList<sunapp_systemproperty>();
 
     /**
      * Each <b>domain</b> can have one or more system property child elements.
@@ -329,8 +324,8 @@ public class sunapp_domain extends Task {
      *
      * @return
      */
-    public sunapp_property createSunapp_property() {
-        sunapp_property tmp = new sunapp_property();
+    public sunapp_systemproperty createSunapp_systemproperty() {
+        sunapp_systemproperty tmp = new sunapp_systemproperty();
         list_of_systemproperties.add(tmp);
         return tmp;
     }
