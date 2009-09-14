@@ -196,6 +196,7 @@
 
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
+        <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
 
         <!-- modify domain.xml of glassfish domain -->
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
