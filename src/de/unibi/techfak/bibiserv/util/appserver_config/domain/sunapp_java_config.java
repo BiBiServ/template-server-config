@@ -5,6 +5,9 @@
 
 package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A simple representation of the java_config tag within 
  *
@@ -143,5 +146,30 @@ public class sunapp_java_config {
     public void setSystem_classpath(String system_classpath) {
         this.system_classpath = system_classpath;
     }
-    
+
+
+    private List<String> jvm_options = new ArrayList<String>();
+
+    public List<String> getJvmOptionsList(){
+        return jvm_options;
+    }
+
+    /**
+     * Each <b>java-config</b> can have one or more jvm-options child elements.
+     *
+      <pre>
+      &lt;java-config&gt;
+        &lt;jvm-options  value="..."/&gt;
+        ...
+      &lt;java-config&gt;
+      </pre>
+     *
+     * @return
+     */
+    public sunapp_jvm_options createSunapp_jvm_options(){
+        sunapp_jvm_options temp = new sunapp_jvm_options();
+        jvm_options.add(temp.getValue());
+        return temp;
+    }
+
 }
