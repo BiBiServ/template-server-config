@@ -3,6 +3,7 @@ package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 import generated.Config;
 import generated.Configs;
 import generated.Domain;
+import generated.JavaConfig;
 import generated.JdbcConnectionPool;
 import generated.JdbcResource;
 import generated.Property;
@@ -23,6 +24,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import sun.security.jgss.wrapper.SunNativeProvider;
 
 /**
  * public class sunapp_domain represents an ant task (sunapp_domain)
@@ -37,6 +39,8 @@ import org.apache.tools.ant.Task;
 public class sunapp_domain extends Task {
 
     private String fn = null;
+
+    private sunapp_java_config sunapp_java_config = null;
 
     /**
      * mandantory attribute @file
@@ -150,6 +154,116 @@ public class sunapp_domain extends Task {
         }catch  (NoSuchMethodException e) {
             throw new BuildException(e);
         }
+
+
+        JavaConfig javaconfig = config.getJavaConfig();
+        // check
+        if (sunapp_java_config != null){
+            // check mode
+            String mode = sunapp_java_config.getMode();
+            if ((mode == null) ||
+                    ((!sunapp_java_config.getMode().equalsIgnoreCase("replace")) ||
+                     (!sunapp_java_config.getMode().equalsIgnoreCase("append")))) {
+                throw new BuildException("attribute mode must be not null. The only attribute values currently supported are \"replace\" and \"append\" !");
+               
+            }
+
+            // classpathprefix
+            if (sunapp_java_config.getClasspath_prefix() != null && !sunapp_java_config.getClasspath_prefix().equals("")) {
+                 if (mode.equals("append") && javaconfig.getClasspathPrefix() != null && !javaconfig.getClasspathPrefix().equals("")) {
+                    javaconfig.setClasspathPrefix(javaconfig.getClasspathPrefix()+":"+sunapp_java_config.getClasspath_prefix());
+                } else {
+                    javaconfig.setClasspathPrefix(sunapp_java_config.getClasspath_prefix());
+                }
+            }
+
+            // classpathsuffix
+            if (sunapp_java_config.getClasspath_suffix() != null && !sunapp_java_config.getClasspath_suffix().equals("")) {
+                 if (mode.equals("append") && javaconfig.getClasspathSuffix() != null && !javaconfig.getClasspathSuffix().equals("")) {
+                    javaconfig.setClasspathSuffix(javaconfig.getClasspathSuffix()+":"+sunapp_java_config.getClasspath_suffix());
+                } else {
+                    javaconfig.setClasspathSuffix(sunapp_java_config.getClasspath_suffix());
+                }
+            }
+
+            // serverclasspath
+            if (sunapp_java_config.getServer_classpath() != null && !sunapp_java_config.getServer_classpath().equals("")) {
+                 if (mode.equals("append") && javaconfig.getServerClasspath() != null && !javaconfig.getServerClasspath().equals("")) {
+                    javaconfig.setServerClasspath(javaconfig.getServerClasspath()+":"+sunapp_java_config.getServer_classpath());
+                } else {
+                    javaconfig.setServerClasspath(sunapp_java_config.getServer_classpath());
+                }
+            }
+            // systemclasspath
+            if (sunapp_java_config.getSystem_classpath() != null && !sunapp_java_config.getSystem_classpath().equals("")) {
+                 if (mode.equals("append") && javaconfig.getSystemClasspath() != null && !javaconfig.getSystemClasspath().equals("")) {
+                    javaconfig.setSystemClasspath(javaconfig.getSystemClasspath()+":"+sunapp_java_config.getSystem_classpath());
+                } else {
+                    javaconfig.setServerClasspath(sunapp_java_config.getSystem_classpath());
+                }
+            }
+
+            // nativelibrarypathprefix
+            if (sunapp_java_config.getNative_library_path_prefix() != null && !sunapp_java_config.getNative_library_path_prefix().equals("")) {
+                 if (mode.equals("append") && javaconfig.getNativeLibraryPathPrefix() != null && !javaconfig.getNativeLibraryPathPrefix().equals("")) {
+                    javaconfig.setNativeLibraryPathPrefix(javaconfig.getNativeLibraryPathPrefix()+":"+sunapp_java_config.getNative_library_path_prefix());
+                } else {
+                    javaconfig.setNativeLibraryPathPrefix(sunapp_java_config.getNative_library_path_prefix());
+                }
+            }
+
+
+            // nativelibrarypathsuffix
+            if (sunapp_java_config.getNative_library_path_suffix() != null && !sunapp_java_config.getNative_library_path_suffix().equals("")) {
+                 if (mode.equals("append") && javaconfig.getNativeLibraryPathSuffix() != null && !javaconfig.getNativeLibraryPathSuffix().equals("")) {
+                    javaconfig.setNativeLibraryPathSuffix(javaconfig.getNativeLibraryPathSuffix()+":"+sunapp_java_config.getNative_library_path_suffix());
+                } else {
+                    javaconfig.setNativeLibraryPathSuffix(sunapp_java_config.getNative_library_path_suffix());
+                }
+            }
+
+            // debugoptions
+            if (sunapp_java_config.getDebug_options() != null && !sunapp_java_config.getDebug_options().equals("")) {
+                 if (mode.equals("append") && javaconfig.getDebugOptions() != null && !javaconfig.getDebugOptions().equals("")) {
+                    javaconfig.setDebugOptions(javaconfig.getDebugOptions()+":"+sunapp_java_config.getDebug_options());
+                } else {
+                    javaconfig.setDebugOptions(sunapp_java_config.getDebug_options());
+                }
+            }
+
+            // javac_options
+            if (sunapp_java_config.getJavac_options() != null && !sunapp_java_config.getJavac_options().equals("")) {
+                 if (mode.equals("append") && javaconfig.getJavacOptions() != null && !javaconfig.getJavacOptions().equals("")) {
+                    javaconfig.setJavacOptions(javaconfig.getJavacOptions()+":"+sunapp_java_config.getJavac_options());
+                } else {
+                    javaconfig.setJavacOptions(sunapp_java_config.getJavac_options());
+                }
+            }
+
+
+            /* for the attributes debug_enabled, java_home, bytecode_preprocesors the 'append'
+             * mode make no sense, so we replace the attribute ...*/
+
+            if (sunapp_java_config.getDebug_enabled() != null && !sunapp_java_config.getDebug_enabled().equals("")) {
+                javaconfig.setDebugEnabled(sunapp_java_config.getDebug_enabled());
+            }
+
+            if (sunapp_java_config.getJava_home() != null && !sunapp_java_config.getJava_home().equals("")){
+                javaconfig.setJavaHome(sunapp_java_config.getJava_home());
+            }
+
+            if (sunapp_java_config.getBytecode_preprocessors() != null && !sunapp_java_config.getBytecode_preprocessors().equals("")){
+                javaconfig.setBytecodePreprocessors(sunapp_java_config.getBytecode_preprocessors());
+            }
+
+            // jvm options
+            List <Object> jvmoptionlist = javaconfig.getJvmOptionsOrProperty();
+            for (String jvmoption : sunapp_java_config.getJvmOptionsList()) {
+                jvmoptionlist.add(0,jvmoption);
+            }
+
+        }
+
 
         System.out.println("add " + list_of_jdbcconnectionpool.size() + " appserver connection pools!");
         try {
@@ -283,7 +397,7 @@ public class sunapp_domain extends Task {
     private List<sunapp_jdbc_connection_pool> list_of_jdbcconnectionpool = new ArrayList<sunapp_jdbc_connection_pool>();
 
      /**
-     * Each <b>domain</b> can have one or more jdbc_resource (child)child elements.
+     * Each <b>domain</b> can have one or more jdbc_connection_pool (child)child elements.
      *
       <pre>
       &lt;domain&gt;
@@ -317,7 +431,7 @@ public class sunapp_domain extends Task {
       <pre>
       &lt;domain&gt;
         ...
-        &lt;property key="..." value="..."/&gt;
+        &lt;systemproperty key="..." value="..."/&gt;
         ...
       &lt;domain&gt;
       </pre>
@@ -328,5 +442,26 @@ public class sunapp_domain extends Task {
         sunapp_systemproperty tmp = new sunapp_systemproperty();
         list_of_systemproperties.add(tmp);
         return tmp;
+    }
+
+    /**
+     * Each <b>domain</b> cann have one java-config child element
+     *
+     *
+      <pre>
+      &lt;domain&gt;
+        ...
+        &lt;java-config classpath_prefix="..." classpath_suffix="..." ..&gt;
+            &lt;jvm-options&gt;.....&lt;/jvm-options&gt;
+            ...
+        &lt;/java-config&gt;
+        ...
+      &lt;domain&gt;
+      </pre>
+     */
+
+    public sunapp_java_config createSunapp_java_config() {
+        sunapp_java_config = new sunapp_java_config();
+        return sunapp_java_config;
     }
 }
