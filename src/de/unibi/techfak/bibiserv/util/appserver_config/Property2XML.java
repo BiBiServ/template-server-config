@@ -67,7 +67,7 @@ public class Property2XML extends Task {
         try {
             prop.storeToXML(new FileOutputStream(dest_file), "converted by " + getClass().getName());
         } catch (FileNotFoundException e) {
-            throw new BuildException("Dest '" + src + "' not found ... ", e);
+            throw new BuildException("Dest '" + dest + "' not found ... ", e);
         } catch (IOException e) {
             throw new BuildException(e);
         }
