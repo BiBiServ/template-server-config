@@ -55,7 +55,7 @@
                         <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter domain root !" addproperty="domain.dir"/>
+                <input message="Enter domain root dir (NOT install root dir)!" addproperty="domain.dir"/>
 
         <!-- domain name -->
                 <input message="Enter domain name !" addproperty="domain.name"/>
@@ -201,10 +201,11 @@
 
         <copy todir="${domain.dir}/${domain}/lib">
             <fileset dir="${lib}">
-                <include name="jboss_el*"/>
+                <include name="jboss-el*"/>
             </fileset>
-            <globmapper to="${jboss_el}"/>
+            <mergemapper to="${jboss_el}"/>
         </copy>
+        <echo>Copied jboss-el library to ${domain.dir}/${domain}/lib/${jboss_el}</echo>
 
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
