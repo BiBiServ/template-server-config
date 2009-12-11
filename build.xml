@@ -46,7 +46,7 @@
                         <property name="catalina.home" value="${env.CATALINA_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter Glassfish root !" addproperty="catalina.home"/>
+                <input message="Enter Glassfish root dir !" addproperty="catalina.home"/>
 
         <!-- domain root -->
                 <if>
@@ -55,7 +55,7 @@
                         <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter domain root dir (NOT install root dir)!" addproperty="domain.dir"/>
+                <input message="Enter domain root (NOT install(=Glassfish) root)!" addproperty="domain.dir"/>
 
         <!-- domain name -->
                 <input message="Enter domain name !" addproperty="domain.name"/>
