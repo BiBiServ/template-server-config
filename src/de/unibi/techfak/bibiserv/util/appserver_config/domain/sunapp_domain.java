@@ -162,8 +162,8 @@ public class sunapp_domain extends Task {
             // check mode
             String mode = sunapp_java_config.getMode();
             if ((mode == null) ||
-                    ((!sunapp_java_config.getMode().equalsIgnoreCase("replace")) ||
-                     (!sunapp_java_config.getMode().equalsIgnoreCase("append")))) {
+                    (!(sunapp_java_config.getMode().equalsIgnoreCase("replace") ||
+                     (sunapp_java_config.getMode().equalsIgnoreCase("append"))))) {
                 throw new BuildException("attribute mode must be not null. The only attribute values currently supported are \"replace\" and \"append\" !");
                
             }
