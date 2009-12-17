@@ -36,7 +36,15 @@ public class XML2Database extends Task {
             } else {
                 //FileInputStream is;
                 //is = new FileInputStream(src);
+
+
+
+
                 FileReader ir = null;
+
+
+
+                
                 try {
                     org.apache.derby.jdbc.ClientDataSource ds = new org.apache.derby.jdbc.ClientDataSource();
                     ds.setDatabaseName("bibiserv2");
@@ -65,13 +73,13 @@ public class XML2Database extends Task {
                     PreparedStatement stmnt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, XMLPARSE (DOCUMENT CAST (? AS CLOB) PRESERVE WHITESPACE))");
                     stmnt.setClob(1, br);
                     stmnt.execute();
-                    System.out.println("Now reading from filled DB...");
+                    System.out.println("Written Structure of BiBiServ to Database BiBiServ2 into table Structure");
+                   
                 } catch (SQLException ex) {
                     Logger.getLogger(XML2Database.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(XML2Database.class.getName()).log(Level.SEVERE, null, ex);
-                } 
-                finally {
+                } finally {
                     try {
                         ir.close();
                     } catch (IOException ex) {

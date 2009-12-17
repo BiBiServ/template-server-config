@@ -154,9 +154,18 @@
             </else>
             
         </if>
-        
+               <!-- start database on localhost:1527-->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="start-database"/>
+            <arg value="--dbhome=${domain.dir}/${domain}/db"/>
+        </exec>
+            
         <!--Writing BiBiServ Strucutre xml to database-->
             <xml2database src="config/BiBiServ.xml"/>
+             <!-- stop database -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="stop-database"/>
+        </exec>
             <echo> Database bibiserv2 filled with BiBiServ-structure XMl-File</echo>
         
         
@@ -180,8 +189,7 @@
             <then>
                 
                 <!-- copy xml property -->
-                 
-                <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+              <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
                 
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
