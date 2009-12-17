@@ -13,6 +13,7 @@
     <dependencies>
         <dependency org="com.sun.java" name="sun-domain_jaxb" rev="" revConstraint="1.3_+"/>
         <dependency org="org.jboss" name="jboss-el_GA" rev="" revConstraint="2.0+"/>
+	<dependency org="org.apache" name="embedded-derby" rev="" revConstraint="10.4+"/>
     </dependencies>
 
 </ivy-module>
