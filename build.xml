@@ -10,9 +10,7 @@
 
     <property name="local.configuration" value="local.configuration"/>
     <property name="local.passwordfile" value="local.passwordfile"/>
-
-    <property name="jboss_el" value="jboss_el.jar"/>
-
+    
     <!-- include ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
@@ -46,7 +44,7 @@
                         <property name="catalina.home" value="${env.CATALINA_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter Glassfish root dir !" addproperty="catalina.home"/>
+                <input message="Enter Glassfish root !" addproperty="catalina.home"/>
 
         <!-- domain root -->
                 <if>
@@ -55,7 +53,7 @@
                         <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter domain root (NOT install(=Glassfish) root)!" addproperty="domain.dir"/>
+                <input message="Enter domain root !" addproperty="domain.dir"/>
 
         <!-- domain name -->
                 <input message="Enter domain name !" addproperty="domain.name"/>
@@ -152,14 +150,21 @@
                 </exec>
             </then>
             <else>
-                <echo> Database bibiserv2 exist, continue ... </echo>
+                <echo> Database bibiserv2 exists, continue ... </echo>
             </else>
+            
         </if>
+        
+        <!--Writing BiBiServ Strucutre xml to database-->
+            <xml2database src="config/BiBiServ.xml"/>
+            <echo> Database bibiserv2 filled with BiBiServ-structure XMl-File</echo>
+        
         
         <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv_config.xml" value="true"/>
 
         <if>
             <isset property="bibiserv.properties.present"/>
+            
             <then>
                 <input message="BiBiServ Properties file (${domain.dir}/${domain}/config/bibiserv_config.xml) is present! Overwrite (Y/N)?" validargs="Y,y,N,n" addproperty="overwrite"/>
             </then>
@@ -173,9 +178,11 @@
                 <isset property="overwrite"/>
             </or>
             <then>
+                
                 <!-- copy xml property -->
+                 
                 <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
-
+                
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
                     <entry key="spooldir.base" value="${spool.dir}"/>
@@ -184,8 +191,9 @@
                 </propertyfile>
                 
                 <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
-                
-                <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'. 
+                 
+                 
+                <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'.
                 Feel free to modify this configuration. Some things you MAY/SHOULD change in an production environment.
                 - lsub.bin, qsub.bin
                 - lsub.cpu and lsub.mem : the predefined values consider only VERY small jobs, if you run the Appserver on a high powered
@@ -195,17 +203,6 @@
 
             </then>
         </if>
-
-        <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
-        <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
-
-        <copy todir="${domain.dir}/${domain}/lib">
-            <fileset dir="${lib}">
-                <include name="jboss-el*"/>
-            </fileset>
-            <mergemapper to="${jboss_el}"/>
-        </copy>
-        <echo>Copied jboss-el library to ${domain.dir}/${domain}/lib/${jboss_el}</echo>
 
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
@@ -261,9 +258,6 @@
                         jndiname="jdbc/bibiserv2"
                         objecttype="user"
                         poolname="bibiserv2_derby"/>
-            <!-- modify existing java-config -->
-            <sunapp_java_config
-                        classpath_prefix="${domain.dir}/${domain}/lib/${jboss_el}" mode="replace"/>
         </sunapp_domain>
     </target>
     
@@ -328,7 +322,7 @@
                 <include name="bin/**"/>
                 <include name="config/**"/>
                 <include name="build.xml"/>
-                <include name="ivy.xml"/>               
+                <include name="ivy.xml"/>
             </zipfileset>
             <exclude name="**"/>
         </zip>

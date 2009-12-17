@@ -13,4 +13,17 @@ create table status (
     stderr varchar(1000)
 );
 
+create table item (
+id varchar(200),
+item xml
+);
+
+create table structure (
+  time timestamp,
+    content xml
+);
+
+
+
+
 disconnect BIBISERV2;
