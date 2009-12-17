@@ -1,0 +1,1181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<category xmlns="de:unibi:techfak:bibiserv:cms"
+    xmlns:microhtml="de:unibi:techfak:bibiserv:cms:microhtml"
+    xmlns:minihtml="de:unibi:techfak:bibiserv:cms:minihtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="de:unibi:techfak:bibiserv:cms BiBiServAbstraction.xsd" id="bibiserv">
+    <name>BiBiServ</name>
+    <categoryDescription xml:lang="en">Welcome to BiBiserv. The Bielefeld University Bioinformatics
+        Server. </categoryDescription>
+    <categoryRepresentation>
+        <title>BiBiServ - Bielefeld University Bioinformatics Server</title>
+        <customContent xml:lang="en"> The Bielefeld Bioinformatics Server (BiBiServ) is a relatively
+            small unit of the <microhtml:a
+                href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Institute for
+                Bioinformatics</microhtml:a> (IFB) within the <microhtml:a
+                href="http://www.cebitec.uni-bielefeld.de">Center for Biotechnology</microhtml:a>
+            (CeBiTec) dedicated to providing persistent service to the community by hosting
+            bioinformatics tools which emerge from the research of the Bielefeld groups and their
+            direct collaborators. </customContent>
+    </categoryRepresentation>
+    <category id="tools">
+        <name>Tools</name>
+        <categoryDescription>The BiBiServ Tool section currently offers bioinformatics tools for a
+            large variety of tasks</categoryDescription>
+        <categoryRepresentation>
+            <title>BiBiServ Tool Section</title>
+            <customContent xml:lang="en"> As some analyses can take a long time - sometimes over
+                several hours - BiBiServ provides two different result delivery mechanisms. Results
+                of short analyses (less than 5 minutes compute time) are shown immediately in the
+                browser. For longer analyses (maximum of one day compute time) the result is stored
+                on a temporary web-site and the corresponding URL is sent to the user via E-mail.
+                BiBiServ runs in a UNIX environment. The data stored locally can be accessed only by
+                the BiBiServ administrators. The result of a calculation is stored temporarily for
+                three days and deleted afterwards. We do not offer encrypted submissions.
+            </customContent>
+        </categoryRepresentation>
+        <!-- Genome Comparison -->
+        <category id="genomeComparison">
+            <name>Genome Comparison</name>
+            <categoryDescription>Several Tools for Genome Comparison</categoryDescription>
+            <categoryRepresentation>
+                <title>Genome Comparison</title>
+                <customContent/>
+            </categoryRepresentation>
+        </category>
+        <!-- RNA Studio -->
+        <category id="rna">
+            <name>RNA Studio</name>
+            <categoryDescription>RNA processing tools</categoryDescription>
+            <categoryRepresentation>
+                <title>RNA Studio</title>
+                <customContent/>
+            </categoryRepresentation>
+            <runnableItem id="rnafold">
+                <name>RNAfold</name>
+                <shortDescription>RNAfold calculates secondary structures of RNAs</shortDescription>
+                <description>
+                    <p xmlns="de:unibi:techfak:bibiserv:cms:microhtml"> BiBiServ offers a Webservice
+                        interface for RNA folding and sequence design using the program RNAfold from
+                        the <a href="http://www.tbi.univie.ac.at/~ivo/RNA/">Vienna package</a>. </p>
+                </description>
+                <toolTipText>Calculation of secondary structures of RNAs</toolTipText>
+                <keywords>RNA secondary structure computation</keywords>
+                <responsibleAuthor>
+                    <firstname>Jan</firstname>
+                    <lastname>Krueger</lastname>
+                    <organisation>BiBiServ Curator Team</organisation>
+                    <email>jkrueger@cebitec.uni-bielefeld.de</email>
+                    <phone>+49 (0)521 106 2494</phone>
+                    <adress/>
+                </responsibleAuthor>
+                <support>
+                    <firstname>Sven</firstname>
+                    <lastname>Hartmeier</lastname>
+                    <organisation>BiBiServ Curator Team</organisation>
+                    <email>shartmei@techfak.uni-bielefeld.de</email>
+                    <phone>+49 (0)521 106 2494</phone>
+                    <adress/>
+                </support>
+                <executable>
+                    <version>1.5</version>
+                    <execInfo>
+                        <executableType>binary</executableType>
+                        <path>/vol/biotools/bin</path>
+                        <callingInformation>rnafold</callingInformation>
+                    </execInfo>
+                    <input id="rnafold_input_inputsequence">
+                        <name>inputsequence</name>
+                        <shortDescription>RNASequence in Fasta format.</shortDescription>
+                        <description>
+                            <a xmlns="de:unibi:techfak:bibiserv:cms:microhtml"/>
+                        </description>
+                        <type>Fasta_RNA_Single</type>
+                        <handling>STDIN</handling>
+                        <example/>
+                    </input>
+                    <output id="rnafold_output_outputdotbracket">
+                        <name xml:lang="en">outputdotbracket</name>
+                        <shortDescription/>
+                        <description>
+                            <a xmlns="de:unibi:techfak:bibiserv:cms:microhtml"/>
+                        </description>
+                        <type>DotBracket_RNA</type>
+                        <handling>STDOUT</handling>
+                        <example/>
+                    </output>
+                    <param id="rnafold_param_temperature">
+                        <name xml:lang="en">folding temparature</name>
+                        <shortDescription xml:lang="en">Rescale energy parameters to a folding temperature of  temp  C. Default is 37C.</shortDescription>
+                        <description xml:lang="en">No decription yet,see shortDescription for a <microhtml:em>short</microhtml:em> description.</description>
+                        <type>int</type>
+                        <option>T</option>
+                        <defaultValue>37</defaultValue>
+                        <min included="true">0</min>
+                        <max included="true">100</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <function id="rnafold_function_simple">
+                        <name>Simple Computation</name>
+                        <shortDescription>shape computation with optional temperature
+                            variable</shortDescription>
+                        <description>
+                            <p xmlns="de:unibi:techfak:bibiserv:cms:microhtml"> This function
+                                computes a simple MFE Structure, optionally using the environment
+                                temperature to modify the resulting structure. </p>
+                        </description>
+                        <inputref ref="rnafold_input_inputsequence"/>
+                        <outputref ref="rnafold_output_outputdotbracket"/>
+                        <paramGroup id="pg1">
+                            <name/>
+                            <shortDescription/>
+                            <description>
+                                <p xmlns="de:unibi:techfak:bibiserv:cms:microhtml"/>
+                            </description>
+                            <paramref ref="rnafold_param_temperature"/>
+                        </paramGroup>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-nodotplot</additionalString>
+                            <reference>rnafold_param_temperature</reference>
+                            <reference>rnafold_input_inputsequence</reference>
+                            <reference>rnafold_output_outputdotbracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+                </executable>
+                <view type="submission" id="rnafold_view_submission"/>
+                <view type="webservice" id="rnafold_view_webservice"/>
+                <view type="mobyservice" id="rnafold_view_moby"/>
+                <manual id="manual">
+                    <introductoryText>
+                        <a xmlns="de:unibi:techfak:bibiserv:cms:microhtml"/>
+                    </introductoryText>
+                </manual>
+            </runnableItem>
+            <runnableItem id="rnashapes">
+                <name xml:lang="en">RNAshapes</name>
+                <shortDescription xml:lang="en">RNAshapes: an integrated RNA analysis package based
+                    on abstract shapes </shortDescription>
+                <shortDescription xml:lang="de">RNAshapes: ein integriertes RNA-Analysepaket,
+                    welches auf abstrakten `shapes` basiert.</shortDescription>
+                <description xml:lang="en"> RNAshapes offers three RNA analysis tools in one single
+                    software package: computation of a small set of representative structures of
+                    different shapes, computation of shape probabilities, and comparative prediction
+                    of consensus structures. </description>
+                <keywords xml:lang="en">RNA secondary structure prediction</keywords>
+                <responsibleAuthor>
+                    <firstname>Jan</firstname>
+                    <lastname>Krueger</lastname>
+                    <email>jkrueger@techfak.uni-bielefeld.de</email>
+                </responsibleAuthor>
+                <author>
+                    <firstname>Peter</firstname>
+                    <lastname>Steffen</lastname>
+                    <email>psteffen@techfak.uni-bielefeld.de</email>
+                </author>
+                <customContent xml:lang="en">
+                    <microhtml:img src="icon.png" alt="RNAshapes Icon"/>RNAshapes Current version:
+                    RNAshapes 2.1.5 (Apr. 15. 2008) <microhtml:p> RNA shape abstraction maps
+                        structures to a tree-like domain of shapes, retaining adjacency and nesting
+                        of structural features, but disregarding helix lengths. Shape abstraction
+                        integrates well with dynamic programming algorithms, and hence it can be
+                        applied during structure prediction rather than afterwards. This avoids
+                        exponential explosion and can still give us a non-heuristic and complete
+                        account of properties of the molecule`s folding space. </microhtml:p>
+                    RNAshapes offers three powerful RNA analysis tools in one single software
+                    package: <microhtml:ul>
+                        <microhtml:li>Computation of a small set of representative structures of
+                            different shapes, complete in a well-defined sense.</microhtml:li>
+                        <microhtml:li>Computation of accumulated shape probabilities.</microhtml:li>
+                        <microhtml:li>Comparative prediction of consensus structures, as an
+                            alternative to the over-expensive Sankoff Algorithm.</microhtml:li>
+                    </microhtml:ul>
+                    <microhtml:p> RNAshapes is available as C source code and compiled binaries for
+                        Unix, Mac OS X and Microsoft Windows. See <microhtml:a href="download"
+                            >download section</microhtml:a>. </microhtml:p>
+                    <microhtml:p> RNAshapes can also be used online (<microhtml:a href="submission"
+                            >submission section</microhtml:a>). This also links to a website that
+                        allows to study the combinatorics of shapes. </microhtml:p>
+                    <microhtml:cite> P. Steffen, B. Voß, M. Rehmsmeier, J. Reeder, and R. Giegerich.
+                        RNAshapes: an integrated RNA analysis package based on abstract shapes.
+                        Bioinformatics, 22(4), 2006. </microhtml:cite>
+                </customContent>
+
+
+
+                <executable>
+                    <version>2.1.1</version>
+                    <execInfo>
+                        <executableType>binary</executableType>
+                        <path>/vol/biotools/bin</path>
+                        <callingInformation>RNAshapes</callingInformation>
+                    </execInfo>
+                    <input id="rnashapes_input_FASTA">
+                        <name xml:lang="en">FASTA</name>
+                        <shortDescription xml:lang="en">RNAsequence in FASTA
+                            format</shortDescription>
+                        <description xml:lang="en">RNAsequence in FASTA format. FASTA is a text
+                            based format ... </description>
+                        <type>Fasta_RNA_Single</type>
+                        <handling>FILE</handling>
+                        <option>-f </option>
+                        <example/>
+                    </input>
+                    <output id="rnashapes_output_DotBracket">
+                        <name xml:lang="en">DotBracket</name>
+                        <shortDescription xml:lang="en">RNA secondary structure in DotBracket
+                            notation.</shortDescription>
+                        <description xml:lang="en"> RNA secondary structure in DotBracket notation.
+                            DotBracket is a text based format ...</description>
+                        <type>DotBracket_RNA</type>
+                        <handling>STDOUT</handling>
+                        <example/>
+                    </output>
+
+
+                    <!-- shape	Integer - 1 to 5	shape type -->
+                    <param id="rnashapes_param_shape">
+                        <name xml:lang="en">shape</name>
+                        <shortDescription xml:lang="en">shape type</shortDescription>
+                        <description xml:lang="en">shape type</description>
+                        <type>int</type>
+                        <option>-t </option>
+                        <min included="true">1</min>
+                        <max included="true">5</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- energy	Double - 0 to 100	energy range, used with energy_mode -->
+                    <param id="rnashapes_param_energy">
+                        <name xml:lang="en">energy</name>
+                        <shortDescription xml:lang="en">energy range, used with
+                            energy_mode</shortDescription>
+                        <description xml:lang="en">energy range, used with energy_mode</description>
+                        <type>float</type>
+                        <min included="true">0</min>
+                        <max included="true">100</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+
+
+
+
+                    <!-- prob_number	Integer - 1 to 1000	sets the max number of probabilities to calculate (probability mode: best) -->
+                    <param id="rnashapes_param_prob_number">
+                        <name xml:lang="en">prob_number</name>
+                        <shortDescription xml:lang="en">sets the maximum numbers of probabilities to
+                            calculate</shortDescription>
+                        <description xml:lang="en">sets the maximum numbers of probabilities to
+                            calculate</description>
+                        <type>int</type>
+                        <min included="true">1</min>
+                        <max included="true">1000</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!--prob_cutoff	Double - 0 to 1	probability cutoff (probability mode) -->
+                    <param id="rnashapes_param_prob_cutoff">
+                        <name xml:lang="en">prob_cutoff</name>
+                        <shortDescription xml:lang="en">probability cutoff</shortDescription>
+                        <description xml:lang="en">probability cutoff</description>
+                        <type>float</type>
+                        <min included="true">0.0</min>
+                        <max included="true">1.0</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- prob_output	Double - 0 to 1	probability output cutoff (probability mode) -->
+                    <param id="rnashapes_param_prob_output">
+                        <name xml:lang="en">prob_output</name>
+                        <shortDescription>probability output cutoff</shortDescription>
+                        <description>probability output cutoff</description>
+                        <type>float</type>
+                        <min included="true">0.0</min>
+                        <max included="true">1.0</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- sampling	Integer - 1 to 100000	number of iterations (sampling mode) -->
+                    <param id="rnashapes_param_sampling">
+                        <name xml:lang="en">sampling</name>
+                        <shortDescription xml:lang="en">number of iterations</shortDescription>
+                        <description xml:lang="en">number of iterations</description>
+                        <type>int</type>
+                        <min included="true">1</min>
+                        <max included="true">100000</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- calc_struct_prob	Boolean	calculate probabilities for structures -->
+                    <param id="rnashapes_param_calc_struct_prop">
+                        <name xml:lang="en">calc_struct_prob</name>
+                        <shortDescription xml:lang="en">calculate probabilities for
+                            structures</shortDescription>
+                        <description xml:lang="en">calculate probabilities for
+                            structures</description>
+                        <type>boolean</type>
+                        <guiElement>selectBooleanCheckbox</guiElement>
+                    </param>
+                    <!-- ignore_unstable	Boolean	ignore unstable structures -->
+                    <param id="rnashapes_param_ignore_unstable">
+                        <name xml:lang="en">ignore_unstable</name>
+                        <shortDescription xml:lang="en">ignore unstable
+                            structures</shortDescription>
+                        <description xml:lang="en">ignore unstable structures</description>
+                        <type>boolean</type>
+                        <guiElement>selectBoolanCheckbox</guiElement>
+                    </param>
+                    <!-- match_shape	String - shape declared using the symbols `[`, `]` and `_`. max 1000 chars	sets a shape, that all structures have to match -->
+                    <param id="rnashapes_param_match_shape">
+                        <name xml:lang="en">match_shape</name>
+                        <shortDescription xml:lang="en">declare a shape that all structures have to
+                            match</shortDescription>
+                        <description xml:lang="en">shape declared using the symbols `[`, `]` and
+                            `_`. max 1000 chars sets a shape, that all structures have to
+                            match</description>
+                        <type>string</type>
+                        <regexp>(\[|\]|_)*</regexp>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- window_size	Integer - 1 to 1000000	size of the window -->
+                    <param id="rnashapes_param_window_size">
+                        <name xml:lang="en">window_size</name>
+                        <shortDescription xml:lang="en">size of the window</shortDescription>
+                        <description xml:lang="en">size of the window</description>
+                        <type>int</type>
+                        <min included="true">1</min>
+                        <max included="true">1000000</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+                    <!-- window_incr	Integer - 1 to 1000000	increment of the window -->
+                    <param id="rnashapes_param_window_incr">
+                        <name xml:lang="en">window_incr</name>
+                        <shortDescription xml:lang="en">increment of the window</shortDescription>
+                        <description xml:lang="en">increment of the window</description>
+                        <type>int</type>
+                        <min included="true">1</min>
+                        <max included="true">1000000</max>
+                        <guiElement>inputText</guiElement>
+                    </param>
+
+
+
+                    <!--  mode	String - one of the following chars: aspqPiC	program mode of RNAshapes -->
+                    <!-- <param id="rnashapes_param_mode">
+            <name xml:lang="en">mode</name>
+            <shortDescription xml:lang="en">program mode of RNAshapes</shortDescription>
+            <description xml:lang="en">RNAshapes offers five major program modes. ShapeFolding : </description>
+            <type>string</type>
+            <regexp>(a|s|p|q|P|i|C)</regexp>
+            </param> -->
+                    <!-- <enumParam id="rnashapes_param_mode" >
+            <name xml:lang="en">mode</name>
+            <shortDescription xml:lang="en">program mode of RNAshapes</shortDescription>
+            <description xml:lang="en">
+                RNAshapes offers five major program modes:
+                <microhtml:ul>
+                    <microhtml:li><microhtml:em>Shape folding:</microhtml:em>
+                        RNA folding based on abstract shapes. This is the standard mode of operation
+                        when no other options are given. It calculates the shapes and the corresponding
+                        shreps based on free energy minimization.</microhtml:li>
+                    <microhtml:li><microhtml:em>Suboptimal shape folding:</microhtml:em>
+                        Complete suboptimal folding of RNA. This mode uses a non-ambiguous grammar that
+                        also handles dangling bases of multiloop components in a non-ambiguous way.</microhtml:li>
+                    <microhtml:li><microhtml:em>Shape probabilities:</microhtml:em>
+                        This option calculates the shape probabilities based on partition function.
+                        The probability of a shape is the sum of the probabilities of all structures that
+                        fall into this shape.</microhtml:li>
+                    <microhtml:li><microhtml:em>Sampling:</microhtml:em>
+                        Probabilistic sampling based on partition function. This mode combines stochastic
+                        sampling with a-posteriori shape abstraction. A sample from the structure space holds
+                        M structures together with their shapes, on which classification is performed. The
+                        probability of a shape can then be approximated by its frequency in the sample.
+                        Sequences up to a length of around 1500 can be handled with this mode. In our
+                        experience, 1000 iterations are sufficient to achieve reasonable results for shapes
+                        with high probability.</microhtml:li>
+                    <microhtml:li><microhtml:em>Consensus shapes:</microhtml:em>
+                        For a family of RNA sequences, this method independently enumerates the near-optimal
+                        abstract shape space, and predicts as the consensus an abstract shape common to all
+                        sequences. For each sequence, it delivers the thermodynamically best structure which
+                        has this common shape. Since the shape space is much smaller than the structure space,
+                        and identification of common shapes can be done in linear time (in the number of shapes
+                        considered), the method is essentially linear in the number of sequences.</microhtml:li>
+                </microhtml:ul>
+            </description>
+            <type>string</type>
+               <values defaultValue="true">
+                    <key>shape</key>
+                    <value>-a</value>
+                    <name xml:lang="en">shape folding</name>
+                 </values>
+                 <values>
+                    <key>suboptimal</key>
+                    <value>-s</value>
+                    <name xml:lang="en">Suboptimal shape folding</name>
+                  </values>
+                  <values>
+                    <key>probabilities</key>
+                    <value>-p</value>
+                      <name xml:lang="en">shape probabilities</name>
+                  </values>
+                  <values>
+                    <key>sampling</key>
+                    <value>-q</value>
+                    <name xml:lang="en">probalistic sampling</name>
+                   </values>
+                   <values>
+                    <key>consensus</key>
+                    <value>-C</value>
+                    <name xml:lang="en">consensus shapes</name>
+                   </values>
+
+            <guiElement>selectOneListbox</guiElement>
+        </enumParam> -->
+
+
+
+
+                    <enumParam id="rnashapes_param_energy_mode" minoccurs="0" maxoccurs="1">
+                        <name xml:lang="en">energy_mode</name>
+                        <shortDescription>Energy range mode</shortDescription>
+                        <description> Sets the energy range either as percentage value of the
+                            minimum free energy (% of mfe) or as the difference to the minimum free
+                            energy for the sequence (kcal/mol).</description>
+                        <type>string</type>
+                        <values>
+                            <key>absolut</key>
+                            <value>e</value>
+                            <name xml:lang="en">kcal per mol</name>
+                        </values>
+                        <values>
+                            <key>relative</key>
+                            <value>c</value>
+                            <name xml:lang="en">percent of mfe</name>
+                        </values>
+                        <guiElement>selectOneRadio</guiElement>
+                    </enumParam>
+
+
+                    <paramGroup id="rnashapes_paramGroup_1">
+                        <shortDescription>"Required" parameter</shortDescription>
+                        <paramref ref="rnashapes_param_shape"/>
+                    </paramGroup>
+
+                    <paramGroup id="rnashapes_paramGroup_2">
+                        <shortDescription>"Optional" parameter that must used together
+                            ...</shortDescription>
+                        <paramref ref="rnashapes_param_energy"/>
+                        <paramref ref="rnashapes_param_energy_mode"/>
+                    </paramGroup>
+
+                    <paramGroup id="rnashapes_paramGroup_3">
+                        <shortDescription>"Optional" parameter</shortDescription>
+                        <paramref ref="rnashapes_param_calc_struct_prop"/>
+                        <paramref ref="rnashapes_param_ignore_unstable"/>
+                        <paramref ref="rnashapes_param_prob_cutoff"/>
+                        <paramref ref="rnashapes_param_prob_number"/>
+                        <paramref ref="rnashapes_param_prob_output"/>
+                        <paramref ref="rnashapes_param_sampling"/>
+                        <paramref ref="rnashapes_param_window_incr"/>
+                        <paramref ref="rnashapes_param_window_size"/>
+                    </paramGroup>
+
+
+                    <dependency id="rnashapes_dependency_1">
+                        <shortDescription>dependency of parameter group 1</shortDescription>
+
+                        <dependencyDefinition> ,def(@rnashapes_param_shape) </dependencyDefinition>
+                    </dependency>
+
+                    <dependency id="rnahshapes_dependency_2">
+                        <shortDescription>dependency of parameter group 2</shortDescription>
+                        <dependencyDefinition>
+                            logeq(def(@rnashapes_param_energy),def(@rnashapes_param_mode))
+                        </dependencyDefinition>
+                    </dependency>
+
+                    <!-- function (mode shape folding) -->
+                    <function id="rnashapes_function_1">
+                        <name xml:lang="en">RNAshapes_shape_folding</name>
+                        <shortDescription xml:lang="en">shape folding</shortDescription>
+                        <description xml:lang="en"><microhtml:em>Shape folding:</microhtml:em> RNA
+                            folding based on abstract shapes. This is the standard mode of operation
+                            when no other options are given. It calculates the shapes and the
+                            corresponding shreps based on free energy minimization.</description>
+                        <inputref ref="rnashapes_input_FASTA"/>
+                        <outputref ref="rnashapes_output_DotBracket"/>
+                        <paramGroup id="rnashapes_paramgroup_function_1">
+                            <shortDescription>Shape folding parameter</shortDescription>
+                            <paramGroupref ref="rnashapes_paramGroup_1"/>
+                            <paramGroupref ref="rnashapes_paramGroup_2"/>
+                            <paramGroupref ref="rnashapes_paramGroup_3"/>
+                        </paramGroup>
+                        <depref ref="rnashapes_dependency_1"/>
+                        <depref ref="rnahshapes_dependency_2"/>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-a</additionalString>
+                            <reference>rnashapes_param_calc_struct_prop</reference>
+                            <reference>rnashapes_param_energy</reference>
+                            <reference>rnashapes_param_energy_mode</reference>
+                            <reference>rnashapes_param_ignore_unstable</reference>
+                            <reference>rnashapes_param_match_shape</reference>
+                            <reference>rnashapes_param_prob_cutoff</reference>
+                            <reference>rnashapes_param_prob_number</reference>
+                            <reference>rnashapes_param_prob_output</reference>
+                            <reference>rnashapes_param_sampling</reference>
+                            <reference>rnashapes_param_shape</reference>
+                            <reference>rnashapes_param_window_incr</reference>
+                            <reference>rnashapes_param_window_size</reference>
+                            <reference>rnashapes_input_FASTA</reference>
+                            <reference>rnashapes_output_DotBracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+                    <!-- function (mode subtoptimal shape folding) -->
+                    <function id="rnashapes_function_2">
+                        <name xml:lang="en">Supoptimal_Shape_Folding</name>
+                        <shortDescription xml:lang="en">Supoptimal Shape Folding</shortDescription>
+                        <description xml:lang="en"><microhtml:em>Suboptimal shape
+                                folding:</microhtml:em> Complete suboptimal folding of RNA. This
+                            mode uses a non-ambiguous grammar that also handles dangling bases of
+                            multiloop components in a non-ambiguous way.</description>
+                        <inputref ref="rnashapes_input_FASTA"/>
+                        <outputref ref="rnashapes_output_DotBracket"/>
+                        <paramGroup id="rnashapes_paramgroup_function2">
+                            <shortDescription>parameter of rnashapes_function_1</shortDescription>
+                            <paramGroupref ref="rnashapes_paramGroup_1"/>
+                            <paramGroupref ref="rnashapes_paramGroup_2"/>
+                            <paramGroupref ref="rnashapes_paramGroup_3"/>
+                        </paramGroup>
+                        <depref ref="rnashapes_dependency_1"/>
+                        <depref ref="rnahshapes_dependency_2"/>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-s</additionalString>
+                            <reference>rnashapes_param_calc_struct_prop</reference>
+                            <reference>rnashapes_param_energy</reference>
+                            <reference>rnashapes_param_energy_mode</reference>
+                            <reference>rnashapes_param_ignore_unstable</reference>
+                            <reference>rnashapes_param_match_shape</reference>
+                            <reference>rnashapes_param_prob_cutoff</reference>
+                            <reference>rnashapes_param_prob_number</reference>
+                            <reference>rnashapes_param_prob_output</reference>
+                            <reference>rnashapes_param_sampling</reference>
+                            <reference>rnashapes_param_shape</reference>
+                            <reference>rnashapes_param_window_incr</reference>
+                            <reference>rnashapes_param_window_size</reference>
+                            <reference>rnashapes_input_FASTA</reference>
+                            <reference>rnashapes_output_DotBracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+                    <function id="rnashapes_function_3">
+                        <name xml:lang="en">Shape_Probabilities</name>
+                        <shortDescription xml:lang="en">Shape Probabilities</shortDescription>
+                        <inputref ref="rnashapes_input_FASTA"/>
+                        <outputref ref="rnashapes_output_DotBracket"/>
+                        <paramGroup id="rnashapes_paramgroup_function3">
+                            <shortDescription>parameter of rnashapes_function_3</shortDescription>
+                            <paramGroupref ref="rnashapes_paramGroup_1"/>
+                            <paramGroupref ref="rnashapes_paramGroup_2"/>
+                            <paramGroupref ref="rnashapes_paramGroup_3"/>
+                        </paramGroup>
+                        <depref ref="rnashapes_dependency_1"/>
+                        <depref ref="rnahshapes_dependency_2"/>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-p</additionalString>
+                            <reference>rnashapes_param_calc_struct_prop</reference>
+                            <reference>rnashapes_param_energy</reference>
+                            <reference>rnashapes_param_energy_mode</reference>
+                            <reference>rnashapes_param_ignore_unstable</reference>
+                            <reference>rnashapes_param_match_shape</reference>
+                            <reference>rnashapes_param_prob_cutoff</reference>
+                            <reference>rnashapes_param_prob_number</reference>
+                            <reference>rnashapes_param_prob_output</reference>
+                            <reference>rnashapes_param_sampling</reference>
+                            <reference>rnashapes_param_shape</reference>
+                            <reference>rnashapes_param_window_incr</reference>
+                            <reference>rnashapes_param_window_size</reference>
+                            <reference>rnashapes_input_FASTA</reference>
+                            <reference>rnashapes_output_DotBracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+                    <function id="rnashapes_function_4">
+                        <name xml:lang="en">Sampling</name>
+                        <shortDescription xml:lang="en">Sampling</shortDescription>
+                        <description xml:lang="en"><microhtml:em>Sampling:</microhtml:em>
+                            Probabilistic sampling based on partition function. This mode combines
+                            stochastic sampling with a-posteriori shape abstraction. A sample from
+                            the structure space holds M structures together with their shapes, on
+                            which classification is performed. The probability of a shape can then
+                            be approximated by its frequency in the sample. Sequences up to a length
+                            of around 1500 can be handled with this mode. In our experience, 1000
+                            iterations are sufficient to achieve reasonable results for shapes with
+                            high probability.</description>
+                        <inputref ref="rnashapes_input_FASTA"/>
+                        <outputref ref="rnashapes_output_DotBracket"/>
+                        <paramGroup id="rnashapes_paramgroup_function4">
+                            <shortDescription>parameter of rnashapes_function_4</shortDescription>
+                            <paramGroupref ref="rnashapes_paramGroup_1"/>
+                            <paramGroupref ref="rnashapes_paramGroup_2"/>
+                            <paramGroupref ref="rnashapes_paramGroup_3"/>
+                        </paramGroup>
+                        <depref ref="rnashapes_dependency_1"/>
+                        <depref ref="rnahshapes_dependency_2"/>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-q</additionalString>
+                            <reference>rnashapes_param_calc_struct_prop</reference>
+                            <reference>rnashapes_param_energy</reference>
+                            <reference>rnashapes_param_energy_mode</reference>
+                            <reference>rnashapes_param_ignore_unstable</reference>
+                            <reference>rnashapes_param_match_shape</reference>
+                            <reference>rnashapes_param_prob_cutoff</reference>
+                            <reference>rnashapes_param_prob_number</reference>
+                            <reference>rnashapes_param_prob_output</reference>
+                            <reference>rnashapes_param_sampling</reference>
+                            <reference>rnashapes_param_shape</reference>
+                            <reference>rnashapes_param_window_incr</reference>
+                            <reference>rnashapes_param_window_size</reference>
+                            <reference>rnashapes_input_FASTA</reference>
+                            <reference>rnashapes_output_DotBracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+                    <function id="rnashapes_function_5">
+                        <name xml:lang="en">Consensus_Shapes</name>
+                        <shortDescription xml:lang="en">Consensus_Shapes</shortDescription>
+                        <description><microhtml:em>Consensus shapes:</microhtml:em> For a family of
+                            RNA sequences, this method independently enumerates the near-optimal
+                            abstract shape space, and predicts as the consensus an abstract shape
+                            common to all sequences. For each sequence, it delivers the
+                            thermodynamically best structure which has this common shape. Since the
+                            shape space is much smaller than the structure space, and identification
+                            of common shapes can be done in linear time (in the number of shapes
+                            considered), the method is essentially linear in the number of
+                            sequences.</description>
+                        <inputref ref="rnashapes_input_FASTA"/>
+                        <outputref ref="rnashapes_output_DotBracket"/>
+                        <paramGroup id="rnashapes_paramgroup_function5">
+                            <shortDescription>parameter of rnashapes_function_5</shortDescription>
+                            <paramGroupref ref="rnashapes_paramGroup_1"/>
+                            <paramGroupref ref="rnashapes_paramGroup_2"/>
+                            <paramGroupref ref="rnashapes_paramGroup_3"/>
+                        </paramGroup>
+                        <depref ref="rnashapes_dependency_1"/>
+                        <depref ref="rnahshapes_dependency_2"/>
+                        <paramAndInputOutputOrder>
+                            <additionalString>-C</additionalString>
+                            <reference>rnashapes_param_calc_struct_prop</reference>
+                            <reference>rnashapes_param_energy</reference>
+                            <reference>rnashapes_param_energy_mode</reference>
+                            <reference>rnashapes_param_ignore_unstable</reference>
+                            <reference>rnashapes_param_match_shape</reference>
+                            <reference>rnashapes_param_prob_cutoff</reference>
+                            <reference>rnashapes_param_prob_number</reference>
+                            <reference>rnashapes_param_prob_output</reference>
+                            <reference>rnashapes_param_sampling</reference>
+                            <reference>rnashapes_param_shape</reference>
+                            <reference>rnashapes_param_window_incr</reference>
+                            <reference>rnashapes_param_window_size</reference>
+                            <reference>rnashapes_input_FASTA</reference>
+                            <reference>rnashapes_output_DotBracket</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+
+                </executable>
+
+                <view type="webservice" id="rnashapes_webservice"/>
+                <view type="mobyservice" id="rnashapes_mobyservice"/>
+
+                <manual id="rnashapes_manual">
+                    <introductoryText xml:lang="en"> This manual page gives a detailed description
+                        of all parameters providing by all functions implemented in the
+                        webinterface. </introductoryText>
+                </manual>
+
+
+            </runnableItem>
+
+
+
+        </category>
+        <!-- Alignments -->
+        <category id="alignment">
+            <name>Alignment</name>
+            <categoryDescription>The BiBiServ Alignmenttools</categoryDescription>
+            <categoryRepresentation>
+                <title>BiBiServ Alignmenttools</title>
+                <customContent>blablabla</customContent>
+            </categoryRepresentation>
+            <runnableItem xmlns="de:unibi:techfak:bibiserv:cms"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="de:unibi:techfak:bibiserv:cms ../BiBiServAbstraction.xsd"
+                id="clustalw">
+                <name>ClustalW</name>
+                <shortDescription>ClustalW is a general purpose multiple sequence alignment program
+                    for DNA or proteins.</shortDescription>
+                <description> ClustalW is a general purpose multiple sequence alignment program for
+                    DNA or proteins. It produces biologically meaningful multiple sequence
+                    alignments of divergent sequences. It calculates the best match for the selected
+                    sequences, and lines them up so that the identities, similarities and
+                    differences can be seen. BiBiServ offers a Webservice Interface and an HTML
+                    interface for running ClustalW online in a browser. </description>
+
+                <toolTipText>Multiple Alignment Program ClustalW</toolTipText>
+                <keywords>Alignment DNA Proteins Amino Cremoved problems with execution string acids
+                    Multiple Sequences Webservice Webform</keywords>
+
+                <responsibleAuthor>
+                    <firstname>Julie D.</firstname>
+                    <lastname>Thompson</lastname>
+                    <organisation>European Molecular Biology Laboratory</organisation>
+                    <email/>
+                    <adress>Postfach 102209, Meyerhofstrasse 1, D-69012 Heidelberg,Germany</adress>
+                </responsibleAuthor>
+                <author>
+                    <firstname>Desmond G.</firstname>
+                    <lastname>Higgins</lastname>
+                    <organisation>European Molecular Biology Laboratory</organisation>
+                    <email/>
+                    <phone/>
+                    <adress>Postfach 102209, Meyerhofstrasse 1, D-69012 Heidelberg,Germany</adress>
+                </author>
+                <author>
+                    <firstname>Toby J.</firstname>
+                    <lastname>Gibson</lastname>
+                    <email/>
+                    <adress>Postfach 102209, Meyerhofstrasse 1, D-69012 Heidelberg,Germany</adress>
+                </author>
+
+                <support>
+                    <firstname>Daniel</firstname>
+                    <lastname>Hagemeier</lastname>
+                    <organisation>BiBiServ - University Bielefeld</organisation>
+                    <email>dhagemei@techfak.uni-bielefeld.de</email>
+                    <phone>+49 521 106-2910 </phone>
+                    <adress>Universitaetsstrasse, 33615 Bielefeld, Germany</adress>
+                </support>
+                <references>
+                    <entry xmlns="http://bibtexml.sf.net/" xmlns:ns1="http://bibtexml.sf.net/"
+                        ns1:id="clustalw1">
+
+                        <article>
+                            <author>J. D. Thompson, D. G. Higgins and T. J. Gibson</author>
+                            <title>CLUSTAL W: improving the sensitivity of progressive multiple
+                                sequence alignment through sequence weighting, position-specific gap
+                                penalties and weight matrix choice</title>
+                            <journal>Nucleic Acids Research, Oxford University Press</journal>
+                            <year>1994</year>
+                        </article>
+
+                    </entry>
+                </references>
+                <customContent/>
+
+                <executable>
+                    <version>1.83</version>
+                    <execInfo>
+                        <executableType>binary</executableType>
+                        <path>/vol/biotools/bin</path>
+                        <callingInformation>= clustalw -OUTPUT=FASTA </callingInformation>
+                    </execInfo>
+
+                    <input id="clustalw_fasta_in">
+                        <name>FASTA</name>
+                        <shortDescription xml:lang="en">Sequence in FASTA-Format</shortDescription>
+                        <description xml:lang="de">Sequenz in FASTA-Format</description>
+                        <description xml:lang="en">Sequences in FASTA-Format consist of at least two
+                            lines. The first line is a header that starts with ">" and the ID of the
+                            sequence. The second line and all eventually following lines carry the
+                            sequence informtaion. </description>
+                        <description xml:lang="de"> Sequenzen in FASTA-Format bestehen aus
+                            mindestens zwei Zeilen.Die erste Zeile, der sogenannte "Header" startet
+                            mit einem ">" und darauffolgend der ID der Sequenz. Die zweite und alle
+                            weiteren Zeilen, die nicht mit einem ">" starten enthalten dann die
+                            Sequenzinformationen. </description>
+                        <type>FASTA</type>
+                        <handling>FILE</handling>
+                        <option>-INFILE=</option>
+                        <example/>
+                    </input>
+
+                    <output id="clustalw_fasta_out">
+                        <name>FASTA</name>
+                        <shortDescription xml:lang="en">Sequence in FASTA-Format</shortDescription>
+                        <description>Sequences in FASTA-Format consist of at least two lines. The
+                            first line is a header that starts with ">" and the ID of the sequence.
+                            The second line and all eventually following lines carry the sequence
+                            informtaion. </description>
+                        <type>fasta</type>
+                        <handling>FILE</handling>
+                        <option>-OUTFILE=</option>
+                        <example/>
+                    </output>
+
+                    <param id="clustalw_gapopen_penalty">
+                        <name>Gap opening Penalty</name>
+                        <shortDescription xml:lang="en">Opening gaps in the sequence alignment are
+                            avoided if the gap extension value is set to a higher
+                            value.</shortDescription>
+                        <description>Opening gaps in the sequence alignment are avoided if the gap
+                            extension value is set to a higher value.</description>
+                        <type>int</type>
+                        <option>GAPEXT=</option>
+                        <defaultValue/>
+                        <guiElement>inputText</guiElement>
+                    </param>
+
+                    <param id="clustalw_gapext_penalty">
+                        <name xml:lang="en">Gap extension Penalty</name>
+                        <shortDescription xml:lang="en">Long gaps in the sequence alignment are
+                            avoided if the gap extension value is set to a higher
+                            value.</shortDescription>
+                        <description xml:lang="en">Long gaps in the sequence alignment are avoided
+                            if the gap extension value is set to a higher value</description>
+                        <type>int</type>
+                        <option>-GAPOPEN=</option>
+                        <defaultValue/>
+                        <guiElement>inputText</guiElement>
+                    </param>
+
+                    <enumParam id="clusatlw_protein_weight_matrix" minoccurs="1" maxoccurs="1">
+                        <name xml:lang="en">Protein weight Matrix</name>
+                        <shortDescription xml:lang="en">Scoring Matrix that keeps propabilities for
+                            an exchange of one protein against anaother according to evolutionary
+                            time.</shortDescription>
+                        <description xml:lang="en">Scoring Matrix that keeps propabilities for an
+                            exchange of one protein against anaother according to evolutionary time.
+                            Scoring matrices appear in all analysis involving sequence comparison.
+                            The choice of matrix can strongly influence the outcome of the analysis.
+                            Scoring matrices implicitly represent a particular theory of evolution.
+                            Understanding theories underlying a given scoring matrix can aid in
+                            making proper choice. The protein weight matrix offers a choice of
+                            weight matrices. The default for proteins is the PAM series derived by
+                            Gonnet and colleagues. Different matrices work differently at each
+                            evolutionary distance. You can choose between the following Matrices: </description>
+                        <type>string</type>
+                        <option> -MATRIX=</option>
+
+
+                        <values defaultValue="true">
+                            <key>DEFAULT</key>
+                            <value>DEFAULT</value>
+                            <name xml:lang="en">DEFAULT</name>
+                        </values>
+
+                        <values defaultValue="false">
+                            <key>BLOSUM</key>
+                            <value>BLOSUM</value>
+                            <name xml:lang="en">BLOSUM</name>
+                        </values>
+
+                        <values defaultValue="false">
+                            <key>PAM</key>
+                            <value>PAM</value>
+                            <name>PAM</name>
+                        </values>
+
+                        <values defaultValue="false">
+                            <key>GONNET</key>
+                            <value>GONNET</value>
+                            <name>GONNET</name>
+                        </values>
+
+                        <guiElement>selectOneMenu</guiElement>
+                    </enumParam>
+
+                    <function id="clustalw_submission_function">
+                        <name/>
+                        <shortDescription/>
+                        <description/>
+                        <inputref ref="clustalw_fasta_in"/>
+                        <outputref ref="clustalw_fasta_out"/>
+                        <paramGroup id="clustalw_paramgroup_submission">
+                            <name/>
+                            <shortDescription/>
+                            <description/>
+                            <paramref ref="clusatlw_protein_weight_matrix"/>
+                            <paramref ref="clustalw_gapopen_penalty"/>
+                            <paramref ref="clustalw_gapext_penalty"/>
+                        </paramGroup>
+                        <paramAndInputOutputOrder>
+                            <reference>clustalw_fasta_in</reference>
+                            <reference>clustalw_fasta_out</reference>
+                            <reference>clustalw_paramgroup_submission</reference>
+                        </paramAndInputOutputOrder>
+                    </function>
+
+                </executable>
+
+                <view type="submission" id="clustalw_submission">
+                    <viewContent>
+                        <title>Clustal W- Submission</title>
+                        <customContent> </customContent>
+                    </viewContent>
+                </view>
+                <manual id="clustalw_manual">
+                    <introductoryText> The sensitivity of the commonly used progressive multiple
+                        sequence alignment method has been greatly improved for the alignment of
+                        divergent protein sequences. Firstly, individual weights are assigned to
+                        each sequence in a partial alignment in order to down-weight near-duplicate
+                        sequences and up-weight the most divergent ones. Secondly, amino acid
+                        substitution matrices are varied at different alignment stages according to
+                        the divergence of the sequences to be aligned. Thirdly, residue-specific gap
+                        penalties and locally reduced gap penalties in hydrophilic regions encourage
+                        new gaps in potential loop regions rather than regular secondary structure.
+                        Fourthly, positions in early alignments where gaps have been opened receive
+                        locally reduced gap penalties to encourage the opening up of new gaps at
+                        these positions. These modifications are incorporated into the program,
+                        CLUSTAL W which is freely available. </introductoryText>
+                    <customContent> </customContent>
+                </manual>
+            </runnableItem>
+
+        </category>
+        <!-- Primer Design -->
+        <category id="primerDesign">
+            <name>Primer Design</name>
+            <categoryDescription/>
+        </category>
+
+        <!-- Evolutionary Relationships -->
+        <category id="evolutionaryRelationship">
+            <name>Evolutionary Relationships</name>
+            <categoryDescription/>
+        </category>
+        <category id="others">
+            <name>Others</name>
+            <categoryDescription>Tools that do not fit into the other
+                categories</categoryDescription>
+        </category>
+    </category>
+
+    <!-- ++++++++++++++++++
+         ++   Education  ++
+         ++++++++++++++++++ -->
+    <category id="education">
+        <name>Education</name>
+        <categoryDescription>Educational media dealing with the main topics in bioinfromatics are
+            provided here.</categoryDescription>
+        <categoryRepresentation>
+            <title xml:lang="en">BiBiServ-Courses and Education</title>
+            <customContent xml:lang="en">Bioinformatics is a young and dynmaic field. The
+                integration of knowledge from biology and computer science requires a significant
+                educational effort. Our Distance Education and Training Department ...
+            </customContent>
+        </categoryRepresentation>
+        <category id="dp">
+            <name>Dynamic Programming</name>
+            <categoryDescription>Dynamic programming is a predominant programming technique in
+                biosequence analysis. Algebraic Dynamic Programming (ADP) is a new method to design
+                and implement, tune, test and teach Dynamic Programming
+                algorithms.</categoryDescription>
+            <item id="adp">
+                <name>Algebraic Dynamic Programming (ADP)</name>
+                <shortDescription>Algebraic Dynamic Programming (ADP) is a new method to design
+                    ,implement, tune, test amd teach Dynamic Programming
+                    algorithms.</shortDescription>
+                <description>Algebraic Dynamic Programming (ADP) is a new method to design
+                    ,implement, tune, test amd teach Dynamic Programming algorithms. Compared to the
+                    traditional style, ADP provides a much higher level of abstarction, helping to
+                    solve more sophisticated problems with better chances of success.</description>
+                <keywords>ADP Course effective dynamic programming </keywords>
+                <responsibleAuthor>
+                    <firstname>Peter </firstname>
+                    <lastname>Steffen</lastname>
+                    <email>psteffen@techfak.uni-bielefeld.de</email>
+                </responsibleAuthor>
+                <linkedFile id="adp_www">
+                    <name>ADP Online Resources</name>
+                    <shortDescription>Algebraic Dynamic Programming(ADP) Online
+                        Resources</shortDescription>
+                    <location>/dp</location>
+                </linkedFile>
+                <linkedFile id="dp_course">
+                    <name>DP online course</name>
+                    <shortDescription>Dynamic Programming in Bioinformatics - Online
+                        course</shortDescription>
+                    <location>/dpcource</location>
+                </linkedFile>
+            </item>
+        </category>
+        <category id="sa">
+            <name>Sequence Analysis</name>
+            <categoryDescription/>
+            <item id="sadr">
+                <name>SADR</name>
+                <shortDescription>Sequence Analysis with Distributed Resources</shortDescription>
+                <description>A WWW-based practical course on Sequence Analysis with Distributed
+                    Resources. This course has been available since 1998. A previous version has
+                    been translated into several languages and was regularly offered at various
+                    locations. So much for history -- the course has been updated and completely
+                    remodelled in 2005 and 2009.</description>
+                <keywords>sequence analysis distributed resources </keywords>
+                <responsibleAuthor>
+                    <firstname>Alexander</firstname>
+                    <lastname>Sczyrba</lastname>
+                    <email>asczyrba@techfak.uni-bielefeld.de</email>
+                </responsibleAuthor>
+                <author>
+                    <firstname>Susanne</firstname>
+                    <lastname>Konermann</lastname>
+                    <email>skonerma@techfak.uni-bielefeld.de</email>
+                </author>
+                <author>
+                    <firstname>Jan</firstname>
+                    <lastname>Krueger</lastname>
+                    <email>jkrueger@techfak.uni-bielefeld.de</email>
+                </author>
+                <author>
+                    <firstname>Daniel</firstname>
+                    <lastname>Hagemeier</lastname>
+                    <email>dhagemei@techfak.uni-bielefeld.de</email>
+                </author>
+                <author>
+                    <firstname>Stefan</firstname>
+                    <lastname>Janssen</lastname>
+                    <email>sjanssen@techfak.uni-bielefeld.de</email>
+                </author>
+                <linkedFile id="sadr_course">
+                    <name>SADR</name>
+                    <shortDescription>Sequence Analysis with Distributed
+                        Resources</shortDescription>
+                    <location>/sadr</location>
+                </linkedFile>
+            </item>
+        </category>
+    </category>
+    <!-- ++++++++++++++++++++++
+        ++   Administration  ++
+        +++++++++++++++++++++++ -->
+    <category id="administration">
+        <name>Administration</name>
+        <categoryDescription>The administration section of BiBiServ </categoryDescription>
+        <categoryRepresentation>
+            <title xml:lang="en">BiBiServ Administration</title>
+            <customContent xml:lang="en"> The BiBiServ (Bielefeld BioInformatics Service) is a unit
+                of the <microhtml:a href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html"
+                    >IfB (Institute for Bioinformatics)</microhtml:a> inside the <microhtml:a
+                    href="http://www.cebitec.uni-bielefeld.de">CeBiTec (Center for
+                    Biotechnology)</microhtml:a> at <microhtml:a href="http://www.uni-bielefeld.de"
+                    >Bielefeld University</microhtml:a>.The Service is operational since 1996 and
+                provides a multitude of bioinformatical tools for users worldwide via the Bielefeld
+                BioInformatics Server. The service group consists of several curators responsible
+                for the smooth operation, the continuous modernisation and improvement of the server
+                as well as the handling of user requests.</customContent>
+        </categoryRepresentation>
+        <item id="administration_policy">
+            <name>Policies</name>
+            <shortDescription>BiBiServ Policies</shortDescription>
+            <description/>
+            <keywords/>
+            <responsibleAuthor>
+                <firstname/>
+                <lastname/>
+                <email/>
+            </responsibleAuthor>
+            <customContent xml:lang="en">
+                <microhtml:ul>
+                    <microhtml:li><microhtml:em>Availbility:</microhtml:em>All tools are available
+                        online for free, both to academic and commercial users. Some of the software
+                        tools are distributed also or only for local installation. In the latter
+                        case commercial users may have to pay a licence fee.</microhtml:li>
+                    <microhtml:li><microhtml:em>Credits:</microhtml:em>If you use BiBiServ tools for
+                        your research and publich your results, we request that you cite the
+                        BiBiServ URL as well as reference article indicated with each tool
+                        individually</microhtml:li>
+                    <microhtml:li><microhtml:em>Tool release:</microhtml:em>New tools officially
+                        appear on BiBiServ as soon as corresponding publciations explaining their
+                        purpose and underlying algorithm appear. Unofficially (i.e. witout a hotlink
+                        from the main web-site) they may appear earlier, to facilitate cooperation
+                        or evaluation by external researchers.</microhtml:li>
+                    <microhtml:li><microhtml:em>Tool selection:</microhtml:em>While some tools have
+                        thousands of users per month, others less than hundred, and some perhaps
+                        only ten, the criterion of persistence on BiBiServ is not popularity, but
+                        scientific value. Tools disappear from BiBiServ when their purpose has
+                        become obsolete (because scientific questions or laboratory techniques have
+                        changed), or when a better tool for the same purpose becomes available
+                        elsewhere.</microhtml:li>
+                    <microhtml:li><microhtml:em>Confidentiality:</microhtml:em>BiBiServ runs in a
+                        UNIX environment. The data stored locally can be accessed only by the
+                        BiBiServ administrators. The result of a calculation is stored temporarily
+                        for three days and deleted afterwards. We do not offer encrypted
+                        submissions. </microhtml:li>
+                </microhtml:ul>
+                <microhtml:strong>Attention: These policies copied from the old/current server.
+                    Policies of the new BiBiServ 2.0 may be (slightly) different.
+                </microhtml:strong>
+            </customContent>
+        </item>
+        <item id="administration_team">
+            <name xml:lang="en">Team</name>
+            <shortDescription xml:lang="en">BiBiServ Team</shortDescription>
+            <description xml:lang="en">All current and past BiBiServ curators</description>
+
+            <keywords>member team curator administration</keywords>
+            <responsibleAuthor>
+                <firstname>Jan</firstname>
+                <lastname>Krueger</lastname>
+                <email>jkrueger@techfak.uni-bielefeld.de</email>
+            </responsibleAuthor>
+            <customContent xml:lang="en">
+                <microhtml:p>BiBiServ has no permanent staff dedicated to development of tools.
+                    Students in our local bioinformatics curriculum do project works and diploma
+                    theses. PhD students as well as postdocs contribute software or educational
+                    material from their research and their teaching. Sometimes we also decide to
+                    serve software developed by collaborators of our group. A small group of
+                    curators takes care that BiBiServ runs reliably and consistently.</microhtml:p>
+                <microhtml:p> If you have any comments, suggestions or technical problems, please
+                    send email to the server curators at <microhtml:a href="#"
+                        >bibi-help(at)techfak.uni-bielefeld.de</microhtml:a>. </microhtml:p> The
+                BiBiServ curators are: <microhtml:ul>
+                    <microhtml:li>Alexander Sczyrba (group leader - currently on leave at
+                            <microhtml:a href="http://www.jgi.doe.gov"
+                        >JGI</microhtml:a>)</microhtml:li>
+
+                    <microhtml:li>Daniel Hagemeier (server technology)</microhtml:li>
+                    <microhtml:li>Sven Hartmeier (server technology)</microhtml:li>
+                    <microhtml:li>Susanne Konermann (design / educational media)</microhtml:li>
+                    <microhtml:li>Jan Krüger (server technology - temporary group
+                        leader)</microhtml:li>
+
+                    <microhtml:li>Richard Madsack (graduate assistant)</microhtml:li>
+                    <microhtml:li>Armin Töpfer (student assistant)</microhtml:li>
+                </microhtml:ul> Previous members: <microhtml:ul>
+                    <microhtml:li>Bastian Meyer</microhtml:li>
+                    <microhtml:li>Christian Peters</microhtml:li>
+                    <microhtml:li>Kai Löwenthal (educational media)</microhtml:li>
+                    <microhtml:li>Alexander Kaiser</microhtml:li>
+                    <microhtml:li>Jan Reinkensmeier</microhtml:li>
+                    <microhtml:li>Henning Mersch (server technology)</microhtml:li>
+                    <microhtml:li>Georg Sauthoff</microhtml:li>
+                    <microhtml:li>Nan Zhang</microhtml:li>
+                    <microhtml:li>Jörn Clausen (educational media)</microhtml:li>
+                    <microhtml:li>Johannes Huth</microhtml:li>
+                    <microhtml:li>Elke Wohlleben</microhtml:li>
+                    <microhtml:li>Stefan Kurtz</microhtml:li>
+                    <microhtml:li>Michael Höhl</microhtml:li>
+                    <microhtml:li>Kai Runte</microhtml:li>
+                    <microhtml:li>Dirk Evers</microhtml:li>
+                    <microhtml:li>Chris Schleiermacher></microhtml:li>
+                </microhtml:ul>
+            </customContent>
+        </item>
+        <item id="collaborators">
+            <name>Collaborators</name>
+            <shortDescription>Collaborators</shortDescription>
+            <description>Collaborators</description>
+            <keywords>Supporter Collaborators</keywords>
+            <responsibleAuthor>
+                <firstname>Jan</firstname>
+                <lastname>Krueger</lastname>
+                <email>jkrueger@techfak.uni-bielefeld.de</email>
+            </responsibleAuthor>
+            <customContent xml:lang="en">
+                <microhtml:ul>
+                    <microhtml:li> The Institute of Genome Research in the Biology Department,
+                        directed by Prof. Dr. A. Puehler and Prof. Dr. B. Weisshaar, helps us to
+                        find out what kind of software support the practicing biologists really
+                        need. </microhtml:li>
+                    <microhtml:li> The Bioinformatics Resource Facility (BRF), directed by Dr. A.
+                        Goessmann, provides access to databases and computing resources. </microhtml:li>
+                    <microhtml:li> The Ph.D. students at our International Graduate School in
+                        Bioinformatics and Genome Research contribute to our tool supply in manifold
+                        ways.</microhtml:li>
+                </microhtml:ul>
+            </customContent>
+        </item>
+
+
+    </category>
+</category>
