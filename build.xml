@@ -10,7 +10,9 @@
 
     <property name="local.configuration" value="local.configuration"/>
     <property name="local.passwordfile" value="local.passwordfile"/>
-    
+
+    <property name="jboss_el" value="jboss_el.jar"/>
+
     <!-- include ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
@@ -212,6 +214,16 @@
             </then>
         </if>
 
+        <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
+        <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
+
+        <copy todir="${domain.dir}/${domain}/lib">
+            <fileset dir="${lib}">
+                <include name="jboss_el*"/>
+            </fileset>
+            <globmapper to="${jboss_el}"/>
+        </copy>
+
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
@@ -266,6 +278,9 @@
                         jndiname="jdbc/bibiserv2"
                         objecttype="user"
                         poolname="bibiserv2_derby"/>
+            <!-- modify existing java-config -->
+            <sunapp_java_config
+                        classpath_prefix="${domain.dir}/${domain}/lib/${jboss_el}" mode="replace"/>
         </sunapp_domain>
     </target>
     
