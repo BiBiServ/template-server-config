@@ -24,7 +24,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
-import sun.security.jgss.wrapper.SunNativeProvider;
 
 /**
  * public class sunapp_domain represents an ant task (sunapp_domain)
