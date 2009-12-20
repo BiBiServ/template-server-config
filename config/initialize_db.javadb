@@ -14,16 +14,30 @@ create table status (
 );
 
 create table item (
-id varchar(200),
-item xml
+    id varchar(200),
+    item clob
 );
 
 create table structure (
-  time timestamp,
-    content xml
+    time timestamp,
+    content clob
 );
+
+
+
+--CALL SYSCS_UTIL.SYSCS_IMPORT_DATA_LOBS_FROM_EXTFILE (
+--            NULL,
+--            'STRUCTURE',
+--            'CONTENT',
+--            '1',
+--            '/home/jan/work/bibiadm/bibiserv2/main/appserver_config/config/test.txt',
+--            '-',
+--            '^',
+--            'UTF-8',
+--            0);
 
 
 
 
 disconnect BIBISERV2;
+;
