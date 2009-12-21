@@ -15,6 +15,15 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 /**
+ * Ant task that inserts a bibiserv structure file (as CLOB) in a table STRUCTURE.
+ * The table is defined as follows :
+ * <pre>
+ *  create table structure (
+ *      time timestamp,
+ *      content clob
+ *  );
+ * 
+ * </pre>
  *
  * @author Daniel Hagemeier - dhagemei(at)cebitec.uni-bielefeld.de
  *         Jan Krüger - jkrueger(at)cebitec.uni-bielefeld.de
@@ -23,13 +32,41 @@ public class Structure2DataBase extends Task {
 
     private String src = null;
 
+    /**
+     * Set the structure source file to be insert into table STRUCTURE.
+     *
+     * @param src
+     */
     public void setSrc(String src) {
         this.src = src;
     }
     private String dbURL = null;
 
+    /**
+     * Set the database url (jdbc-string), valid strings are:
+     * <ul>
+     *  <li>jdbc:derby://localhost:1527/bibiserv2</li>
+     *  <li>jdbc:derby://localhost:1527/bibiserv2;user=me;password=mine;</li>
+     *  <li>jdbc:derby:bibiserv2 <pre>embedded only</pre></li>
+     *  <li> ... </li>
+     * </ul>
+     *
+     * @param dbURL - databasse url (see description above)
+     */
     public void setDbURL(String dbURL) {
         this.dbURL = dbURL;
+    }
+
+    private boolean embedded = false;
+
+    /**
+     * Set the optional attribute embedded. Forces the task to use the embedded driver
+     * instead the network driver.
+     *
+     * @param embedded
+     */
+    public void setEmbedded(boolean embedded){
+        this.embedded = embedded;
     }
     private Connection con = null;
     private PreparedStatement stmt = null;
@@ -46,16 +83,8 @@ public class Structure2DataBase extends Task {
         if (!src_file.isFile()) {
             throw new BuildException("'src'file +'" + src_file + " not found .");
         }
-        // create connection
-
-
-
-        FileReader ir = null;
-
-
-
-
-        try {
+       FileReader ir = null;
+       try {
             createConnection();
             stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, (? AS CLOB))");
             stmt.setClob(1, new BufferedReader(new FileReader(src_file)));
@@ -77,7 +106,12 @@ public class Structure2DataBase extends Task {
 
     private void createConnection() {
         try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            if (embedded) {
+                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+
+            } else {
+                Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+            }
             //Get a connection
             con = DriverManager.getConnection(dbURL);
         } catch (Exception except) {
