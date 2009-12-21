@@ -144,33 +144,24 @@
                 <isset property="bibiserv2.present"/>
             </not>
             <then>
-                <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with table 'status'</echo>
+                
+                <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with table 'status', 'structure' and 'item</echo>
+               
                 <mkdir dir="${domain.dir}/${domain}/db"/>
                 <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
-                    <arg value="${basedir}/config/initialize_db.javadb"/>
+                    <arg value="${config.dir}/initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
+                <structure2database src="${config.dir}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2"/>
             </then>
             <else>
-                <echo> Database bibiserv2 exists, continue ... </echo>
+                <echo> Database bibiserv2 exists. Check manually if database contains a valid 'status', 'structure' and 'item' table. </echo>
             </else>
             
         </if>
-               <!-- start database on localhost:1527-->
-        <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="start-database"/>
-            <arg value="--dbhome=${domain.dir}/${domain}/db"/>
-        </exec>
-            
-        <!--Writing BiBiServ Strucutre xml to database-->
-            <xml2database src="config/BiBiServ.xml"/>
-             <!-- stop database -->
-        <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="stop-database"/>
-        </exec>
-            <echo> Database bibiserv2 filled with BiBiServ-structure XMl-File</echo>
         
         
+       
         <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv_config.xml" value="true"/>
 
         <if>

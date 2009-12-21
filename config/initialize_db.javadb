@@ -23,8 +23,6 @@ create table structure (
     content clob
 );
 
-
-
 --CALL SYSCS_UTIL.SYSCS_IMPORT_DATA_LOBS_FROM_EXTFILE (
 --            NULL,
 --            'STRUCTURE',
