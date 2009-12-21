@@ -7,7 +7,8 @@
     <property name="classes" value="classes"/>
     <property name="dist" value="dist"/>
     <property name="lib" value="lib"/>
-
+    <property name="config" value="config"/>
+    
     <property name="local.configuration" value="local.configuration"/>
     <property name="local.passwordfile" value="local.passwordfile"/>
 
@@ -149,10 +150,10 @@
                
                 <mkdir dir="${domain.dir}/${domain}/db"/>
                 <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
-                    <arg value="${config.dir}/initialize_db.javadb"/>
+                    <arg value="${basedir}/${config}/initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
-                <structure2database src="${config.dir}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2"/>
+                <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
             </then>
             <else>
                 <echo> Database bibiserv2 exists. Check manually if database contains a valid 'status', 'structure' and 'item' table. </echo>

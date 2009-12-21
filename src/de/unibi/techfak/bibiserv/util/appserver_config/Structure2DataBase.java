@@ -83,10 +83,10 @@ public class Structure2DataBase extends Task {
         if (!src_file.isFile()) {
             throw new BuildException("'src'file +'" + src_file + " not found .");
         }
-       FileReader ir = null;
+      
        try {
             createConnection();
-            stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, (? AS CLOB))");
+            stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, ? )");
             stmt.setClob(1, new BufferedReader(new FileReader(src_file)));
             stmt.execute();
             System.out.println("Written Structure of BiBiServ to '"+dbURL+"' into table STRUCTURE");
@@ -95,12 +95,7 @@ public class Structure2DataBase extends Task {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                ir.close();
                 shutdown();
-            } catch (IOException ex) {
-                Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 
