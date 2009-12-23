@@ -64,4 +64,8 @@
     <entry key="statuscode.731">Resource busy (Grid)</entry>
     <entry key="statuscode.732">Resource Busy (DB)</entry>
     <entry key="statuscode.733">Resource Busy (HDD)</entry>
+    <!-- used by de.unibi.cebitec.bibiserv.server.manager -->
+    <entry key="de.unibi.cebitec.bibiserv.server.manager.apppath"></entry>
+    
+    
 </properties>
