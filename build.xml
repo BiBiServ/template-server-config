@@ -220,11 +220,16 @@
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
 
+        <!-- create BAR dir -->
+        <property name="bar.dir" value="${domain.dir}/${domain}/bar"/>
+        <mkdir dir="${bar.dir}"/>
+
         <!-- modify domain.xml of glassfish domain -->
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
         <sunapp_domain file="${domain.dir}/${domain}/config/domain.xml">
             <!-- append System Property : de.unibi.techfak.bibiserv.config -->
             <sunapp_systemproperty key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+            <sunapp_systemproperty key="de.unibi.cebitec.bibiserv.manager.bardir" value="${bar.dir}"/>
             <!-- append Connection Pool for previous generated DB -->
             <sunapp_jdbc_connection_pool
                         allownoncomponentcallers="false"
