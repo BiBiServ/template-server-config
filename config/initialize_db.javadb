@@ -26,5 +26,9 @@ create table structure (
     content clob
 );
 
+create table manager_auth (
+    role varchar(20),
+    password varchar(100)
+);
+
 disconnect BIBISERV2;
-;
