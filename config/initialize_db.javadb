@@ -28,7 +28,9 @@ create table structure (
 
 create table manager_auth (
     role varchar(20),
-    password varchar(100)
+    password varchar(100),
+    consessions varchar(100),
+    authorized varchar(10)
 );
 
 disconnect BIBISERV2;
