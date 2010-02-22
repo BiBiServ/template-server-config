@@ -230,7 +230,7 @@
                 <mkdir dir="${domain.dir}/${domain}/autodeploy"/>
             </then>
         </if>
-        
+
         <!-- copy bibimainapp to auto-deploy-dir for instant runnable server :-) -->
         <copy overwrite="true" tofile="${domain.dir}/${domain}/autodeploy/${bibimainapp}">
             <!-- This must return only ONE file, otherwise th copy task breaks! -->
@@ -398,8 +398,56 @@
         <ivy:retrieve/>
     </target>
 
+    <!-- publish current project in private ivy-repository -->
+    <target name="publish" depends="resolve,_mercurial" description="publish package as module on local ivy repository">
+        <ivy:publish resolver="private" validate="false" overwrite="true"
+                     artifactspattern="${dist.dir}/[artifact].[ext]" pubrevision="${HG.TAG}_${HG.REVISION}"/>
+    </target>
+
     <target name="clean-cache" description="clean ivy cache">
         <ivy:cleancache/>
     </target>
 
+    <!-- install package from local ivy-repository on the server -->
+    <target name="install" depends="resolve,_mercurial"
+            description="install published package on bibiserv repository : ssh.user, ssh.key and ssh.passphrase(optional) must set as property!">
+
+        <!-- create local ivy-rep as install base -->
+        <mkdir dir="ivy-rep"/>
+        <ivy:publish resolver="local" validate="false" overwrite="true"
+                     artifactspattern="${dist.dir}/[artifact].[ext]" pubrevision="${HG.TAG}_${HG.REVISION}"/>
+
+        <!-- load ssh specify setting from bibiserv -->
+        <property url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivy_ssh.properties"/>
+
+        <!-- check if ${ssh.key} and ${ssh.user} is set -->
+        <fail unless="ssh.user"
+              message="The Target &lt;install&gt; uses ssh key based authentication. Give the ssh user for ${ssh.host} as property 'ssh.user' as argument to the ant call!"/>
+        <fail unless="ssh.key"
+              message="The Target &lt;install&gt; uses ssh key based authentication. Give the location of your private key as property 'ssh.key' and optional a passphrase as property 'ssh.passphrase' as argument to the ant call!"/>
+
+        <!-- copy local ivy-rep to bibiserv using porta.techfak.uni-bielefeld.de -->
+        <scp todir="${ssh.user}@${ssh.host}:${ssh.basedir}/ivy-rep" passphrase="${ssh.passphrase}"
+             keyfile="${ssh.key}">
+            <fileset dir="ivy-rep"/>
+        </scp>
+
+        <!-- change file AND directory permission on remote sevrver -->
+        <sshexec host="${ssh.host}" username="${ssh.user}" keyfile="${ssh.key}"
+                 passphrase="${ssh.passphrase}"
+                 command="find -L ${ssh.basedir}/ivy-rep -type d -user ${ssh.user} | xargs chmod g+ws; find -L ${ssh.basedir}/ivy-rep -type f -user ${ssh.user} | xargs chmod g+w "
+                 />
+    </target>
+
+    <!-- target, for internal use only -->
+    <target name="_mercurial" description="get the latest tag name and revision number">
+        <exec executable="bash" outputproperty="HG.TAG">
+            <arg line="-c "/>
+            <arg value="hg tags | head -n 2 | grep -v tip |  cut -f 1 -d ' '  "/>
+        </exec>
+        <exec executable="bash" outputproperty="HG.REVISION">
+            <arg line="-c "/>
+            <arg value="hg tip | grep changeset: | cut -f 2 -d ':' | sed -e 's/^ *//' "/>
+        </exec>
+    </target>
 </project>
