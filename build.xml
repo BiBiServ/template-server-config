@@ -150,17 +150,18 @@
             </not>
             <then>
 
-                <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with table 'status', 'structure' and 'item</echo>
+                <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with tables 'status', 'structure', 'item and 'manager_auth'</echo>
 
                 <mkdir dir="${domain.dir}/${domain}/db"/>
                 <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
                     <arg value="${basedir}/${config}/initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
+                <echo>IMPORTANT: Created admin user with login 'testadmin' and password 'simplepassword'!</echo>
                 <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
             </then>
             <else>
-                <echo> Database bibiserv2 exists. Check manually if database contains a valid 'status', 'structure' and 'item' table. </echo>
+                <echo> Database bibiserv2 exists. Check manually if database contains valid 'status', 'structure', 'item' and 'manager_auth' tables. </echo>
             </else>
         </if>
 
