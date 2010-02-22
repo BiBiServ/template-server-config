@@ -29,8 +29,12 @@ create table structure (
 create table manager_auth (
     role varchar(20),
     password varchar(100),
-    consessions varchar(100),
+    concessions varchar(100),
     authorized varchar(10)
 );
+insert into manager_auth values (
+    'testadmin',
+    'simplepassword',
+    '','');
 
 disconnect BIBISERV2;
