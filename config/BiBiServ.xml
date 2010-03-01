@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<category xmlns="de:unibi:techfak:bibiserv:cms"
-    xmlns:microhtml="de:unibi:techfak:bibiserv:cms:microhtml"
-    xmlns:minihtml="de:unibi:techfak:bibiserv:cms:minihtml"
+<category xmlns="bibiserv:de.unibi.techfak.bibiserv.cms"  
+    xmlns:microhtml="bibiserv:de.unibi.techfak.bibiserv.cms.microhtml"
+    xmlns:minihtml="bibiserv:de.unibi.techfak.bibiserv.cms.minihtml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="de:unibi:techfak:bibiserv:cms http://bibiserv.techfak.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd" id="bibiserv">
+    xsi:schemaLocation="bibiserv:de.unibi.techfak.bibiserv.cms http://bibiserv.techfak.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd" id="bibiserv">
     <name>BiBiServ</name>
     <categoryDescription xml:lang="en">Welcome to BiBiserv. The Bielefeld University Bioinformatics
         Server. </categoryDescription>
@@ -18,6 +18,7 @@
             bioinformatics tools which emerge from the research of the Bielefeld groups and their
             direct collaborators. </customContent>
     </categoryRepresentation>
+    
     <category id="tools">
         <name>Tools</name>
         <categoryDescription>The BiBiServ Tool section currently offers bioinformatics tools for a
@@ -34,6 +35,7 @@
                 three days and deleted afterwards. We do not offer encrypted submissions.
             </customContent>
         </categoryRepresentation>
+        
         <!-- Genome Comparison -->
         <category id="genomeComparison">
             <name>Genome Comparison</name>
@@ -43,6 +45,7 @@
                 <customContent/>
             </categoryRepresentation>
         </category>
+        
         <!-- RNA Studio -->
         <category id="rna">
             <name>RNA Studio</name>
@@ -51,12 +54,8 @@
                 <title>RNA Studio</title>
                 <customContent/>
             </categoryRepresentation>
-            
-            
-
-
-
         </category>
+        
         <!-- Alignments -->
         <category id="alignment">
             <name>Alignment</name>
@@ -65,9 +64,8 @@
                 <title>BiBiServ Alignmenttools</title>
                 <customContent>blablabla</customContent>
             </categoryRepresentation>
-            
-
         </category>
+        
         <!-- Primer Design -->
         <category id="primerDesign">
             <name>Primer Design</name>
@@ -100,87 +98,22 @@
                 educational effort. Our Distance Education and Training Department ...
             </customContent>
         </categoryRepresentation>
+        
         <category id="dp">
             <name>Dynamic Programming</name>
             <categoryDescription>Dynamic programming is a predominant programming technique in
                 biosequence analysis. Algebraic Dynamic Programming (ADP) is a new method to design
                 and implement, tune, test and teach Dynamic Programming
-                algorithms.</categoryDescription>
-            <item id="adp">
-                <name>Algebraic Dynamic Programming (ADP)</name>
-                <shortDescription>Algebraic Dynamic Programming (ADP) is a new method to design
-                    ,implement, tune, test amd teach Dynamic Programming
-                    algorithms.</shortDescription>
-                <description>Algebraic Dynamic Programming (ADP) is a new method to design
-                    ,implement, tune, test amd teach Dynamic Programming algorithms. Compared to the
-                    traditional style, ADP provides a much higher level of abstarction, helping to
-                    solve more sophisticated problems with better chances of success.</description>
-                <keywords>ADP Course effective dynamic programming </keywords>
-                <responsibleAuthor>
-                    <firstname>Peter </firstname>
-                    <lastname>Steffen</lastname>
-                    <email>psteffen@techfak.uni-bielefeld.de</email>
-                </responsibleAuthor>
-                <linkedFile id="adp_www">
-                    <name>ADP Online Resources</name>
-                    <shortDescription>Algebraic Dynamic Programming(ADP) Online
-                        Resources</shortDescription>
-                    <location>/dp</location>
-                </linkedFile>
-                <linkedFile id="dp_course">
-                    <name>DP online course</name>
-                    <shortDescription>Dynamic Programming in Bioinformatics - Online
-                        course</shortDescription>
-                    <location>/dpcource</location>
-                </linkedFile>
-            </item>
+                algorithms.
+            </categoryDescription>          
         </category>
+        
         <category id="sa">
             <name>Sequence Analysis</name>
-            <categoryDescription/>
-            <item id="sadr">
-                <name>SADR</name>
-                <shortDescription>Sequence Analysis with Distributed Resources</shortDescription>
-                <description>A WWW-based practical course on Sequence Analysis with Distributed
-                    Resources. This course has been available since 1998. A previous version has
-                    been translated into several languages and was regularly offered at various
-                    locations. So much for history -- the course has been updated and completely
-                    remodelled in 2005 and 2009.</description>
-                <keywords>sequence analysis distributed resources </keywords>
-                <responsibleAuthor>
-                    <firstname>Alexander</firstname>
-                    <lastname>Sczyrba</lastname>
-                    <email>asczyrba@techfak.uni-bielefeld.de</email>
-                </responsibleAuthor>
-                <author>
-                    <firstname>Susanne</firstname>
-                    <lastname>Konermann</lastname>
-                    <email>skonerma@techfak.uni-bielefeld.de</email>
-                </author>
-                <author>
-                    <firstname>Jan</firstname>
-                    <lastname>Krueger</lastname>
-                    <email>jkrueger@techfak.uni-bielefeld.de</email>
-                </author>
-                <author>
-                    <firstname>Daniel</firstname>
-                    <lastname>Hagemeier</lastname>
-                    <email>dhagemei@techfak.uni-bielefeld.de</email>
-                </author>
-                <author>
-                    <firstname>Stefan</firstname>
-                    <lastname>Janssen</lastname>
-                    <email>sjanssen@techfak.uni-bielefeld.de</email>
-                </author>
-                <linkedFile id="sadr_course">
-                    <name>SADR</name>
-                    <shortDescription>Sequence Analysis with Distributed
-                        Resources</shortDescription>
-                    <location>/sadr</location>
-                </linkedFile>
-            </item>
+            <categoryDescription/>        
         </category>
     </category>
+    
     <!-- ++++++++++++++++++++++
         ++   Administration  ++
         +++++++++++++++++++++++ -->
@@ -200,128 +133,5 @@
                 for the smooth operation, the continuous modernisation and improvement of the server
                 as well as the handling of user requests.</customContent>
         </categoryRepresentation>
-        <item id="administration_policy">
-            <name>Policies</name>
-            <shortDescription>BiBiServ Policies</shortDescription>
-            <description/>
-            <keywords/>
-            <responsibleAuthor>
-                <firstname/>
-                <lastname/>
-                <email/>
-            </responsibleAuthor>
-            <customContent xml:lang="en">
-                <microhtml:ul>
-                    <microhtml:li><microhtml:em>Availbility:</microhtml:em>All tools are available
-                        online for free, both to academic and commercial users. Some of the software
-                        tools are distributed also or only for local installation. In the latter
-                        case commercial users may have to pay a licence fee.</microhtml:li>
-                    <microhtml:li><microhtml:em>Credits:</microhtml:em>If you use BiBiServ tools for
-                        your research and publich your results, we request that you cite the
-                        BiBiServ URL as well as reference article indicated with each tool
-                        individually</microhtml:li>
-                    <microhtml:li><microhtml:em>Tool release:</microhtml:em>New tools officially
-                        appear on BiBiServ as soon as corresponding publciations explaining their
-                        purpose and underlying algorithm appear. Unofficially (i.e. witout a hotlink
-                        from the main web-site) they may appear earlier, to facilitate cooperation
-                        or evaluation by external researchers.</microhtml:li>
-                    <microhtml:li><microhtml:em>Tool selection:</microhtml:em>While some tools have
-                        thousands of users per month, others less than hundred, and some perhaps
-                        only ten, the criterion of persistence on BiBiServ is not popularity, but
-                        scientific value. Tools disappear from BiBiServ when their purpose has
-                        become obsolete (because scientific questions or laboratory techniques have
-                        changed), or when a better tool for the same purpose becomes available
-                        elsewhere.</microhtml:li>
-                    <microhtml:li><microhtml:em>Confidentiality:</microhtml:em>BiBiServ runs in a
-                        UNIX environment. The data stored locally can be accessed only by the
-                        BiBiServ administrators. The result of a calculation is stored temporarily
-                        for three days and deleted afterwards. We do not offer encrypted
-                        submissions. </microhtml:li>
-                </microhtml:ul>
-                <microhtml:strong>Attention: These policies copied from the old/current server.
-                    Policies of the new BiBiServ 2.0 may be (slightly) different.
-                </microhtml:strong>
-            </customContent>
-        </item>
-        <item id="administration_team">
-            <name xml:lang="en">Team</name>
-            <shortDescription xml:lang="en">BiBiServ Team</shortDescription>
-            <description xml:lang="en">All current and past BiBiServ curators</description>
-
-            <keywords>member team curator administration</keywords>
-            <responsibleAuthor>
-                <firstname>Jan</firstname>
-                <lastname>Krueger</lastname>
-                <email>jkrueger@techfak.uni-bielefeld.de</email>
-            </responsibleAuthor>
-            <customContent xml:lang="en">
-                <microhtml:p>BiBiServ has no permanent staff dedicated to development of tools.
-                    Students in our local bioinformatics curriculum do project works and diploma
-                    theses. PhD students as well as postdocs contribute software or educational
-                    material from their research and their teaching. Sometimes we also decide to
-                    serve software developed by collaborators of our group. A small group of
-                    curators takes care that BiBiServ runs reliably and consistently.</microhtml:p>
-                <microhtml:p> If you have any comments, suggestions or technical problems, please
-                    send email to the server curators at <microhtml:a href="#"
-                        >bibi-help(at)techfak.uni-bielefeld.de</microhtml:a>. </microhtml:p> The
-                BiBiServ curators are: <microhtml:ul>
-                    <microhtml:li>Alexander Sczyrba (group leader - currently on leave at
-                            <microhtml:a href="http://www.jgi.doe.gov"
-                        >JGI</microhtml:a>)</microhtml:li>
-
-                    <microhtml:li>Daniel Hagemeier (server technology)</microhtml:li>
-                    <microhtml:li>Sven Hartmeier (server technology)</microhtml:li>
-                    <microhtml:li>Susanne Konermann (design / educational media)</microhtml:li>
-                    <microhtml:li>Jan Krüger (server technology - temporary group
-                        leader)</microhtml:li>
-
-                    <microhtml:li>Richard Madsack (graduate assistant)</microhtml:li>
-                    <microhtml:li>Armin Töpfer (student assistant)</microhtml:li>
-                </microhtml:ul> Previous members: <microhtml:ul>
-                    <microhtml:li>Bastian Meyer</microhtml:li>
-                    <microhtml:li>Christian Peters</microhtml:li>
-                    <microhtml:li>Kai Löwenthal (educational media)</microhtml:li>
-                    <microhtml:li>Alexander Kaiser</microhtml:li>
-                    <microhtml:li>Jan Reinkensmeier</microhtml:li>
-                    <microhtml:li>Henning Mersch (server technology)</microhtml:li>
-                    <microhtml:li>Georg Sauthoff</microhtml:li>
-                    <microhtml:li>Nan Zhang</microhtml:li>
-                    <microhtml:li>Jörn Clausen (educational media)</microhtml:li>
-                    <microhtml:li>Johannes Huth</microhtml:li>
-                    <microhtml:li>Elke Wohlleben</microhtml:li>
-                    <microhtml:li>Stefan Kurtz</microhtml:li>
-                    <microhtml:li>Michael Höhl</microhtml:li>
-                    <microhtml:li>Kai Runte</microhtml:li>
-                    <microhtml:li>Dirk Evers</microhtml:li>
-                    <microhtml:li>Chris Schleiermacher></microhtml:li>
-                </microhtml:ul>
-            </customContent>
-        </item>
-        <item id="collaborators">
-            <name>Collaborators</name>
-            <shortDescription>Collaborators</shortDescription>
-            <description>Collaborators</description>
-            <keywords>Supporter Collaborators</keywords>
-            <responsibleAuthor>
-                <firstname>Jan</firstname>
-                <lastname>Krueger</lastname>
-                <email>jkrueger@techfak.uni-bielefeld.de</email>
-            </responsibleAuthor>
-            <customContent xml:lang="en">
-                <microhtml:ul>
-                    <microhtml:li> The Institute of Genome Research in the Biology Department,
-                        directed by Prof. Dr. A. Puehler and Prof. Dr. B. Weisshaar, helps us to
-                        find out what kind of software support the practicing biologists really
-                        need. </microhtml:li>
-                    <microhtml:li> The Bioinformatics Resource Facility (BRF), directed by Dr. A.
-                        Goessmann, provides access to databases and computing resources. </microhtml:li>
-                    <microhtml:li> The Ph.D. students at our International Graduate School in
-                        Bioinformatics and Genome Research contribute to our tool supply in manifold
-                        ways.</microhtml:li>
-                </microhtml:ul>
-            </customContent>
-        </item>
-
-
     </category>
 </category>
