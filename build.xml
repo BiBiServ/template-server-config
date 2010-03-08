@@ -77,6 +77,9 @@
 
                 <!-- executable root dir -->
                 <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="executable.dir"/>
+                
+                <!-- database port -->
+                <input message="Enter database (derby) port [e.g.: 1527] !" addproperty="db.port"/>
 
                 <!-- write local configuration file -->
                 <propertyfile file="${local.configuration}" comment="local bibiserv2 startup properties">
@@ -85,7 +88,8 @@
                     <entry key="domain" value="${domain.name}"/>
                     <entry key="admin.user" value="${admin.user}"/>
                     <entry key="spool.dir" value="${spool.dir}"/>
-                    <entry key="executable.dir" value="${excutable.dir}"/>
+                    <entry key="executable.dir" value="${executable.dir}"/>
+                    <entry key="db.port" value="${db.port}"/>
                 </propertyfile>
 
             </then>
@@ -285,7 +289,7 @@
                 <sunapp_property name="Password" value="APP"/>
                 <sunapp_property name="LoginTimeout" value="0"/>
                 <sunapp_property name="User" value="APP"/>
-                <sunapp_property name="PortNumber" value="1527"/>
+                <sunapp_property name="PortNumber" value="${db.port}"/>
                 <sunapp_property name="ServerName" value="localhost"/>
                 <sunapp_property name="TraceLevel" value="-1"/>
             </sunapp_jdbc_connection_pool>
@@ -298,6 +302,12 @@
             <!-- modify existing java-config -->
             <sunapp_java_config
                 classpath_prefix="${domain.dir}/${domain}/lib/${jboss_el}" mode="replace"/>
+            <!-- modify http-service // http-listener -->
+            <sunapp_http_service>
+                <sunapp_http_listener id="http-listener-1">
+                    <sunapp_property name="cometSupport" value="true"/> 
+                </sunapp_http_listener>
+            </sunapp_http_service>
         </sunapp_domain>
     </target>
 
@@ -305,10 +315,11 @@
         <!-- load configuration -->
         <property file="local.configuration"/>
 
-        <!-- start database on localhost:1527-->
+        <!-- start database on localhost:${db.port} -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="start-database"/>
             <arg value="--dbhome=${domain.dir}/${domain}/db"/>
+            <arg value="--dbport=${db.port}"/>
         </exec>
         <!-- start glassfish -->
         <exec executable="${catalina.home}/bin/asadmin">
@@ -343,6 +354,7 @@
         <!-- stop database -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="stop-database"/>
+            <arg value="--dbport=${db.port}"/>
         </exec>
 
     </target>
@@ -371,10 +383,11 @@
     <target name="clean" description="clean compiled classes and distribution jar">
         <delete dir="${dist}"/>
         <delete dir="${classes}"/>
+        <delete dir="${lib}"/>
         <delete file="appserver_config.zip"/>
     </target>
 
-    <target name="clean-all" depends="clean" description="clean really everything (Attention! Also, previous generated local appserver configuration files are deleted!)">
+    <target name="clean-all" depends="clean" description="clean really everything (Attention! Also, previous generated local appserver configuration files are deleted!)">      
         <delete file="${local.configuration}"/>
         <delete file="${local.passwordfile}"/>
     </target>
@@ -396,6 +409,7 @@
 
     <!-- use ivy to resolve  library dependencies -->
     <target name="resolve" description="retrieve dependencies with ivy">
+        <mkdir dir="${lib}"/>
         <ivy:retrieve/>
     </target>
 
