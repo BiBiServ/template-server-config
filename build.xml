@@ -135,7 +135,6 @@
             </then>
         </if>
 
-        <!--<taskdef resource="de.unibi.techfak.bibiserv.util.appserver_config.appserver_config.properties" classpath="${classes}"/>-->
         <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
             <classpath>
                 <path refid="classpath"/>
@@ -244,9 +243,7 @@
             </fileset>
         </copy>
 
-        <!-- create BAR dir -->
-        <property name="bar.dir" value="${domain.dir}/${domain}/bar"/>
-        <mkdir dir="${bar.dir}"/>
+        
 
         <!-- modify domain.xml of glassfish domain -->
         <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
@@ -379,7 +376,60 @@
             <exclude name="**"/>
         </zip>
     </target>
-
+    
+    <target name="update_bibiservstructure" description="update the bibiserv structure file in database from config/BiBiServ.xml => for test purpose only">
+        <!-- add appserver_config ant task -->
+        <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
+        <if>
+            <not>
+                <isset property="lib.present"/>
+            </not>
+            <then>
+                <antcall target="build"/>
+            </then>
+        </if>
+        
+        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${classes}"/>
+            </classpath>
+        </taskdef>
+        
+        <!-- load configuration -->
+        <property file="local.configuration"/>
+        
+        <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+      
+    </target>
+        
+    <target name="print_bibiservstructure" description="print bibiserv.xml to STDOUT, works only with running database => for test purpose only">
+        <!-- add appserver_config ant task -->
+        <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
+        <if>
+            <not>
+                <isset property="lib.present"/>
+            </not>
+            <then>
+                <antcall target="build"/>
+            </then>
+        </if>
+        
+        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+            <classpath>
+                <path refid="classpath"/>
+                <pathelement location="${classes}"/>
+            </classpath>
+        </taskdef>
+        
+        <!-- load configuration -->
+        <property file="local.configuration"/>
+        
+        
+        <database2structure dbURL="jdbc:derby://localhost:${db.port}/bibiserv2" /> 
+      
+    </target>
+    
     <target name="clean" description="clean compiled classes and distribution jar">
         <delete dir="${dist}"/>
         <delete dir="${classes}"/>
