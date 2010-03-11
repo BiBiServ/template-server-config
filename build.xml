@@ -213,7 +213,7 @@
         <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
         <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
         <copy overwrite="true" tofile="${domain.dir}/${domain}/lib/${jboss_el}">
-            <!-- This must return only ONE file, otherwise th copy task breaks! -->
+            <!-- This must return only ONE file, otherwise the copy task breaks! -->
             <fileset dir="${lib}">
                 <filename name="**/jboss-el*.jar"/>
             </fileset>
@@ -237,7 +237,7 @@
 
         <!-- copy bibimainapp to auto-deploy-dir for instant runnable server :-) -->
         <copy overwrite="true" tofile="${domain.dir}/${domain}/autodeploy/${bibimainapp}">
-            <!-- This must return only ONE file, otherwise th copy task breaks! -->
+            <!-- This must return only ONE file, otherwise the copy task breaks! -->
             <fileset dir="${lib}">
                 <filename name="**/bibimainapp*.war"/>
             </fileset>
@@ -308,16 +308,9 @@
         </sunapp_domain>
     </target>
 
-    <target name="start" description="start the Glassfish AND the JavaDB Server">
-        <!-- load configuration -->
-        <property file="local.configuration"/>
 
-        <!-- start database on localhost:${db.port} -->
-        <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="start-database"/>
-            <arg value="--dbhome=${domain.dir}/${domain}/db"/>
-            <arg value="--dbport=${db.port}"/>
-        </exec>
+    <target name="start" depends="_load_config,_start_db" description="start the Glassfish AND the JavaDB Server">
+
         <!-- start glassfish -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="start-domain"/>
@@ -327,20 +320,21 @@
             <arg value="${domain}"/>
         </exec>
     </target>
+    
+    <target name="debug" depends="_load_config,_start_db" description="start Glassfish appserver in debug mode">
+        <!-- start glassfish in debug mode-->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="start-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="--debug"/>
+            <arg value="${domain}"/>
+        </exec>
+        
+    </target>
 
-    <target name="stop" description="stop the Glassfish AND JavaDB Server">
-        <!-- check if configuration file exists -->
-        <available file="local.configuration" property="config.present" value="true"/>
-        <if>
-            <not>
-                <isset property="config.present"/>
-            </not>
-            <then>
-                <antcall target="configure"/>
-            </then>
-        </if>
-        <!-- load configuration -->
-        <property file="local.configuration"/>
+    <target name="stop" depends="_load_config" description="stop the Glassfish AND JavaDB Server">
         <!-- stop glassfish -->
         <exec executable="${catalina.home}/bin/asadmin">
 
@@ -348,11 +342,8 @@
             <arg value="--domaindir=${domain.dir}"/>
             <arg value="${domain}"/>
         </exec>
-        <!-- stop database -->
-        <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="stop-database"/>
-            <arg value="--dbport=${db.port}"/>
-        </exec>
+       
+       <antcall target="_stop_db"/>
 
     </target>
 
@@ -377,7 +368,7 @@
         </zip>
     </target>
     
-    <target name="update_bibiservstructure" description="update the bibiserv structure file in database from config/BiBiServ.xml => for test purpose only">
+    <target name="_update_bibiservstructure" description="(test task) update the bibiserv structure file in database from config/BiBiServ.xml">
         <!-- add appserver_config ant task -->
         <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
         <if>
@@ -403,7 +394,7 @@
       
     </target>
         
-    <target name="print_bibiservstructure" description="print bibiserv.xml to STDOUT, works only with running database => for test purpose only">
+    <target name="_print_bibiservstructure" description="(test task) print bibiserv.xml to STDOUT, works only with running database">
         <!-- add appserver_config ant task -->
         <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
         <if>
@@ -504,8 +495,8 @@
                  />
     </target>
 
-    <!-- target, for internal use only -->
-    <target name="_mercurial" description="get the latest tag name and revision number">
+    <!-- targets, for internal use only -->
+    <target name="_mercurial" description="(internal task ) get the latest tag name and revision number">
         <exec executable="bash" outputproperty="HG.TAG">
             <arg line="-c "/>
             <arg value="hg tags | head -n 2 | grep -v tip |  cut -f 1 -d ' '  "/>
@@ -514,5 +505,39 @@
             <arg line="-c "/>
             <arg value="hg tip | grep changeset: | cut -f 2 -d ':' | sed -e 's/^ *//' "/>
         </exec>
+    </target>
+    
+    <target name="_start_db" depends="_load_config" description="(internal task) start the database">
+        <!-- start database on localhost:${db.port} -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="start-database"/>
+            <arg value="--dbhome=${domain.dir}/${domain}/db"/>
+            <arg value="--dbport=${db.port}"/>
+        </exec>   
+    </target>
+    
+    
+    <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
+        <!-- stop database -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="stop-database"/>
+            <arg value="--dbport=${db.port}"/>
+        </exec>
+    </target>
+    
+    <target name="_load_config" description="(internal task) load configuration from file">
+        <!-- check if configuration file exists -->
+        <available file="local.configuration" property="config.present" value="true"/>
+        <if>
+            <not>
+                <isset property="config.present"/>
+            </not>
+            <then>
+                <antcall target="configure"/>
+            </then>
+        </if>
+        
+        <!-- load configuration -->
+        <property file="local.configuration"/>
     </target>
 </project>
