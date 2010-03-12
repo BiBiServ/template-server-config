@@ -5,7 +5,7 @@
     <entry key="chmod.bin">chmod</entry>
     <entry key="chmod.param">2777</entry>
     <!-- used by de.unibi.techfak.bibiserv.BiBiTools -->
-    <entry key="executable.rootpath">/vol/bibi/share/bibiserv2_testing/biotools/</entry>    <!-- ATTENTION ! Change this! -->
+    <entry key="executable.rootpath">/vol/bibi/share/bibiserv2_testing/</entry>             <!-- ATTENTION ! Change this! -->
     <entry key="executable.path.isrelativ">true</entry>                                     <!-- ATTENTION ! Change this! -->
     <entry key="spooldir.base">/vol/bibi/share/bibiserv2_testing/spool</entry>              <!-- ATTENTION ! Change this! -->
     <entry key="tmpdir.base">/vol/bibi/share/bibiserv2_testing/spool/tmp</entry>            <!-- ATTENTION ! Change this! -->

@@ -193,7 +193,7 @@
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
                     <entry key="spooldir.base" value="${spool.dir}"/>
                     <entry key="tmpdir.base" value="${spool.dir}/tmp"/>
-                    <entry key="executable.root.path" value="${executable.dir}"/>
+                    <entry key="executable.rootpath" value="${executable.dir}"/>
                 </propertyfile>
 
                 <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
@@ -342,9 +342,7 @@
             <arg value="--domaindir=${domain.dir}"/>
             <arg value="${domain}"/>
         </exec>
-       
        <antcall target="_stop_db"/>
-
     </target>
 
     <target name="build" depends="resolve" description="compile and build ant task needed to run this build script">
