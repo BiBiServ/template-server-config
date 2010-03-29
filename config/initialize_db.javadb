@@ -37,4 +37,50 @@ insert into manager_auth values (
     'testadmin',
     'simplepassword',
     '','');
+    
+CREATE TABLE stats_clientinfo (
+    sessionid character varying(50) NOT NULL,
+    resolutionx integer,
+    resolutiony integer,
+    browsername character varying(50),
+    browserversion character varying(50),
+    os character varying(50),
+    ip character varying(15),
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE stats_toolclicks (
+    toolname character varying(50) NOT NULL,
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    location character varying(50) NOT NULL,
+    sessionid character varying(100)
+);
+
+CREATE TABLE stats_toolerrors (
+    toolname character varying(50) NOT NULL,
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    location character varying(50) NOT NULL,
+    ip character varying(15)
+);
+
+CREATE TABLE stats_categoryclicks (
+    category character varying(50) NOT NULL,
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    sessionid character varying(100)
+);
+    
+CREATE TABLE stats_toolruntime (
+    toolname character varying(45) NOT NULL,
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    runtime bigint NOT NULL,
+    sessionid character varying(100)
+);
+
+CREATE TABLE stats_toolsubmission (
+    toolname character varying(50) NOT NULL,
+    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    example character varying(1) DEFAULT 'n',
+    stdparam character varying(1) DEFAULT 'y',
+    sessionid character varying(100)
+);
 disconnect BIBISERV2;
