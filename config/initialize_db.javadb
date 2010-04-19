@@ -36,7 +36,7 @@ create table manager_auth (
 insert into manager_auth values (
     'testadmin',
     'simplepassword',
-    '','');
+    'ADMIN,DEVELOPER,USER','true');
     
 CREATE TABLE stats_clientinfo (
     sessionid character varying(50) NOT NULL,
