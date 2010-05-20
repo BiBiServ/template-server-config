@@ -11,31 +11,18 @@ import java.util.List;
 public class sunapp_http_listener {
 
     private String acceptor_threads;
-
     private String adress;
-
     private String blocking_enabled;
-
     private String default_virtual_server;
-
     private String enabled;
-
     private String external_port;
-
     private String family;
-
     private String id;
-
     private String port;
-
     private String redirect_port;
-
     private String security_enabled;
-
     private String server_name;
-
     private String xpowered_by;
-
     private List<sunapp_property> properties = new ArrayList<sunapp_property>();
 
     public String getAcceptor_threads() {
@@ -142,31 +129,25 @@ public class sunapp_http_listener {
         this.xpowered_by = xpowered_by;
     }
 
-        /**
+    /**
      * Each <b>http_listener</b> can have one or more property child elements.
      *
-      <pre>
-        &lt;http-listener&gt;
-            &lt; property name="..." value="..." /&gt;
-            ...
-        &lt;/http-listener&gt;
-      </pre>
+    <pre>
+    &lt;http-listener&gt;
+    &lt; property name="..." value="..." /&gt;
+    ...
+    &lt;/http-listener&gt;
+    </pre>
      *
      * @return
      */
-    public sunapp_property createSunapp_property(){
+    public sunapp_property createSunapp_property() {
         sunapp_property temp = new sunapp_property();
         properties.add(temp);
         return temp;
     }
 
-
-    public List<sunapp_property> getProperties(){
+    public List<sunapp_property> getProperties() {
         return properties;
     }
-
-    
-
-   
-
 }

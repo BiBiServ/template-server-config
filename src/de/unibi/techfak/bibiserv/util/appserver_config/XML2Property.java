@@ -39,7 +39,7 @@ public class XML2Property extends Task {
 
     @Override
     public void execute() throws BuildException {
-         if (src != null) {
+        if (src != null) {
             src_file = new File(src);
             if (!src_file.isFile()) {
                 throw new BuildException("'src'file +'" + src_file + " not found .");
@@ -59,22 +59,22 @@ public class XML2Property extends Task {
         try {
             InputStream in = new FileInputStream(src_file);
             prop.loadFromXML(in);
-           
+
         } catch (FileNotFoundException e) {
-            throw new BuildException("Src '"+src+"' not found ... ",e);
+            throw new BuildException("Src '" + src + "' not found ... ", e);
         } catch (IOException e) {
             throw new BuildException(e);
         }
 
-         // write properties to file
+        // write properties to file
         try {
             prop.store(new FileOutputStream(new File(dest)), "converted by " + getClass().getName());
-        } catch (FileNotFoundException e){
-            throw new BuildException("Dest '"+dest+"' not found ... ",e);
-        } catch (IOException e){
+        } catch (FileNotFoundException e) {
+            throw new BuildException("Dest '" + dest + "' not found ... ", e);
+        } catch (IOException e) {
             throw new BuildException(e);
         }
 
-        System.out.println("Read XML properties from '"+src+"' and write properties to '"+dest+"'");
+        System.out.println("Read XML properties from '" + src + "' and write properties to '" + dest + "'");
     }
 }

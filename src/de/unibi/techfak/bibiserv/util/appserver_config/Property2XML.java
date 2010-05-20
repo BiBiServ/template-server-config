@@ -72,6 +72,6 @@ public class Property2XML extends Task {
             throw new BuildException(e);
         }
 
-        System.out.println("Read properties from '"+src+"' and write XML properties to '"+dest+"'");
+        System.out.println("Read properties from '" + src + "' and write XML properties to '" + dest + "'");
     }
 }

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -56,7 +55,6 @@ public class Structure2DataBase extends Task {
     public void setDbURL(String dbURL) {
         this.dbURL = dbURL;
     }
-
     private boolean embedded = false;
 
     /**
@@ -65,7 +63,7 @@ public class Structure2DataBase extends Task {
      *
      * @param embedded
      */
-    public void setEmbedded(boolean embedded){
+    public void setEmbedded(boolean embedded) {
         this.embedded = embedded;
     }
     private Connection con = null;
@@ -83,19 +81,19 @@ public class Structure2DataBase extends Task {
         if (!src_file.isFile()) {
             throw new BuildException("'src'file +'" + src_file + " not found .");
         }
-      
-       try {
+
+        try {
             createConnection();
             stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, ? )");
             stmt.setClob(1, new BufferedReader(new FileReader(src_file)));
             stmt.execute();
-            System.out.println("Written Structure of BiBiServ to '"+dbURL+"' into table STRUCTURE");
+            System.out.println("Written Structure of BiBiServ to '" + dbURL + "' into table STRUCTURE");
         } catch (SQLException ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-                shutdown();
+            shutdown();
         }
     }
 

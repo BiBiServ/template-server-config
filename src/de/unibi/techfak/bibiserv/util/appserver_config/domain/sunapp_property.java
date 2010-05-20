@@ -9,40 +9,37 @@ import generated.Property;
  */
 public class sunapp_property {
 
-
     Property property = new Property();
 
     /** simple constructor */
-    public sunapp_property(){}
+    public sunapp_property() {
+    }
 
-
-    public Property getProperty(){
+    public Property getProperty() {
         return property;
     }
 
-    public void setKey(String key){
-       property.setName(key);
-    }
-
-    public void setName(String key){
+    public void setKey(String key) {
         property.setName(key);
     }
 
-    public String getKey(){
+    public void setName(String key) {
+        property.setName(key);
+    }
+
+    public String getKey() {
         return property.getName();
     }
 
-    public String getName(){
+    public String getName() {
         return property.getName();
     }
 
-    public void setValue(String value){
+    public void setValue(String value) {
         property.setValue(value);
     }
 
-    public String getValue(){
+    public String getValue() {
         return property.getValue();
     }
-
-
 }

@@ -58,7 +58,6 @@ public class Database2Structure extends Task {
     public void setDbURL(String dbURL) {
         this.dbURL = dbURL;
     }
-
     private boolean embedded = false;
 
     /**
@@ -67,7 +66,7 @@ public class Database2Structure extends Task {
      *
      * @param embedded
      */
-    public void setEmbedded(boolean embedded){
+    public void setEmbedded(boolean embedded) {
         this.embedded = embedded;
     }
     private Connection con = null;
@@ -78,43 +77,43 @@ public class Database2Structure extends Task {
         if (dbURL == null) {
             throw new BuildException("Attribute 'dbURL' is mandantory und must be valid jdbcURL!");
         }
-       
-        
-  
-      
-       try {
+
+
+
+
+        try {
             createConnection();
             stmt = con.prepareStatement("SELECT CONTENT FROM STRUCTURE WHERE TIME=(SELECT MAX(TIME) FROM STRUCTURE)");
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-            Clob clob = rs.getClob("CONTENT");
-            if (dst != null ) {
-                File dst_file = new File(dst);
-                OutputStream out = new BufferedOutputStream(new FileOutputStream(dst_file));
-                InputStream in = clob.getAsciiStream();
-                byte [] buf = new byte [4096];
-                int bytes_read = 0;
-                while ((bytes_read = in.read(buf)) != -1){
-                    out.write(buf,0,bytes_read);
+                Clob clob = rs.getClob("CONTENT");
+                if (dst != null) {
+                    File dst_file = new File(dst);
+                    OutputStream out = new BufferedOutputStream(new FileOutputStream(dst_file));
+                    InputStream in = clob.getAsciiStream();
+                    byte[] buf = new byte[4096];
+                    int bytes_read = 0;
+                    while ((bytes_read = in.read(buf)) != -1) {
+                        out.write(buf, 0, bytes_read);
+                    }
+                    out.close();
+                    in.close();
+                    System.out.println("Wrote content of Clob to file '" + dst_file + "'!");
+                } else {
+                    System.out.println("Destination is null, so print Clob to STDOUT!");
+                    System.out.println(clob.getSubString(1, (int) clob.length()));
                 }
-                out.close();
-                in.close();
-                System.out.println("Wrote content of Clob to file '"+dst_file+"'!");
-            } else {
-                System.out.println("Destination is null, so print Clob to STDOUT!");
-                System.out.println(clob.getSubString(1, (int)clob.length()));
-            }
             } else {
                 System.out.println("call next() 'SELECT CONTENT FROM STRUCTURE WHERE TIME=(SELECT MAX(TIME) FROM STRUCTURE)' returns false ...");
             }
 
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Database2Structure.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Database2Structure.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-                shutdown();
+            shutdown();
         }
     }
 

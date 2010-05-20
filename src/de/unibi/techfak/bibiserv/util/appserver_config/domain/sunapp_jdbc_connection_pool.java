@@ -19,14 +19,15 @@ import org.apache.tools.ant.BuildException;
  *
  * @author Jan Krueger (jkrueger(at)cebitec.uni-bielefeld.de)
  */
-public class sunapp_jdbc_connection_pool{
+public class sunapp_jdbc_connection_pool {
 
     /** simple Constructor */
-    public sunapp_jdbc_connection_pool() {};
+    public sunapp_jdbc_connection_pool() {
+    }
 
-     /** internal properties representation of subelements **/
+    ;
+    /** internal properties representation of subelements **/
     private List<Property> properties = new ArrayList<Property>();
-
     /** internal used JAXb representation of an jadbc connection pool */
     private JdbcConnectionPool jdbcconnectionpool = new JdbcConnectionPool();
 
@@ -46,55 +47,50 @@ public class sunapp_jdbc_connection_pool{
      *
      * @throws BuildException
      */
-    public void execute() throws BuildException{
+    public void execute() throws BuildException {
 
         // iterate over all property sub elements ...
         List<Property> list_of_properties = jdbcconnectionpool.getProperty();
-        
-        for (Property prop : properties  ){
+
+        for (Property prop : properties) {
             list_of_properties.add(prop);
         }
-        
-        
+
+
         if (jdbcconnectionpool.getName() == null) {
             throw new BuildException("Attribute 'name' must be specified!");
         }
-        
+
         if (jdbcconnectionpool.getDatasourceClassname() == null) {
             throw new BuildException("Attribute 'DatasourceClassname' must be specified!");
         }
-        if ((jdbcconnectionpool.getResType() == null) || !(
-                jdbcconnectionpool.getResType().equals("javax.sql.DataSource") || 
-                jdbcconnectionpool.getResType().equals("javax.sql.XADataSource") || 
-                jdbcconnectionpool.getResType().equals("javax.sql.ConnectionPoolDataSource"))) {
-            throw new BuildException("Attribute 'res-type' of Element 'sunapp_jdbc_connection_pool' must be specified and one of (javax.sql.DataSource | javax.sql.XADataSource | javax.sql.ConnectionPoolDataSource) - was "+jdbcconnectionpool.getResType());
+        if ((jdbcconnectionpool.getResType() == null) || !(jdbcconnectionpool.getResType().equals("javax.sql.DataSource")
+                || jdbcconnectionpool.getResType().equals("javax.sql.XADataSource")
+                || jdbcconnectionpool.getResType().equals("javax.sql.ConnectionPoolDataSource"))) {
+            throw new BuildException("Attribute 'res-type' of Element 'sunapp_jdbc_connection_pool' must be specified and one of (javax.sql.DataSource | javax.sql.XADataSource | javax.sql.ConnectionPoolDataSource) - was " + jdbcconnectionpool.getResType());
         }
 
-        if (!(jdbcconnectionpool.getConnectionValidationMethod().equals("auto-commit") ||
-                jdbcconnectionpool.getConnectionValidationMethod().equals("meta-data") ||
-                jdbcconnectionpool.getConnectionValidationMethod().equals("table"))) {
-            throw new BuildException("Attribute 'connectionValidationMethod' of Element 'sunapp_jdbc_connection_pool' must be  one of (auto-commit | meta-data | table) - was "+jdbcconnectionpool.getConnectionValidationMethod());
+        if (!(jdbcconnectionpool.getConnectionValidationMethod().equals("auto-commit")
+                || jdbcconnectionpool.getConnectionValidationMethod().equals("meta-data")
+                || jdbcconnectionpool.getConnectionValidationMethod().equals("table"))) {
+            throw new BuildException("Attribute 'connectionValidationMethod' of Element 'sunapp_jdbc_connection_pool' must be  one of (auto-commit | meta-data | table) - was " + jdbcconnectionpool.getConnectionValidationMethod());
         }
 
     }
 
-
-   
-
-
     /**
      * Each <b>jdbc-connection-pool</b> can have one or more property child elements.
      *
-      <pre>
-      &lt;jdb-connection-pool&gt;
-        &lt;property key="..." value="..."/&gt;
-        ...
-      &lt;jdb-connection-pool&gt;
-      </pre>
+    <pre>
+    &lt;jdb-connection-pool&gt;
+    &lt;property key="..." value="..."/&gt;
+    ...
+    &lt;jdb-connection-pool&gt;
+    </pre>
      *
      * @return
      */
-    public sunapp_property createSunapp_property(){
+    public sunapp_property createSunapp_property() {
         sunapp_property p = new sunapp_property();
         properties.add(p.getProperty());
         return p;
@@ -102,13 +98,12 @@ public class sunapp_jdbc_connection_pool{
 
 
     /* Getter/Setter methods for all attributes supported by jdbc_connection_pool entry */
-    
     public boolean getAllownoncomponentcallers() {
         return Boolean.parseBoolean(jdbcconnectionpool.getAllowNonComponentCallers());
     }
 
     public void setAllownoncomponentcallers(boolean allownoncomponentcallers) {
-       jdbcconnectionpool.setAllowNonComponentCallers(Boolean.toString(allownoncomponentcallers));
+        jdbcconnectionpool.setAllowNonComponentCallers(Boolean.toString(allownoncomponentcallers));
     }
 
     public String getAssociatewiththread() {
@@ -116,7 +111,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setAssociatewiththread(String associatewiththread) {
-       jdbcconnectionpool.setAssociateWithThread(associatewiththread);
+        jdbcconnectionpool.setAssociateWithThread(associatewiththread);
     }
 
     public String getConnectioncreationretryattempts() {
@@ -156,7 +151,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setConnectionvalidationmethod(String connectionvalidationmethod) {
-       jdbcconnectionpool.setConnectionValidationMethod(connectionvalidationmethod);
+        jdbcconnectionpool.setConnectionValidationMethod(connectionvalidationmethod);
     }
 
     public String getDatasourceclassname() {
@@ -188,7 +183,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setIsconnectionvalidationrequired(String isconnectionvalidationrequired) {
-       jdbcconnectionpool.setIsConnectionValidationRequired(isconnectionvalidationrequired);
+        jdbcconnectionpool.setIsConnectionValidationRequired(isconnectionvalidationrequired);
     }
 
     public String getIsisolationlevelguaranteed() {
@@ -204,7 +199,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setLazyconnectionassociation(String lazyconnectionassociation) {
-       jdbcconnectionpool.setLazyConnectionAssociation(lazyconnectionassociation);
+        jdbcconnectionpool.setLazyConnectionAssociation(lazyconnectionassociation);
     }
 
     public String getLazyconnectionenlistment() {
@@ -220,7 +215,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setMatchconnections(String matchconnection) {
-       jdbcconnectionpool.setMatchConnections(matchconnection);
+        jdbcconnectionpool.setMatchConnections(matchconnection);
     }
 
     public String getMaxconnectionusagecount() {
@@ -228,11 +223,11 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setMaxconnectionusagecount(String maxconnectionusagecount) {
-       jdbcconnectionpool.setMaxConnectionUsageCount(maxconnectionusagecount);
+        jdbcconnectionpool.setMaxConnectionUsageCount(maxconnectionusagecount);
     }
 
     public String getMaxpoolsize() {
-        return jdbcconnectionpool.getMaxPoolSize() ;
+        return jdbcconnectionpool.getMaxPoolSize();
     }
 
     public void setMaxpoolsize(String maxpoolsize) {
@@ -300,7 +295,7 @@ public class sunapp_jdbc_connection_pool{
     }
 
     public void setTransactionisolationlevel(String transactionisolationlevel) {
-      jdbcconnectionpool.setTransactionIsolationLevel(Isolation.valueOf(transactionisolationlevel));
+        jdbcconnectionpool.setTransactionIsolationLevel(Isolation.valueOf(transactionisolationlevel));
     }
 
     public String getValidateatmostonceperiodinseconds() {
@@ -319,14 +314,11 @@ public class sunapp_jdbc_connection_pool{
         jdbcconnectionpool.setValidationTableName(validationtablename);
     }
 
-    public String  getWrapjdbcobjects() {
+    public String getWrapjdbcobjects() {
         return jdbcconnectionpool.getWrapJdbcObjects();
     }
 
     public void setWrapjdbcobjects(String wrapjdbcobjects) {
         jdbcconnectionpool.setWrapJdbcObjects(wrapjdbcobjects);
     }
-
-
-
 }
