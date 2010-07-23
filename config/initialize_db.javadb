@@ -91,9 +91,12 @@ CREATE TABLE stats_categoryclicks (
     
 CREATE TABLE stats_toolruntime (
     toolname character varying(45) NOT NULL,
+    bibiserv character varying(50) NOT NULL,
+    statuscode int NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     runtime bigint NOT NULL,
-    sessionid character varying(100)
+    sessionid character varying(100),
+    description character varying(10000)
 );
 
 CREATE TABLE stats_toolsubmission (
