@@ -1,68 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
-
-Copyright 2010 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
-All rights reserved.
-
-The contents of this file are subject to the terms of the Common
-Development and Distribution License("CDDL") (the "License"). You
-may not use this file except in compliance with the License. You can
-obtain a copy of the License at http://www.sun.com/cddl/cddl.html
-
-See the License for the specific language governing permissions and
-limitations under the License.  When distributing the software, include
-this License Header Notice in each file.  If applicable, add the following
-below the License Header, with the fields enclosed by brackets [] replaced
- by your own identifying information:
-
-"Portions Copyrighted [year] [name of copyright owner]"
-
-Contributor(s):
-
+    DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+    
+    Copyright 2010 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
+    All rights reserved.
+    
+    The contents of this file are subject to the terms of the Common
+    Development and Distribution License("CDDL") (the "License"). You
+    may not use this file except in compliance with the License. You can
+    obtain a copy of the License at http://www.sun.com/cddl/cddl.html
+    
+    See the License for the specific language governing permissions and
+    limitations under the License.  When distributing the software, include
+    this License Header Notice in each file.  If applicable, add the following
+    below the License Header, with the fields enclosed by brackets [] replaced
+    by your own identifying information:
+    
+    "Portions Copyrighted [year] [name of copyright owner]"
+    
+    Contributor(s):
+    
 -->
 <category xmlns="bibiserv:de.unibi.techfak.bibiserv.cms"  
     xmlns:microhtml="bibiserv:de.unibi.techfak.bibiserv.cms.microhtml"
     xmlns:minihtml="bibiserv:de.unibi.techfak.bibiserv.cms.minihtml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
     xsi:schemaLocation="bibiserv:de.unibi.techfak.bibiserv.cms http://bibiserv.techfak.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd" id="bibiserv">
     <name>BiBiServ</name>
-    <categoryDescription xml:lang="en">Welcome to BiBiserv. The Bielefeld University Bioinformatics
-        Server. </categoryDescription>
-    <categoryRepresentation>
+    <categoryDescription xml:lang="en">Welcome to BiBiserv -  the Bielefeld University Bioinformatics Server.</categoryDescription>
+    <categoryDescription xml:lang="de">Willkommen auf dem BiBiServ, dem Bioinformatik-Server der Universität Bielefeld.</categoryDescription>
+    <categoryRepresentation id="bibiserv_representation">
         <title>BiBiServ - Bielefeld University Bioinformatics Server</title>
-        <customContent xml:lang="en"> The Bielefeld Bioinformatics Server (BiBiServ) is a relatively
-            small unit of the <microhtml:a
-                href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Institute for
-                Bioinformatics</microhtml:a> (IFB) within the <microhtml:a
-                href="http://www.cebitec.uni-bielefeld.de">Center for Biotechnology</microhtml:a>
-            (CeBiTec) dedicated to providing persistent service to the community by hosting
-            bioinformatics tools which emerge from the research of the Bielefeld groups and their
-            direct collaborators. </customContent>
+        <customContent xml:lang="en">The Bielefeld Bioinformatics Server (BiBiServ) is part of the <microhtml:a
+            href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Institute for Bioinformatics</microhtml:a>
+            (IFB) within the <microhtml:a href="http://www.cebitec.uni-bielefeld.de">Center for Biotechnology</microhtml:a>
+            (CeBiTec). It is dedicated to provide persistent service to the life-science community by hosting
+            bioinformatics tools which emerge from the research of the Bielefeld groups and close collaborators.
+            
+            This site is the home of <microhtml:em>BiBiServ2</microhtml:em>, a total re-implementation of the BiBiServ system. 
+            Goals of the new version include simplified tool development, better usability and easier
+            extensibility of the offered tools, while adding more access interfaces and better documentation.
+            
+            <microhtml:strong>BiBiServ2 is currently in BETA DEVELOPMENT. SOME FUNCTIONALITIES MIGHT NOT WORK AS EXPECTED!
+                Feel free to try out any parts of this site,
+                and do not hesitate to <microhtml:a href="mailto:bibi-help@cebitec.uni-bielefeld.de?subject=BiBiServ2-Beta-Feedback">contact the Curator staff</microhtml:a>
+                with observations, requests, proposals, bug-reports, wishes and any other thoughts you have about the new system!
+            </microhtml:strong> 
+
+        </customContent>
+        <customContent xml:lang="de">Der Bielefelder Bioinformatik Server (BiBiServ) ist Teil des <microhtml:a
+            href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Instituts fuer
+            Bioinformatik</microhtml:a> (IFB) <microhtml:a
+                href="http://www.cebitec.uni-bielefeld.de"> im Center fuer Biotechnologie</microhtml:a>
+            (CeBiTec). Ziel dieser Einrichtung ist die persistente Bereitstellung und der Support bioinformatischer Anwendungen, 
+            die aus der Arbeit Bielefelder AGs und deren Kooperationspartnern entstanden sind.
+            
+            Diese Website ist dir Homepage des <microhtml:em>BiBiServ2</microhtml:em>, einer vollständigen Neu-Implementierung des BiBiServ-Systems. 
+            Ziele bei der Erstellung der neuen Fassung umfassen verinfachte Werkzeugentwicklung, höhere Benutzerfreundlichkeit und Benutzbarkeit
+            sowie einfachere Erweiterbarkeit angebotener Werkzeuge. Hinzu kommen mehr Zugriffsmöglichkeiten auf die Werkzeuge sowie verbesserte
+            Dokumentation.
+            
+            <microhtml:strong>BiBiServ2 ist aktuell im BETA-STATUS. MÖGLICHRWEISE FUNKTIONIEREN DAHER EINIGE DINGE NICHT SO, WIE ERWARTET!
+                Bitte testen Sie gerne alle Teile dieser Seite aus und zögern Sie nicht,
+                <microhtml:a href="mailto:bibi-help@cebitec.uni-bielefeld.de?subject=BiBiServ2-Beta-Feedback">das Administrator-Team zu kontaktieren</microhtml:a>,
+                wenn Sie Fehler bemerken oder Verbesserungsvorschläge, Wünsche und Beobachtungen mitteilen möchten!
+            </microhtml:strong> 
+            
+        </customContent>
     </categoryRepresentation>
     
     <category id="tools">
         <name>Tools</name>
-        <categoryDescription>The BiBiServ Tool section currently offers bioinformatics tools for a
-            large variety of tasks</categoryDescription>
-        <categoryRepresentation>
+        <name xml:lang="en">Tools</name>
+        <name xml:lang="de">Anwendungen</name>
+        <categoryDescription xml:lang="en">The BiBiServ Tool section offers bioinformatics tools for a large variety of tasks</categoryDescription>
+        <categoryDescription xml:lang="de">Der Bereich 'Anwendungen' stellt bioinformatische Werkzeuge für eine Vielzahl von Anwendungsmöglichkeiten bereit</categoryDescription>
+        <categoryRepresentation id="tools_representation">
             <title>BiBiServ Tool Section</title>
-            <customContent xml:lang="en"> As some analyses can take a long time - sometimes over
-                several hours - BiBiServ provides two different result delivery mechanisms. Results
-                of short analyses (less than 5 minutes compute time) are shown immediately in the
-                browser. For longer analyses (maximum of one day compute time) the result is stored
-                on a temporary web-site and the corresponding URL is sent to the user via E-mail.
-                BiBiServ runs in a UNIX environment. The data stored locally can be accessed only by
-                the BiBiServ administrators. The result of a calculation is stored temporarily for
-                three days and deleted afterwards. We do not offer encrypted submissions.
+            <title xml:lang="de">BiBiServ Anwendungen</title>
+            <customContent xml:lang="en"> 
+                The tools on BiBiServ cover a variety of bioinformatics areas, sorted into the categories below.
+            </customContent>
+            <customContent xml:lang="de">
+                Die auf dem BiBiServ bereitgestellten Werkzeuge umfassen diverse Bereiche der BioInformatik, unterteilt in die unten angegeben Kategorien.
             </customContent>
         </categoryRepresentation>
         
         <!-- Genome Comparison -->
         <category id="genomeComparison">
             <name>Genome Comparison</name>
+            <name xml:lang="en">Genome Comparison</name>
+            <name xml:lang="de">Genomvergleich</name>
             <categoryDescription>Several Tools for Genome Comparison</categoryDescription>
-            <categoryRepresentation>
+            <categoryRepresentation id="genomeComparison_representation" >
                 <title>Genome Comparison</title>
                 <customContent/>
             </categoryRepresentation>
@@ -70,30 +101,31 @@ Contributor(s):
         
         <!-- RNA Studio -->
         <category id="rna">
-            <name>RNA Studio</name>
+            <name>RNA Studio</name><name xml:lang="de">RNA Studio</name>
             <categoryDescription>RNA processing tools</categoryDescription>
-            <categoryRepresentation>
+            <categoryRepresentation id="rna_representation">
                 <title>RNA Studio</title>
-                <customContent/>
+                <customContent>The tools within this category work on RNA data and provide i.a. shape prediction and hybridization solutions</customContent>
             </categoryRepresentation>
         </category>
         
         <!-- Alignments -->
         <category id="alignment">
             <name>Alignment</name>
-            <categoryDescription>The BiBiServ Alignmenttools</categoryDescription>
-            <categoryRepresentation>
-                <title>BiBiServ Alignmenttools</title>
-                <customContent>blablabla</customContent>
+            <categoryDescription>Alignment-tools</categoryDescription>
+            <categoryRepresentation id="alignmnet_representation">
+                <title>Alignmenttools</title>
+                <customContent>Tools for aligning sequences and shapes</customContent>
+                <customContent xml:lang="de">Werkzeuge zum Angleichen von Sequenzen und Formen</customContent>
             </categoryRepresentation>
         </category>
         
         <!-- Primer Design -->
         <category id="primerDesign">
             <name>Primer Design</name>
-            <categoryDescription/>
+            <categoryDescription>Tools for PCR Primer Design</categoryDescription>
         </category>
-
+        
         <!-- Evolutionary Relationships -->
         <category id="evolutionaryRelationship">
             <name>Evolutionary Relationships</name>
@@ -101,38 +133,43 @@ Contributor(s):
         </category>
         <category id="others">
             <name>Others</name>
-            <categoryDescription>Tools that do not fit into the other
-                categories</categoryDescription>
+            <name xml:lang="de">Weitere Anwendungen</name>
+            <categoryDescription>Tools that do not fit into the other categories</categoryDescription>
+            <categoryDescription xml:lang="de">Werkzeuge, die in keine der anderen Kategorien passen</categoryDescription>
         </category>
     </category>
-
+    
     <!-- ++++++++++++++++++
-         ++   Education  ++
-         ++++++++++++++++++ -->
+        ++   Education  ++
+        ++++++++++++++++++ -->
     <category id="education">
         <name>Education</name>
-        <categoryDescription>Educational media dealing with the main topics in bioinfromatics are
-            provided here.</categoryDescription>
-        <categoryRepresentation>
+        <name xml:lang="de">Lehre</name>
+        <categoryDescription>Educational media dealing with bioinformatics are provided here.</categoryDescription>
+        <categoryDescription xml:lang="de">Hier werden Lehrmedien mit Bezug zur BioInformatik bereitgestellt.</categoryDescription>
+        <categoryRepresentation id="education_representation">
             <title xml:lang="en">BiBiServ-Courses and Education</title>
-            <customContent xml:lang="en">Bioinformatics is a young and dynmaic field. The
+            <customContent xml:lang="en">Bioinformatics is a young and dynamic field. The
                 integration of knowledge from biology and computer science requires a significant
-                educational effort. Our Distance Education and Training Department ...
+                educational effort. Our Distance Education and Training Department prepares,
+                runs and publishes online courses on certain bioinformatical subjects.
             </customContent>
         </categoryRepresentation>
         
         <category id="dp">
             <name>Dynamic Programming</name>
+            <name xml:lang="de">Dynamische Programmierung</name>
             <categoryDescription>Dynamic programming is a predominant programming technique in
                 biosequence analysis. Algebraic Dynamic Programming (ADP) is a new method to design
-                and implement, tune, test and teach Dynamic Programming
-                algorithms.
+                and implement, tune, test and teach Dynamic Programming algorithms.
             </categoryDescription>          
         </category>
         
         <category id="sa">
             <name>Sequence Analysis</name>
-            <categoryDescription/>        
+            <name xml:lang="de">Sequenzanalyse</name>
+            <categoryDescription>This cateogry contains online courses in the area of Sequence Analysis</categoryDescription>
+            <categoryDescription xml:lang="de">Diese Kategorie enthält Online-Kurse zum Thema Sequenzanalyse</categoryDescription>        
         </category>
     </category>
     
@@ -141,19 +178,15 @@ Contributor(s):
         +++++++++++++++++++++++ -->
     <category id="administration">
         <name>Administration</name>
-        <categoryDescription>The administration section of BiBiServ </categoryDescription>
-        <categoryRepresentation>
+        <name xml:lang="de">Verwaltung</name>
+        <categoryDescription>Administration and Statistics</categoryDescription>
+        <categoryDescription xml:lang="de">Verwaltung und Statistik</categoryDescription>
+        <categoryRepresentation id="administration_representation">
             <title xml:lang="en">BiBiServ Administration</title>
-            <customContent xml:lang="en"> The BiBiServ (Bielefeld BioInformatics Service) is a unit
-                of the <microhtml:a href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html"
-                    >IfB (Institute for Bioinformatics)</microhtml:a> inside the <microhtml:a
-                    href="http://www.cebitec.uni-bielefeld.de">CeBiTec (Center for
-                    Biotechnology)</microhtml:a> at <microhtml:a href="http://www.uni-bielefeld.de"
-                    >Bielefeld University</microhtml:a>.The Service is operational since 1996 and
-                provides a multitude of bioinformatical tools for users worldwide via the Bielefeld
-                BioInformatics Server. The service group consists of several curators responsible
-                for the smooth operation, the continuous modernisation and improvement of the server
-                as well as the handling of user requests.</customContent>
+            <customContent>This area of BiBiServ shows usage statistics and additional administrative information.</customContent>
+            <customContent xml:lang="en">This area of BiBiServ shows usage statistics and additional administrative information.</customContent>
+            <customContent xml:lang="de">In deisem Teil des BiBiServ befinden sich Benutzungsstatistikien und weitere Hintergrundinformtaionen.</customContent>
         </categoryRepresentation>
     </category>
 </category>
+
