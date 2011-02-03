@@ -55,7 +55,8 @@ create table users (
     id varchar(100) primary key not null,
     limitclass varchar(100) not null,    -- id of limitation(=resource) class
     password varchar(100) not null,
-    enabled smallint,                    -- derby doesn't have a boolean type
+    passwordreset smallint default 0,    -- force reset of password
+    enabled smallint default 0,          -- derby doesn't have a boolean type
     name varchar(100) not null,
     surname varchar(100) not null,
     title varchar(20),
