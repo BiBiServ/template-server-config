@@ -70,6 +70,11 @@ create table authorities (
     authority varchar(100) not null
 );
 
+create table authority (
+    value varchar(20) not null unique
+);
+    
+    
 create view manager_auth as select id as role , password, enabled as authorized from users;
 
 
@@ -83,6 +88,13 @@ insert into users (id,password, limitclass, enabled, name, surname, mail) values
     'bibiadm@cebitec.uni-bielefeld.de'
 );
 
+insert into authority values (
+    'ROLE_ADMIN'
+);
+
+insert into authority values (
+    'ROLE_USER'
+);
 
 insert into authorities values (
     'testadmin', 'ROLE_ADMIN'
