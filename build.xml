@@ -47,7 +47,7 @@
 
 
     <target name="configure" description="check environment and configure an existing glassfish domain.">
-	
+
         <!-- check if local.configuration files exists -->
         <available file="local.configuration" property="config.present" value="true"/>
         <if>

@@ -26,8 +26,6 @@ package de.unibi.techfak.bibiserv.util.appserver_config.domain;
 import generated.Config;
 import generated.Configs;
 import generated.Domain;
-import generated.HttpListener;
-import generated.HttpService;
 import generated.JavaConfig;
 import generated.JdbcConnectionPool;
 import generated.JdbcResource;
@@ -64,7 +62,6 @@ public class sunapp_domain extends Task {
 
     private String fn = null;
     private sunapp_java_config sunapp_java_config = null;
-    private sunapp_http_service sunapp_http_service = null;
 
     /**
      * mandantory attribute @file
@@ -170,112 +167,13 @@ public class sunapp_domain extends Task {
                 if (resourceexists(Property.class, Property.class.getMethod("getName"), l_o_P, prop.getName()) == null) {
                     l_o_P.add(prop.getProperty());
                 } else {
-                    System.out.println("property with name '" + prop.getName() + "' exists ... ignore entry");
+                    System.out.println("property with name '" + prop.getName() + "' exitst ... ignore entry");
                 }
 
             }
 
         } catch (NoSuchMethodException e) {
             throw new BuildException(e);
-        }
-
-
-        HttpService httpservice = config.getHttpService();
-        if (sunapp_http_service != null) {
-            //http-listener
-            List<sunapp_http_listener> sunapp_httpservice_httplistener = sunapp_http_service.getHttp_listener();
-            List<HttpListener> http_listener_list = httpservice.getHttpListener();
-            try {
-                for (sunapp_http_listener listener : sunapp_httpservice_httplistener) {
-                    Object tmp = resourceexists(HttpListener.class, HttpListener.class.getMethod("getId"), http_listener_list, listener.getId());
-                    HttpListener http_listener = (tmp == null) ? new HttpListener() : (HttpListener) tmp;
-
-                    if (listener.getAcceptor_threads() != null) {
-                        http_listener.setAcceptorThreads(listener.getAcceptor_threads());
-                    }
-
-                    if (listener.getAdress() != null) {
-                        http_listener.setAddress(listener.getAdress());
-                    }
-
-                    if (listener.getBlocking_enabled() != null) {
-                        http_listener.setBlockingEnabled(listener.getBlocking_enabled());
-                    }
-
-                    if (listener.getDefault_virtual_server() != null) {
-                        http_listener.setDefaultVirtualServer(listener.getDefault_virtual_server());
-                    }
-
-                    if (listener.getEnabled() != null) {
-                        http_listener.setEnabled(listener.getEnabled());
-                    }
-
-                    if (listener.getExternal_port() != null) {
-                        http_listener.setExternalPort(listener.getExternal_port());
-                    }
-
-                    if (listener.getFamily() != null) {
-                        http_listener.setFamily(listener.getFamily());
-                    }
-
-                    if (listener.getId() != null) {
-                        http_listener.setId(listener.getId());
-                    }
-
-                    if (listener.getPort() != null) {
-                        http_listener.setPort(listener.getPort());
-                    }
-
-                    if (listener.getRedirect_port() != null) {
-                        http_listener.setRedirectPort(listener.getRedirect_port());
-                    }
-
-                    if (listener.getSecurity_enabled() != null) {
-                        http_listener.setSecurityEnabled(listener.getSecurity_enabled());
-                    }
-
-                    if (listener.getServer_name() != null) {
-                        http_listener.setServerName(listener.getServer_name());
-                    }
-
-                    if (listener.getXpowered_by() != null) {
-                        http_listener.setXpoweredBy(listener.getXpowered_by());
-                    }
-                    // at the end check http_listener properties to be set ...
-                    List<Property> httplistener_properties = http_listener.getProperty();
-                    for (sunapp_property prop : listener.getProperties()) {
-                        if (resourceexists(Property.class, Property.class.getMethod("getName"), httplistener_properties, prop.getName()) == null) {
-                            httplistener_properties.add(prop.getProperty());
-                        } else {
-                            System.out.println("httpservice property with name '" + prop.getName() + "' exists ... ignore entry");
-                        }
-
-                    }
-
-                }
-
-            } catch (NoSuchMethodException e) {
-                throw new BuildException(e);
-            }
-
-            //property
-            List<sunapp_property> sunapp_httpservice_properties = sunapp_http_service.getProperties();
-            List<Property> http_properties = httpservice.getProperty();
-            try {
-                for (sunapp_property prop : sunapp_httpservice_properties) {
-                    if (resourceexists(Property.class, Property.class.getMethod("getName"), http_properties, prop.getName()) == null) {
-                        http_properties.add(prop.getProperty());
-                    } else {
-                        System.out.println("httpservice property with name '" + prop.getName() + "' exists ... ignore entry");
-                    }
-                }
-
-            } catch (NoSuchMethodException e) {
-                throw new BuildException(e);
-            }
-
-
-
         }
 
 
@@ -583,24 +481,5 @@ public class sunapp_domain extends Task {
     public sunapp_java_config createSunapp_java_config() {
         sunapp_java_config = new sunapp_java_config();
         return sunapp_java_config;
-    }
-
-    /**
-     * Each <b>domain</b> cann have one http_service child element
-     *
-     *
-    <pre>
-    &lt;domain&gt;
-    ...
-    &lt;http_service &gt;
-    ...
-    &lt;/http_service&gt;
-    ...
-    &lt;domain&gt;
-    </pre>
-     */
-    public sunapp_http_service createSunapp_http_service() {
-        sunapp_http_service = new sunapp_http_service();
-        return sunapp_http_service;
     }
 }

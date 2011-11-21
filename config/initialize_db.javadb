@@ -45,6 +45,13 @@ create table item (
     md5 varchar(33)
 );
 
+create table modules (
+    id varchar(100) primary key not null,
+    info clob,
+    file blob,
+    active smallint default 0
+);
+
 create table structure (
     time timestamp,
     content clob
@@ -78,19 +85,6 @@ create table authority (
 create view manager_auth as select id as role , password, enabled as authorized from users;
 
 
--- insert authorities
-insert into authority values (
-    'ROLE_ADMIN'
-);
-
-insert into authority values (
-    'ROLE_USER'
-);
-
-insert into authority values (
-    'ROLE_DEVELOPER'
-);
-
 -- insert example admin user
 insert into users (id,password, limitclass, enabled, name, surname, mail) values (
     'testadmin',
@@ -101,6 +95,14 @@ insert into users (id,password, limitclass, enabled, name, surname, mail) values
     'bibiadm@cebitec.uni-bielefeld.de'
 );
 
+insert into authority values (
+    'ROLE_ADMIN'
+);
+
+insert into authority values (
+    'ROLE_USER'
+);
+
 insert into authorities values (
     'testadmin', 'ROLE_ADMIN'
 );
@@ -108,26 +110,6 @@ insert into authorities values (
 insert into authorities values (
     'testadmin', 'ROLE_USER'
 );
-
-insert into authorities values (
-    'testadmin', 'ROLE_DEVELOPER'
-);
-
--- insert example developer user
-insert into users (id,password, limitclass, enabled, name, surname, mail) values (
-    'testdeveloper',
-    'simplepassword',
-    'registered',
-    '1',
-    'BiBi','Dev',
-    'bibidev@cebitec.uni-bielefeld.de'
-);
-
-
-insert into authorities values (
-    'testdeveloper', 'ROLE_USER'
-);
-
 
 -- insert example standard user
 insert into users (id,password, limitclass, enabled, name, surname, mail) values (
@@ -167,28 +149,28 @@ insert into resources values ('registered', 10, 10080, 50, -1);
 
     
 CREATE TABLE stats_clientinfo (
-    sessionid character varying(100) NOT NULL,
+    sessionid character varying(50) NOT NULL,
     resolutionx integer,
     resolutiony integer,
     browsername character varying(50),
     browserversion character varying(50),
     os character varying(50),
-    ip character varying(39), -- IPv6
+    ip character varying(15),
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE stats_toolclicks (
-    toolname character varying(100) NOT NULL,
+    toolname character varying(50) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     location character varying(50) NOT NULL,
     sessionid character varying(100)
 );
 
 CREATE TABLE stats_toolerrors (
-    toolname character varying(100) NOT NULL,
+    toolname character varying(50) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     location character varying(50) NOT NULL,
-    ip character varying(39) -- IPv6
+    ip character varying(15)
 );
 
 CREATE TABLE stats_categoryclicks (
@@ -198,8 +180,8 @@ CREATE TABLE stats_categoryclicks (
 );
     
 CREATE TABLE stats_toolruntime (
-    toolname character varying(100) NOT NULL,
-    id character varying(100) NOT NULL,
+    toolname character varying(45) NOT NULL,
+    id character varying(50) NOT NULL,
     statuscode int NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     runtime bigint NOT NULL,
