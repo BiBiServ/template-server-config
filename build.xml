@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This project can be used to configure an existing Glassfish Application Server in a BiBiServ2 compatible way. -->
+<!-- This project can be used to configure an existing Glassfish Application Server V3 in a BiBiServ2 compatible way. -->
 
 <project name="appserver_config" basedir="." default="configure" xmlns:ivy="antlib:org.apache.ivy.ant">
 
@@ -26,6 +26,15 @@
     <!-- include ant-contrib tasks -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
+    <!-- Script to calculate the java db port and set the variable ${db.port} from the given portbase -->
+    <scriptdef name="setPorts" language="javascript">
+        <attribute name="portbase"/>
+        <![CDATA[
+        project.setNewProperty("db.port", (parseInt(attributes.get("portbase"))+27));
+        project.setNewProperty("admin.port", (parseInt(attributes.get("portbase"))+48));
+    ]]>
+    </scriptdef>
+
     <!-- Make enviroment accessible by this script -->
     <property environment="env"/>
 
@@ -38,7 +47,7 @@
 
 
     <target name="configure" description="check environment and configure an existing glassfish domain.">
-
+	
         <!-- check if local.configuration files exists -->
         <available file="local.configuration" property="config.present" value="true"/>
         <if>
@@ -55,7 +64,7 @@
                         <property name="catalina.home" value="${env.CATALINA_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter Glassfish root !" addproperty="catalina.home"/>
+                <input message="Enter Glassfish root !" addproperty="catalina.home" defaultvalue="/vol/gf31"/>
 
                 <!-- domain root -->
                 <if>
@@ -64,22 +73,25 @@
                         <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
                     </then>
                 </if>
-                <input message="Enter domain root !" addproperty="domain.dir"/>
+                <input message="Enter domain root !" addproperty="domain.dir"  defaultvalue="/tmp"/>
 
                 <!-- domain name -->
-                <input message="Enter domain name !" addproperty="domain.name"/>
+                <input message="Enter domain name !" addproperty="domain.name"  defaultvalue="bibidomain"/>
+
+                <!-- server portbase -->
+                <input message="Enter server portbase [e.g.: 8000] !" addproperty="server.portbase"  defaultvalue="8000"/>
 
                 <!-- admin user -->
-                <input message="Enter admin user [e.g. admin] !" addproperty="admin.user"/>
+                <input message="Enter admin user [e.g. admin] !" addproperty="admin.user"  defaultvalue="admin"/>
 
                 <!-- spool dir -->
-                <input message="Enter spool dir ! [e.g. /var/tmp/spool ]" addproperty="spool.dir"/>
+                <input message="Enter spool dir ! [e.g. /var/tmp/spool ]" addproperty="spool.dir"  defaultvalue="/tmp/spool"/>
 
                 <!-- executable root dir -->
-                <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="executable.dir"/>
-                
-                <!-- database port -->
-                <input message="Enter database (derby) port [e.g.: 1527] !" addproperty="db.port"/>
+                <input message="Enter executable root dir [e.g.: /vol/biotools] !" addproperty="executable.dir"  defaultvalue="/vol/biotools"/>
+
+                <!-- compute port numbers for database and admin port -->
+                <setPorts portbase="${server.portbase}"/>
 
                 <!-- write local configuration file -->
                 <propertyfile file="${local.configuration}" comment="local bibiserv2 startup properties">
@@ -89,7 +101,9 @@
                     <entry key="admin.user" value="${admin.user}"/>
                     <entry key="spool.dir" value="${spool.dir}"/>
                     <entry key="executable.dir" value="${executable.dir}"/>
+                    <entry key="server.portbase" value="${server.portbase}"/>
                     <entry key="db.port" value="${db.port}"/>
+                    <entry key="admin.port" value="${admin.port}"/>
                 </propertyfile>
 
             </then>
@@ -107,10 +121,10 @@
                 <echo>Passwordfile not present. Create a new one ... </echo>
 
                 <!-- password -->
-                <input message="Enter admin user password [e.g. adminadmin] !" addproperty="admin.password"/>
+                <input message="Enter admin user password [e.g. adminadmin] !" addproperty="admin.password"  defaultvalue="admin"/>
 
                 <!-- master password -->
-                <input message="Enter Master password [e.g. changeit] !" addproperty="masterpassword"/>
+                <input message="Enter Master password [e.g. changeit] !" addproperty="masterpassword" defaultvalue="changeit"/>
 
                 <!-- write password file -->
                 <propertyfile file="${local.passwordfile}">
@@ -144,6 +158,18 @@
 
         <!-- load configuration -->
         <property file="local.configuration"/>
+        <!-- recompute port numbers for database and admin port -->
+        <setPorts portbase="${server.portbase}"/>
+        <!-- create basic domain with asadmin -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-domain"/>
+            <arg value="--portbase=${server.portbase}"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="--savemasterpassword=true"/>
+            <arg value="${domain}"/>
+        </exec>
 
         <!-- check if a database named bibiserv2 exist -->
         <available file="${domain.dir}/${domain}/db/bibiserv2" type="dir" property="bibiserv2.present" value="true"/>
@@ -161,7 +187,7 @@
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
                 <echo>IMPORTANT: Created admin user with login 'testadmin' and password 'simplepassword'!</echo>
-                <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
+                <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
             </then>
             <else>
                 <echo> Database bibiserv2 exists. Check manually if database contains valid 'status', 'structure', 'item' and 'manager_auth' tables. </echo>
@@ -187,7 +213,7 @@
             <then>
 
                 <!-- copy xml property -->
-                <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+                <xml2prop src="${basedir}/config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
 
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
@@ -212,10 +238,17 @@
 
         <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
         <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
-        <copy overwrite="true" tofile="${domain.dir}/${domain}/lib/${jboss_el}">
-            <!-- This must return only ONE file, otherwise the copy task breaks! -->
+        <copy overwrite="true" tofile="${catalina.home}/glassfish/lib/endorsed/log4j.jar">
+             <!--This must return only ONE file, otherwise the copy task breaks!-->
             <fileset dir="${lib}">
-                <filename name="**/jboss-el*.jar"/>
+                <filename name="**/log4j*.jar"/>
+            </fileset>
+        </copy>
+
+        <copy overwrite="true" tofile="${catalina.home}/glassfish/lib/endorsed/xercesImpl.jar">
+             <!--This must return only ONE file, otherwise the copy task breaks!-->
+            <fileset dir="${lib}">
+                <filename name="**/xercesImpl*.jar"/>
             </fileset>
         </copy>
 
@@ -223,6 +256,93 @@
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
 
+        <!-- start server instance for live configuration -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="start-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="${domain}"/>
+        </exec>
+
+        <!-- modify configuration of glassfish domain -->
+        <!-- append System Property : de.unibi.techfak.bibiserv.config -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-system-properties"/>
+            <arg value="de.unibi.techfak.bibiserv.config=${domain.dir}/${domain}/config/bibiserv_config.xml:de.unibi.cebitec.bibiserv.manager.bardir=${bar.dir}"/>
+        </exec>
+
+        <!-- append Connection Pool for previously generated DB -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-jdbc-connection-pool"/>
+            <arg value="--allownoncomponentcallers=false"/>
+            <arg value="--associatewiththread=false"/>
+            <arg value="--creationretryattempts=0"/>
+            <arg value="--creationretryinterval=10"/>
+            <arg value="--leakreclaim=false"/>
+            <arg value="--leaktimeout=0"/>
+            <arg value="--validationmethod=auto-commit"/>
+            <arg value="--datasourceclassname=org.apache.derby.jdbc.ClientDataSource"/>
+            <arg value="--failconnection=false"/>
+            <arg value="--idletimeout=300"/>
+            <arg value="--isconnectvalidatereq=false"/>
+            <arg value="--isisolationguaranteed=false"/>
+            <arg value="--lazyconnectionassociation=false"/>
+            <arg value="--lazyconnectionenlistment=false"/>
+            <arg value="--matchconnections=false"/>
+            <arg value="--maxconnectionusagecount=0"/>
+            <arg value="--maxpoolsize=32"/>
+            <arg value="--maxwait=60000"/>
+            <arg value="--nontransactionalconnections=false"/>
+            <arg value="--poolresize=2"/>
+            <arg value="--restype=javax.sql.DataSource"/>
+            <arg value="--statementtimeout=1"/>
+            <arg value="--steadypoolsize=8"/>
+            <arg value="--validateatmostonceperiod=0"/>
+            <arg value="--wrapjdbcobjects=false"/>
+            <arg value="--property"/>
+            <arg value="TraceFileAppend=false:RetrieveMessageText=true:SecurityMechanism=4:DatabaseName=bibiserv2:Password=APP:LoginTimeout=0:User=APP:PortNumber=${db.port}:ServerName=localhost:TraceLevel=-1"/>
+            <arg value="bibiserv2_derby"/>
+        </exec>
+
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-jdbc-resource"/>
+            <arg value="--connectionpoolid=bibiserv2_derby"/>
+            <arg value="--enabled=true"/>
+            <arg value="jdbc/bibiserv2"/>
+        </exec>
+        <!-- modify http-service // http-listener -->
+<!--
+            <sunapp_http_service>
+                <sunapp_http_listener id="http-listener-1">
+                    <sunapp_property name="cometSupport" value="true"/>
+                </sunapp_http_listener>
+            </sunapp_http_service>
+-->
+
+        <!-- live configuration done, stop server instance -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="stop-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="${domain}"/>
+        </exec>
+    
+        <!-- set jvm option -XX:MaxPermSize=512m ; using asadmin create-jvm-options doesn't work beacuse ':' is
+            used as delimiter -->
+         <replace file="${domain.dir}/${domain}/config/domain.xml" token="-XX:MaxPermSize=192m" value="-XX:MaxPermSize=512m"/>
+            
         <!-- check if autodeploy directory exists -->
         <available file="${domain.dir}/${domain}/autodeploy" type="dir" property="autodeploydir.present" value="true"/>
         <if>
@@ -235,114 +355,65 @@
             </then>
         </if>
 
-        <!-- copy bibimainapp to auto-deploy-dir for instant runnable server :-) -->
+        <!-- copy bibimainapp to auto-deploy-dir for instantly runnable server :-)
         <copy overwrite="true" tofile="${domain.dir}/${domain}/autodeploy/${bibimainapp}">
-            <!-- This must return only ONE file, otherwise the copy task breaks! -->
+             This must return only ONE file, otherwise the copy task breaks!
             <fileset dir="${lib}">
                 <filename name="**/bibimainapp*.war"/>
             </fileset>
-        </copy>
-
-        
-
-        <!-- modify domain.xml of glassfish domain -->
-        <!--<sunapp-domain file="${domain.dir}/${domain}/config/domain.xml">-->
-        <sunapp_domain file="${domain.dir}/${domain}/config/domain.xml">
-            <!-- append System Property : de.unibi.techfak.bibiserv.config -->
-            <sunapp_systemproperty key="de.unibi.techfak.bibiserv.config" value="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
-            <sunapp_systemproperty key="de.unibi.cebitec.bibiserv.manager.bardir" value="${bar.dir}"/>
-            <!-- append Connection Pool for previous generated DB -->
-            <sunapp_jdbc_connection_pool
-                allownoncomponentcallers="false"
-                associatewiththread="false"
-                connectioncreationretryattempts="0"
-                connectioncreationretryintervalinseconds="10"
-                connectionleakreclaim="false"
-                connectionleaktimeoutinseconds="0"
-                connectionvalidationmethod="auto-commit"
-                datasourceclassname="org.apache.derby.jdbc.ClientDataSource"
-                failallconnections="false"
-                idletimeoutinseconds="300"
-                isconnectionvalidationrequired="false"
-                isisolationlevelguaranteed="false"
-                lazyconnectionassociation="false"
-                lazyconnectionenlistment="false"
-                matchconnections="false"
-                maxconnectionusagecount="0"
-                maxpoolsize="32"
-                maxwaittimeinmillis="60000"
-                name="bibiserv2_derby"
-                nontransactionalconnections="false"
-                poolresizequantity="2"
-                restype="javax.sql.DataSource"
-                statementtimeoutinseconds="1"
-                steadypoolsize="8"
-                validateatmostonceperiodinseconds="0"
-                wrapjdbcobjects="false">
-                <sunapp_property name="TraceFileAppend" value="false"/>
-                <sunapp_property name="RetrieveMessageText" value="true"/>
-                <sunapp_property name="SecurityMechanism" value="4"/>
-                <sunapp_property name="DatabaseName" value="bibiserv2"/>
-                <sunapp_property name="Password" value="APP"/>
-                <sunapp_property name="LoginTimeout" value="0"/>
-                <sunapp_property name="User" value="APP"/>
-                <sunapp_property name="PortNumber" value="${db.port}"/>
-                <sunapp_property name="ServerName" value="localhost"/>
-                <sunapp_property name="TraceLevel" value="-1"/>
-            </sunapp_jdbc_connection_pool>
-            <!-- append JDBC Resource named jdbc/bibiserv2 associated with Connection Pool -->
-            <sunapp_jdbc_resource
-                enabled="true"
-                jndiname="jdbc/bibiserv2"
-                objecttype="user"
-                poolname="bibiserv2_derby"/>
-            <!-- modify existing java-config -->
-            <sunapp_java_config
-                classpath_prefix="${domain.dir}/${domain}/lib/${jboss_el}" mode="replace"/>
-            <!-- modify http-service // http-listener -->
-            <sunapp_http_service>
-                <sunapp_http_listener id="http-listener-1">
-                    <sunapp_property name="cometSupport" value="true"/> 
-                </sunapp_http_listener>
-            </sunapp_http_service>
-        </sunapp_domain>
+        </copy> -->
     </target>
 
-
-    <target name="start" depends="_load_config,_start_db" description="start the Glassfish AND the JavaDB Server">
-
+    <target name="_start_domain" depends="_load_config" description="start the Glassfish">
         <!-- start glassfish -->
         <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="start-domain"/>
-            <arg value="--domaindir=${domain.dir}"/>
-            <arg value="--user=${admin.user}"/>
             <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="start-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>            
             <arg value="${domain}"/>
         </exec>
     </target>
     
-    <target name="debug" depends="_load_config,_start_db" description="start Glassfish appserver in debug mode">
+    
+
+    <target name="start" depends="_load_config,_start_db,_start_domain" description="start the Glassfish AND the JavaDB Server"/>
+    
+    <target name="_debug_domain" depends="_load_config" description="start Glassfish appserver in debug mode">
         <!-- start glassfish in debug mode-->
         <exec executable="${catalina.home}/bin/asadmin">
-            <arg value="start-domain"/>
-            <arg value="--domaindir=${domain.dir}"/>
             <arg value="--user=${admin.user}"/>
             <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="start-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
             <arg value="--debug"/>
             <arg value="${domain}"/>
+        </exec>
+    </target>
+    
+
+    <target name="debug" depends="_load_config,_start_db,_debug_domain" description="start the Glassfish and the JavaDB in DEBUG mode"/>
+       
+    <target name="_stop_domain" depends="_load_config" description="stop the Glassfish">
+        <!-- stop glassfish -->
+        <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="stop-domain"/>
+            <arg value="--domaindir=${domain.dir}"/>
+            <arg value="${domain}"/>
+        </exec>
+    </target>
+    
+    <target name="clean-db" depends="_load_config" description="clean up item entries within database">
+        <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
+            <arg value="${basedir}/${config}/clean_item.javadb"/>
+            <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
         </exec>
         
     </target>
 
     <target name="stop" depends="_load_config" description="stop the Glassfish AND JavaDB Server">
-        <!-- stop glassfish -->
-        <exec executable="${catalina.home}/bin/asadmin">
-
-            <arg value="stop-domain"/>
-            <arg value="--domaindir=${domain.dir}"/>
-            <arg value="${domain}"/>
-        </exec>
-       <antcall target="_stop_db"/>
+        <antcall target="_stop_domain"/>       
+        <antcall target="_stop_db"/>
     </target>
 
     <target name="build" depends="resolve" description="compile and build ant task needed to run this build script">
@@ -365,60 +436,7 @@
             <exclude name="**"/>
         </zip>
     </target>
-    
-    <target name="_update_bibiservstructure" description="(test task) update the bibiserv structure file in database from config/BiBiServ.xml">
-        <!-- add appserver_config ant task -->
-        <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
-        <if>
-            <not>
-                <isset property="lib.present"/>
-            </not>
-            <then>
-                <antcall target="build"/>
-            </then>
-        </if>
-        
-        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
-            <classpath>
-                <path refid="classpath"/>
-                <pathelement location="${classes}"/>
-            </classpath>
-        </taskdef>
-        
-        <!-- load configuration -->
-        <property file="local.configuration"/>
-        
-        <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
-      
-    </target>
-        
-    <target name="_print_bibiservstructure" description="(test task) print bibiserv.xml to STDOUT, works only with running database">
-        <!-- add appserver_config ant task -->
-        <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
-        <if>
-            <not>
-                <isset property="lib.present"/>
-            </not>
-            <then>
-                <antcall target="build"/>
-            </then>
-        </if>
-        
-        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
-            <classpath>
-                <path refid="classpath"/>
-                <pathelement location="${classes}"/>
-            </classpath>
-        </taskdef>
-        
-        <!-- load configuration -->
-        <property file="local.configuration"/>
-        
-        
-        <database2structure dbURL="jdbc:derby://localhost:${db.port}/bibiserv2" /> 
-      
-    </target>
-    
+
     <target name="clean" description="clean compiled classes and distribution jar">
         <delete dir="${dist}"/>
         <delete dir="${classes}"/>
@@ -426,7 +444,7 @@
         <delete file="appserver_config.zip"/>
     </target>
 
-    <target name="clean-all" depends="clean" description="clean really everything (Attention! Also, previous generated local appserver configuration files are deleted!)">      
+    <target name="clean-all" depends="clean" description="clean really everything (Attention! Also, previous generated local appserver configuration files are deleted!)">
         <delete file="${local.configuration}"/>
         <delete file="${local.passwordfile}"/>
     </target>
@@ -493,8 +511,8 @@
                  />
     </target>
 
-    <!-- targets, for internal use only -->
-    <target name="_mercurial" description="(internal task ) get the latest tag name and revision number">
+    <!-- targets for internal use only -->
+    <target name="_mercurial" description="get the latest tag name and revision number">
         <exec executable="bash" outputproperty="HG.TAG">
             <arg line="-c "/>
             <arg value="hg tags | head -n 2 | grep -v tip |  cut -f 1 -d ' '  "/>
@@ -504,17 +522,17 @@
             <arg value="hg tip | grep changeset: | cut -f 2 -d ':' | sed -e 's/^ *//' "/>
         </exec>
     </target>
-    
+
     <target name="_start_db" depends="_load_config" description="(internal task) start the database">
         <!-- start database on localhost:${db.port} -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="start-database"/>
             <arg value="--dbhome=${domain.dir}/${domain}/db"/>
             <arg value="--dbport=${db.port}"/>
-        </exec>   
+        </exec>
     </target>
-    
-    
+
+
     <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
         <!-- stop database -->
         <exec executable="${catalina.home}/bin/asadmin">
@@ -522,7 +540,7 @@
             <arg value="--dbport=${db.port}"/>
         </exec>
     </target>
-    
+
     <target name="_load_config" description="(internal task) load configuration from file">
         <!-- check if configuration file exists -->
         <available file="local.configuration" property="config.present" value="true"/>
@@ -534,7 +552,6 @@
                 <antcall target="configure"/>
             </then>
         </if>
-        
         <!-- load configuration -->
         <property file="local.configuration"/>
     </target>
