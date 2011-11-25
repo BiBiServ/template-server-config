@@ -34,9 +34,7 @@
     configuration -->
     <property name="bibimainapp" value="bibimainapp.war"/>
 
-    <!-- include ant-contrib tasks -->
-    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-
+    
     <!-- Script to calculate the java db port and set the variable ${db.port} from the given portbase -->
     <scriptdef name="setPorts" language="javascript">
         <attribute name="portbase"/>
@@ -487,7 +485,7 @@
               message="The Target &lt;install&gt; uses ssh key based authentication. Give the location of your private key as property 'ssh.key' and optional a passphrase as property 'ssh.passphrase' as argument to the ant call!"/>
 
         <!-- copy local ivy-rep to bibiserv using porta.techfak.uni-bielefeld.de -->
-        <scp   todir="${ssh.user}@${ssh.host}:${ssh.basedir}/ivy-rep" passphrase="${ssh.passphrase}"
+        <scp   todir="${ssh.user}@${ssh.host}:${ssh.basedir}/resources" passphrase="${ssh.passphrase}"
              keyfile="${ssh.key}">
             <fileset file="${ant.project.name}.zip"/>
         </scp>
