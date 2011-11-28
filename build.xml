@@ -426,6 +426,7 @@
             </zipfileset>
             <exclude name="**"/>
         </zip>
+        <checksum algorithm="md5" format="CHECKSUM" file="${ant.project.name}.zip"/>
     </target>
 
     <target name="clean" description="clean compiled classes and distribution jar">
@@ -488,6 +489,7 @@
         <scp   todir="${ssh.user}@${ssh.host}:${ssh.basedir}/resources" passphrase="${ssh.passphrase}"
              keyfile="${ssh.key}">
             <fileset file="${ant.project.name}.zip"/>
+            <fileset file="${ant.project.name}.zip.md5"/>
         </scp>
 
      
