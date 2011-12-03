@@ -203,10 +203,9 @@
             </contrib:else>
         </contrib:if>
 
-        <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv_config.xml" value="true"/>
+        
         <contrib:if>
-            <isset property="bibiserv.properties.present"/>
-
+            <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml"/>
             <contrib:then>
                 <input message="BiBiServ Properties file (${domain.dir}/${domain}/config/bibiserv_config.xml) is present! Overwrite (Y/N)?" validargs="Y,y,N,n" addproperty="overwrite"/>
             </contrib:then>
@@ -215,14 +214,14 @@
         <contrib:if>
             <or>
                 <not>
-                    <isset property="bibiserv.properties.present"/>
+                    <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml"/>
                 </not>
                 <isset property="overwrite"/>
             </or>
             <contrib:then>
 
                 <!-- copy xml property -->
-                <xml2prop src="${basedir}/config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+                <xml2prop src="${basedir}/config/bibiserv_config.xml" dest="${basedir}/bibiserv_config.properties"/>
 
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
