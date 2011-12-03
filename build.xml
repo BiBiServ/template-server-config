@@ -230,7 +230,7 @@
                     <entry key="executable.rootpath" value="${executable.dir}"/>
                 </propertyfile>
 
-                <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+                <prop2xml src="${basedir}/bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
 
 
                 <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'.
