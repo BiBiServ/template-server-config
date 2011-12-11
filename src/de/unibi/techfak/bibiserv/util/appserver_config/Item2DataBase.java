@@ -46,28 +46,34 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Ant task that inserts a bibiserv structure file (as CLOB) in a table STRUCTURE.
+ * Ant task that inserts a bibiserv item file (as CLOB) in a table ITEM.
  * The table is defined as follows :
  * <pre>
- *  create table structure (
- *      time timestamp,
- *      content clob
- *  );
- * 
+ * create table item (
+ *   id varchar(100),
+ *   item clob,
+ *   time timestamp,
+ *   bar blob,
+ *   md5 varchar(33),
+ *   type varchar(20) default 'runnable' -- supported values are runnable, linked, default
+ * );
  * </pre>
  *
- * @author Daniel Hagemeier - dhagemei(at)cebitec.uni-bielefeld.de (inital release)
- *         Jan Krüger - jkrueger(at)cebitec.uni-bielefeld.de
+ * @author Jan Krüger - jkrueger(at)cebitec.uni-bielefeld.de
  */
-public class Structure2DataBase extends AbstractXXX2DataBase {
+public class Item2DataBase extends AbstractXXX2DataBase {
 
     private PreparedStatement stmt = null;
+    
+    private String id = "unknown";
 
     @Override
     public void insertSQL(Connection con, File src_file) throws FileNotFoundException, SQLException {
         createConnection();
-        stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, ? )");
-        stmt.setClob(1, new BufferedReader(new FileReader(src_file)));
+        stmt = con.prepareStatement("INSERT INTO ITEM (ID,TIME, ITEM,TYPE) VALUES (?,CURRENT_TIMESTAMP, ? ,?)");
+        stmt.setString(1, id);
+        stmt.setClob(2, new BufferedReader(new FileReader(src_file)));
+        stmt.setString(3, "default");
         stmt.execute();
         stmt.close();
     }
@@ -98,7 +104,8 @@ public class Structure2DataBase extends AbstractXXX2DataBase {
             validator.validate(new DOMSource(document));
 
             // source is schema valid, but at this point we only support category files
-            if (document.getDocumentElement().getTagName().equals("category")){
+            if (document.getDocumentElement().getTagName().equals("item")){
+                id = document.getDocumentElement().getAttribute("id");
                 return true;
             }
             
