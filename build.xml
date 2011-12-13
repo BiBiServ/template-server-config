@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This project can be used to configure an existing Glassfish Application Server V3 in a BiBiServ2 compatible way. -->
 
-<project name="appserver_config" basedir="." default="configure" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="appserver_config" basedir="." default="configure" xmlns:contrib="antlib:net.sf.antcontrib" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <taskdef uri="antlib:net.sf.antcontrib"
+        resource="net/sf/antcontrib/antlib.xml">
+        <classpath path="${ant.lib.path}"/>
+    </taskdef>
+    
+    <taskdef uri="antlib:org.apache.ivy.ant"
+        resource="org/apache/ivy/ant/antlib.xml">
+        <classpath path="${ant.lib.path}"/>
+    </taskdef>
+        
 
     <!-- directory definitions -->
     <property name="src" value="src"/>
@@ -23,9 +34,7 @@
     configuration -->
     <property name="bibimainapp" value="bibimainapp.war"/>
 
-    <!-- include ant-contrib tasks -->
-    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-
+    
     <!-- Script to calculate the java db port and set the variable ${db.port} from the given portbase -->
     <scriptdef name="setPorts" language="javascript">
         <attribute name="portbase"/>
@@ -45,40 +54,34 @@
         </fileset>
     </path>
 
-        <taskdef file="src/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
-            <classpath>
-                <path refid="classpath"/>
-                <pathelement location="${classes}"/>
-            </classpath>
-        </taskdef>
 
     <target name="configure" description="check environment and configure an existing glassfish domain.">
 
         <!-- check if local.configuration files exists -->
         <available file="local.configuration" property="config.present" value="true"/>
-        <if>
+        <contrib:if>
             <not>
                 <isset property="config.present"/>
             </not>
-            <then>
+            <contrib:then>
                 <echo>Configuration not present . Create a new one ... </echo>
 
                 <!-- catalina root -->
-                <if>
+                <contrib:if>
                     <isset property="env.CATALINA_HOME"/>
-                    <then>
+                    <contrib:then>
                         <property name="catalina.home" value="${env.CATALINA_HOME}"/>
-                    </then>
-                </if>
+                    </contrib:then>
+                </contrib:if>
                 <input message="Enter Glassfish root !" addproperty="catalina.home" defaultvalue="/vol/gf31"/>
 
                 <!-- domain root -->
-                <if>
+                <contrib:if>
                     <isset property="env.DOMAIN_HOME"/>
-                    <then>
+                    <contrib:then>
                         <property name="domain.dir" value="${env.DOMAIN_HOME}"/>
-                    </then>
-                </if>
+                    </contrib:then>
+                </contrib:if>
                 <input message="Enter domain root !" addproperty="domain.dir"  defaultvalue="/tmp"/>
 
                 <!-- domain name -->
@@ -112,18 +115,18 @@
                     <entry key="admin.port" value="${admin.port}"/>
                 </propertyfile>
 
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
 
 
 
         <available file="local.passwordfile" property="passwordfile.present" value="true"/>
 
-        <if>
+        <contrib:if>
             <not>
                 <isset property="passwordfile.present"/>
             </not>
-            <then>
+            <contrib:then>
                 <echo>Passwordfile not present. Create a new one ... </echo>
 
                 <!-- password -->
@@ -141,21 +144,22 @@
                 <!-- change permission on password file -->
                 <chmod file="local.passwordfile" perm="600"/>
 
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
 
         <!-- add appserver_config ant task -->
-        <available file="${dist}/appserver_config.jar" property="lib.present" value="true"/>
-        <if>
+        
+        <contrib:if>
             <not>
-                <isset property="lib.present"/>
+                 <available file="${dist}/appserver_config.jar"/>
             </not>
-            <then>
+            <contrib:then>
                 <antcall target="build"/>
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
 
-
+        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+            
 
         <!-- load configuration -->
         <property file="local.configuration"/>
@@ -174,11 +178,11 @@
 
         <!-- check if a database named bibiserv2 exist -->
         <available file="${domain.dir}/${domain}/db/bibiserv2" type="dir" property="bibiserv2.present" value="true"/>
-        <if>
+        <contrib:if>
             <not>
                 <isset property="bibiserv2.present"/>
             </not>
-            <then>
+            <contrib:then>
 
                 <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with tables 'status', 'structure', 'item and 'manager_auth'</echo>
 
@@ -188,33 +192,32 @@
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
                 <echo>IMPORTANT: Created admin user with login 'testadmin' and password 'simplepassword'!</echo>
-                <structure2database src="${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
-            </then>
-            <else>
+                <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
+            </contrib:then>
+            <contrib:else>
                 <echo> Database bibiserv2 exists. Check manually if database contains valid 'status', 'structure', 'item' and 'manager_auth' tables. </echo>
-            </else>
-        </if>
+            </contrib:else>
+        </contrib:if>
 
-        <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml" property="bibiserv_config.xml" value="true"/>
-        <if>
-            <isset property="bibiserv.properties.present"/>
-
-            <then>
+        
+        <contrib:if>
+            <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml"/>
+            <contrib:then>
                 <input message="BiBiServ Properties file (${domain.dir}/${domain}/config/bibiserv_config.xml) is present! Overwrite (Y/N)?" validargs="Y,y,N,n" addproperty="overwrite"/>
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
 
-        <if>
+        <contrib:if>
             <or>
                 <not>
-                    <isset property="bibiserv.properties.present"/>
+                    <available file="${domain.dir}/${domain}/config/bibiserv.properties.xml"/>
                 </not>
                 <isset property="overwrite"/>
             </or>
-            <then>
+            <contrib:then>
 
                 <!-- copy xml property -->
-                <xml2prop src="config/bibiserv_config.xml" dest="bibiserv_config.properties"/>
+                <xml2prop src="${basedir}/config/bibiserv_config.xml" dest="${basedir}/bibiserv_config.properties"/>
 
                 <propertyfile file="bibiserv_config.properties">
                     <entry key="lsub.bin" value="${domain.dir}/${domain}/bin/lsub"/>
@@ -223,7 +226,7 @@
                     <entry key="executable.rootpath" value="${executable.dir}"/>
                 </propertyfile>
 
-                <prop2xml src="bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
+                <prop2xml src="${basedir}/bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
 
 
                 <echo>BiBiServ configuration file generated and copied to '${domain.dir}/${domain}/config/bibiserv_config.xml'.
@@ -234,8 +237,8 @@
                     - spooldir.base must be accessible from all (compute grid) knots (if you use SGE compute grid to distribute your jobs)
                 </echo>
 
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
 
         <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
         <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
@@ -268,6 +271,7 @@
 
         <!-- modify configuration of glassfish domain -->
         <!-- append System Property : de.unibi.techfak.bibiserv.config -->
+        
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="--host=localhost"/>
             <arg value="--port=${admin.port}"/>
@@ -324,7 +328,6 @@
             <arg value="--enabled=true"/>
             <arg value="jdbc/bibiserv2"/>
         </exec>
-      
 
         <!-- live configuration done, stop server instance -->
         <exec executable="${catalina.home}/bin/asadmin">
@@ -337,25 +340,6 @@
             used as delimiter -->
          <replace file="${domain.dir}/${domain}/config/domain.xml" token="-XX:MaxPermSize=192m" value="-XX:MaxPermSize=512m"/>
             
-        <!-- check if autodeploy directory exists -->
-        <available file="${domain.dir}/${domain}/autodeploy" type="dir" property="autodeploydir.present" value="true"/>
-        <if>
-            <not>
-                <isset property="autodeploydir.present"/>
-            </not>
-            <then>
-                <echo> 'autodeploy' directory is missing in domain. Creating 'autodeploy' directory.</echo>
-                <mkdir dir="${domain.dir}/${domain}/autodeploy"/>
-            </then>
-        </if>
-
-        <!-- copy bibimainapp to auto-deploy-dir for instantly runnable server :-)
-        <copy overwrite="true" tofile="${domain.dir}/${domain}/autodeploy/${bibimainapp}">
-             This must return only ONE file, otherwise the copy task breaks!
-            <fileset dir="${lib}">
-                <filename name="**/bibimainapp*.war"/>
-            </fileset>
-        </copy> -->
     </target>
 
     <target name="_start_domain" depends="_load_config" description="start the Glassfish">
@@ -419,7 +403,7 @@
     </target>
 
     <target name="distribution" depends="build" description="create zip distribution of project">
-        <zip basedir="." destfile="appserver_config.zip" >
+        <zip basedir="." destfile="${ant.project.name}.zip" >
             <zipfileset dir="." prefix="${ant.project.name}/">
                 <include name="src/**"/>
                 <include name="bin/**"/>
@@ -429,6 +413,7 @@
             </zipfileset>
             <exclude name="**"/>
         </zip>
+        <checksum algorithm="md5" format="CHECKSUM" file="${ant.project.name}.zip"/>
     </target>
 
     <target name="clean" description="clean compiled classes and distribution jar">
@@ -446,17 +431,17 @@
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
     <!-- set ivy.settings.file property -->
-    <if>
+    <contrib:if>
         <http url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivysettings.xml" errorsbeginat="300"/>
-        <then>
+        <contrib:then>
             <echo>Loading Ivy Settings from BiBiServ ... </echo>
             <ivy:settings url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivysettings.xml"/>
-        </then>
-        <else>
+        </contrib:then>
+        <contrib:else>
             <echo>BiBiserv not available, load Ivy settings from ${user.home}/ivy-rep/ivy-settings.xml or if this file does not exist load default settings file</echo>
             <ivy:settings file="${user.home}/ivy-rep/ivysettings.xml"/>
-        </else>
-    </if>
+        </contrib:else>
+    </contrib:if>
 
     <!-- use ivy to resolve  library dependencies -->
     <target name="resolve" description="retrieve dependencies with ivy">
@@ -475,14 +460,9 @@
     </target>
 
     <!-- install package from local ivy-repository on the server -->
-    <target name="install" depends="resolve,_mercurial"
-            description="install published package on bibiserv repository : ssh.user, ssh.key and ssh.passphrase(optional) must set as property!">
-
-        <!-- create local ivy-rep as install base -->
-        <mkdir dir="ivy-rep"/>
-        <ivy:publish resolver="local" validate="false" overwrite="true"
-                     artifactspattern="${dist.dir}/[artifact].[ext]" pubrevision="${HG.TAG}_${HG.REVISION}"/>
-
+    <target name="install" depends="distribution"
+            description="install as zipped recource on bibiserv : ssh.user, ssh.key and ssh.passphrase(optional) must set as property!">
+       
         <!-- load ssh specify setting from bibiserv -->
         <property url="http://bibiserv.techfak.uni-bielefeld.de/ivy-rep/ivy_ssh.properties"/>
 
@@ -493,16 +473,13 @@
               message="The Target &lt;install&gt; uses ssh key based authentication. Give the location of your private key as property 'ssh.key' and optional a passphrase as property 'ssh.passphrase' as argument to the ant call!"/>
 
         <!-- copy local ivy-rep to bibiserv using porta.techfak.uni-bielefeld.de -->
-        <scp todir="${ssh.user}@${ssh.host}:${ssh.basedir}/ivy-rep" passphrase="${ssh.passphrase}"
+        <scp   todir="${ssh.user}@${ssh.host}:${ssh.basedir}/resources" passphrase="${ssh.passphrase}"
              keyfile="${ssh.key}">
-            <fileset dir="ivy-rep"/>
+            <fileset file="${ant.project.name}.zip"/>
+            <fileset file="${ant.project.name}.zip.md5"/>
         </scp>
 
-        <!-- change file AND directory permission on remote sevrver -->
-        <sshexec host="${ssh.host}" username="${ssh.user}" keyfile="${ssh.key}"
-                 passphrase="${ssh.passphrase}"
-                 command="find -L ${ssh.basedir}/ivy-rep -type d -user ${ssh.user} | xargs chmod g+ws; find -L ${ssh.basedir}/ivy-rep -type f -user ${ssh.user} | xargs chmod g+w "
-                 />
+     
     </target>
 
     <!-- targets for internal use only -->
@@ -538,14 +515,14 @@
     <target name="_load_config" description="(internal task) load configuration from file">
         <!-- check if configuration file exists -->
         <available file="local.configuration" property="config.present" value="true"/>
-        <if>
+        <contrib:if>
             <not>
                 <isset property="config.present"/>
             </not>
-            <then>
+            <contrib:then>
                 <antcall target="configure"/>
-            </then>
-        </if>
+            </contrib:then>
+        </contrib:if>
         <!-- load configuration -->
         <property file="local.configuration"/>
     </target>
@@ -555,8 +532,12 @@
         <property file="local.configuration"/>
         <!-- recompute port numbers for database and admin port -->
         <setPorts portbase="${server.portbase}"/>
+        <!-- load tasks -->
+        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+        <!-- put item to database -->
         
         <item2database src="${config}/administration_team.xml" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
         
     </target>
+    
 </project>

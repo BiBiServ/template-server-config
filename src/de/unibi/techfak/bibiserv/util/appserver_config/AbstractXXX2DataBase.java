@@ -84,9 +84,9 @@ public abstract class AbstractXXX2DataBase extends Task {
      * Check if given file contains the expected content.
      * 
      * @param src_file
-     * @return true, if content is ok, false otherwise
+     * @throws Exception in the case 
      */
-    public abstract boolean checkFile(File src_file);
+    public abstract void checkFile(File src_file) throws Exception;
     
     /**
      * Insert src_file content into database
@@ -109,8 +109,9 @@ public abstract class AbstractXXX2DataBase extends Task {
         }
         File src_file = new File(src);
         if (!src_file.isFile()) {
-            throw new BuildException("'src'file +'" + src_file + " not found .");
+            throw new BuildException("'src'file +'" + src_file + "' not found!");
         }
+        checkFile(src_file);
 
         try {
             createConnection();
