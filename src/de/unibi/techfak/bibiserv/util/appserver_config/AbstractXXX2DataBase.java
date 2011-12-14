@@ -111,7 +111,11 @@ public abstract class AbstractXXX2DataBase extends Task {
         if (!src_file.isFile()) {
             throw new BuildException("'src'file +'" + src_file + "' not found!");
         }
-        checkFile(src_file);
+        try {
+            checkFile(src_file);
+        } catch (Exception e){
+            throw new BuildException(e);
+        }
 
         try {
             createConnection();

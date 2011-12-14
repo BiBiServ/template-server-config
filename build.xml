@@ -540,4 +540,40 @@
         
     </target>
     
+    <target name="install.item" description="install an item (xml decsription file) to database">
+        <contrib:if>
+            <and>
+                <isset property="item"/>
+                <available file="${item}"/>  
+            </and>
+            <contrib:then>
+                <!-- load tasks -->
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+                <!-- put item to database -->
+                <item2database src="${item}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You must set an item property (-Ditem=...) pointing to an existing item description file!"/>
+            </contrib:else>
+        </contrib:if>
+    </target>
+    
+    <target name="install.linkeditem" description="install a linked item (xml description file) to database">
+         <contrib:if>
+            <and>
+                <isset property="linkeditem"/>
+                <available file="${linkeditem}"/>  
+            </and>
+            <contrib:then>
+                <!-- load tasks -->
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+                <!-- put item to database -->
+                <item2database src="${linkeditem}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You must set a linkeditem property (-Dlinkeditem=...) pointing to an existing linkeditem description file!"/>
+            </contrib:else>
+        </contrib:if>
+    </target>
+    
 </project>

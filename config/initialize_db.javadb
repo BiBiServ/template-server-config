@@ -42,7 +42,8 @@ create table item (
     item clob,
     time timestamp,
     bar blob,
-    md5 varchar(33)
+    md5 varchar(33),
+    type varchar(20) default 'runnable' -- supported values are runnable, linked, default
 );
 
 create table modules (

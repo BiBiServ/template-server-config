@@ -73,9 +73,8 @@ public class Structure2DataBase extends AbstractXXX2DataBase {
     }
 
     @Override
-    public boolean checkFile(File src_file){
-         try {
-
+    public void checkFile(File src_file) throws Exception {
+       
             // Parse an XML document into a DOM tree.
             DocumentBuilder parser =
                 DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -98,18 +97,10 @@ public class Structure2DataBase extends AbstractXXX2DataBase {
             validator.validate(new DOMSource(document));
 
             // source is schema valid, but at this point we only support category files
-            if (document.getDocumentElement().getTagName().equals("category")){
-                return true;
+            if (!document.getDocumentElement().getTagName().equals("category")){
+                throw new Exception("File is valid BiBiServAbstraction file, but describe not a category");
             }
-            
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }       
-        return false;
+     
 
     }
     

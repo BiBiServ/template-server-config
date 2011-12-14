@@ -79,44 +79,34 @@ public class Item2DataBase extends AbstractXXX2DataBase {
     }
 
     @Override
-    public boolean checkFile(File src_file){
-         try {
-
-            // Parse an XML document into a DOM tree.
-            DocumentBuilder parser =
+    public void checkFile(File src_file) throws Exception{
+             // Parse an XML document into a DOM tree.
+        DocumentBuilder parser =
                 DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            
-            Document document = parser.parse(src_file);
 
-            // Create a SchemaFactory capable of understanding WXS schemas.
-            SchemaFactory factory =
+        Document document = parser.parse(src_file);
+
+        // Create a SchemaFactory capable of understanding WXS schemas.
+        SchemaFactory factory =
                 SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-            // Load a WXS schema, represented by a Schema instance.
-            Source schemaFile = new StreamSource(new URL("http://bibiserv.cebitec.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd").openStream());
-            Schema schema = factory.newSchema(schemaFile);
+        // Load a WXS schema, represented by a Schema instance.
+        Source schemaFile = new StreamSource(new URL("http://bibiserv.cebitec.uni-bielefeld.de/xsd/bibiserv2/BiBiServAbstraction.xsd").openStream());
+        Schema schema = factory.newSchema(schemaFile);
 
-            // Create a Validator object, which can be used to validate
-            // an instance document.
-            Validator validator = schema.newValidator();
+        // Create a Validator object, which can be used to validate
+        // an instance document.
+        Validator validator = schema.newValidator();
 
-            // Validate the DOM tree.
-            validator.validate(new DOMSource(document));
+        // Validate the DOM tree.
+        validator.validate(new DOMSource(document));
 
-            // source is schema valid, but at this point we only support category files
-            if (document.getDocumentElement().getTagName().equals("item")){
-                id = document.getDocumentElement().getAttribute("id");
-                return true;
-            }
-            
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }       
-        return false;
+        // source is schema valid, but at this point we only support category files
+        if (document.getDocumentElement().getTagName().equals("item")) {
+            id = document.getDocumentElement().getAttribute("id");
+        } else {
+            throw new Exception("File is valid BiBiServAbstraction file, but not an item");
+        }
 
     }
     
