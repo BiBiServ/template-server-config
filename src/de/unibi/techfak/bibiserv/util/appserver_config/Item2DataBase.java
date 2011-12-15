@@ -81,9 +81,12 @@ public class Item2DataBase extends AbstractXXX2DataBase {
     @Override
     public void checkFile(File src_file) throws Exception{
              // Parse an XML document into a DOM tree.
-        DocumentBuilder parser =
-                DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
+          DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            
+            
+            DocumentBuilder parser = dbf.newDocumentBuilder();
+            
         Document document = parser.parse(src_file);
 
         // Create a SchemaFactory capable of understanding WXS schemas.

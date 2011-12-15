@@ -82,9 +82,12 @@ public class LinkedItem2DataBase extends AbstractXXX2DataBase {
 
 
         // Parse an XML document into a DOM tree.
-        DocumentBuilder parser =
-                DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
+         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            
+            
+            DocumentBuilder parser = dbf.newDocumentBuilder();
+            
         Document document = parser.parse(src_file);
 
         // Create a SchemaFactory capable of understanding WXS schemas.

@@ -125,7 +125,9 @@ public abstract class AbstractXXX2DataBase extends Task {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            shutdown();
+            if (embedded) {
+                shutdown();
+            }
         }
     }
 

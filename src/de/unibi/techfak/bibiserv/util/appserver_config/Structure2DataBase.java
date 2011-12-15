@@ -76,8 +76,11 @@ public class Structure2DataBase extends AbstractXXX2DataBase {
     public void checkFile(File src_file) throws Exception {
        
             // Parse an XML document into a DOM tree.
-            DocumentBuilder parser =
-                DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            
+            
+            DocumentBuilder parser = dbf.newDocumentBuilder();
             
             Document document = parser.parse(src_file);
 

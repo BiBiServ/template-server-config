@@ -151,14 +151,19 @@
         
         <contrib:if>
             <not>
-                 <available file="${dist}/appserver_config.jar"/>
+                <available file="${dist}/appserver_config_task.jar"/>
             </not>
             <contrib:then>
                 <antcall target="build"/>
             </contrib:then>
         </contrib:if>
 
-        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+            <classpath>
+                <path  location="${dist}/appserver_config_task.jar"/> 
+                <path refid="classpath"/>
+            </classpath>
+        </taskdef>
             
 
         <!-- load configuration -->
@@ -338,7 +343,7 @@
     
         <!-- set jvm option -XX:MaxPermSize=512m ; using asadmin create-jvm-options doesn't work beacuse ':' is
             used as delimiter -->
-         <replace file="${domain.dir}/${domain}/config/domain.xml" token="-XX:MaxPermSize=192m" value="-XX:MaxPermSize=512m"/>
+        <replace file="${domain.dir}/${domain}/config/domain.xml" token="-XX:MaxPermSize=192m" value="-XX:MaxPermSize=512m"/>
             
     </target>
 
@@ -533,7 +538,7 @@
         <!-- recompute port numbers for database and admin port -->
         <setPorts portbase="${server.portbase}"/>
         <!-- load tasks -->
-        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+        <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config_task.jar"/>
         <!-- put item to database -->
         
         <item2database src="${config}/administration_team.xml" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
@@ -542,13 +547,29 @@
     
     <target name="install.item" description="install an item (xml decsription file) to database">
         <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+            
+        <contrib:if>
             <and>
                 <isset property="item"/>
                 <available file="${item}"/>  
             </and>
             <contrib:then>
                 <!-- load tasks -->
-                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+                    <classpath>
+                        <path  location="${dist}/appserver_config_task.jar"/> 
+                        <path refid="classpath"/>
+                    </classpath>
+                </taskdef>
+               
                 <!-- put item to database -->
                 <item2database src="${item}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
             </contrib:then>
@@ -559,14 +580,28 @@
     </target>
     
     <target name="install.linkeditem" description="install a linked item (xml description file) to database">
-         <contrib:if>
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        <contrib:if>
             <and>
                 <isset property="linkeditem"/>
                 <available file="${linkeditem}"/>  
             </and>
             <contrib:then>
                 <!-- load tasks -->
-                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config.jar"/>
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+                    <classpath>
+                        <path  location="${dist}/appserver_config_task.jar"/> 
+                        <path refid="classpath"/>
+                    </classpath>
+                </taskdef>
                 <!-- put item to database -->
                 <item2database src="${linkeditem}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
             </contrib:then>
