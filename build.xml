@@ -451,7 +451,7 @@
     <!-- use ivy to resolve  library dependencies -->
     <target name="resolve" description="retrieve dependencies with ivy">
         <mkdir dir="${lib}"/>
-        <ivy:retrieve/>
+        <ivy:retrieve/> 
     </target>
 
     <!-- publish current project in private ivy-repository -->
@@ -603,10 +603,74 @@
                     </classpath>
                 </taskdef>
                 <!-- put item to database -->
-                <item2database src="${linkeditem}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+                <linkeditem2database src="${linkeditem}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set a linkeditem property (-Dlinkeditem=...) pointing to an existing linkeditem description file!"/>
+            </contrib:else>
+        </contrib:if>
+    </target>
+    
+    <target name="install.module" description="install a module (car file) to database">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        <contrib:if>
+            <and>
+                <isset property="module"/>
+                <available file="${module}"/>  
+            </and>
+            <contrib:then>
+                <!-- load tasks -->
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+                    <classpath>
+                        <path  location="${dist}/appserver_config_task.jar"/> 
+                        <path refid="classpath"/>
+                    </classpath>
+                </taskdef>
+                <!-- put module to database -->
+                <module2database src="${module}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You must set a module property (-Dmodule=...) pointing to an existing module archive (car file)!"/>
+            </contrib:else>
+        </contrib:if>
+    </target>
+    
+    <target name="install.app" description="install an application/tool (bar file) to database">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        <contrib:if>
+            <and>
+                <isset property="app"/>
+                <available file="${app}"/>  
+            </and>
+            <contrib:then>
+                <!-- load tasks -->
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+                    <classpath>
+                        <path  location="${dist}/appserver_config_task.jar"/> 
+                        <path refid="classpath"/>
+                    </classpath>
+                </taskdef>
+                <!-- put app to database -->
+                <runnableitem2database src="${app}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You must set a linkeditem property (-Dapp=...) pointing to an existing BiBiServ archive (bar) file!"/>
             </contrib:else>
         </contrib:if>
     </target>

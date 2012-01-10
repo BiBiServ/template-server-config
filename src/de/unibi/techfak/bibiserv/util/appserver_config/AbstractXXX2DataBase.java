@@ -23,15 +23,24 @@
 
 package de.unibi.techfak.bibiserv.util.appserver_config;
 
+
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+
+
 
 /**
  * Abstract Ant task which insert XXX into a database. XXX must be
@@ -51,7 +60,7 @@ public abstract class AbstractXXX2DataBase extends Task {
     public void setSrc(String src) {
         this.src = src;
     }
-    private String dbURL = null;
+    protected String dbURL = null;
 
     /**
      * Set the database url (jdbc-string), valid strings are:
@@ -67,7 +76,7 @@ public abstract class AbstractXXX2DataBase extends Task {
     public void setDbURL(String dbURL) {
         this.dbURL = dbURL;
     }
-    private boolean embedded = false;
+    protected boolean embedded = false;
 
     /**
      * Set the optional attribute embedded. Forces the task to use the embedded driver
@@ -94,7 +103,7 @@ public abstract class AbstractXXX2DataBase extends Task {
      * @param con
      * @param src_file 
      */
-    public abstract void insertSQL(Connection con, File src_file) throws FileNotFoundException, SQLException;
+    public abstract void insertSQL(Connection con, File src_file) throws Exception;
     
     private Connection con = null;
     
@@ -120,9 +129,7 @@ public abstract class AbstractXXX2DataBase extends Task {
         try {
             createConnection();
             insertSQL(con,src_file);
-        } catch (SQLException ex) {
-            Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (embedded) {
@@ -156,5 +163,63 @@ public abstract class AbstractXXX2DataBase extends Task {
 
     }
     
+      /**
+     * Extract (unzip) a specified entry from  zipped buffer.
+     *
+     * @param in - The zipped  Inputstream  buffer
+     * @param entry - Name of entry to be extract
+     * @return Returns a byte [] buffer of the unzipped entry.
+     * @throws Exception in a case the entry was not found.
+     */
+    public static byte[] extractNamedEntryfromZippedBuffer(InputStream in, String entry) throws Exception {
+        ZipInputStream zin = new ZipInputStream(in);
+        ZipEntry zipentry;
+
+        byte[] tmp = null;
+
+        while ((zipentry = zin.getNextEntry()) != null) {
+            if (zipentry.getName().equals(entry)) {
+                tmp = new byte[(int) zipentry.getSize()];
+                int readbytes = 0;
+                while (tmp.length > readbytes) {
+                    readbytes += zin.read(tmp, readbytes, tmp.length - readbytes);
+                }
+                break;
+            }
+        }
+        zin.close();
+        // if zipstream does not contain a matching entry, the tmp byte [] is null.
+        if (tmp == null) {
+            throw new Exception("Zipped Buffer does not contain an entry '" + entry + "'!");
+        }
+
+        return tmp;
+    }
+    
+    public static byte[] createChecksum(File filename) throws Exception {
+        InputStream fis = new FileInputStream(filename);
+
+        byte[] buffer = new byte[1024];
+        MessageDigest complete = MessageDigest.getInstance("MD5");
+        int numRead;
+        do {
+            numRead = fis.read(buffer);
+            if (numRead > 0) {
+                complete.update(buffer, 0, numRead);
+            }
+        } while (numRead != -1);
+        fis.close();
+        return complete.digest();
+    }
+
+    public static String getMD5Checksum(File filename) throws Exception {
+        byte[] b = createChecksum(filename);
+        String result = "";
+        for (int i = 0; i < b.length; i++) {
+            result +=
+                    Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+        }
+        return result;
+    }
     
 }
