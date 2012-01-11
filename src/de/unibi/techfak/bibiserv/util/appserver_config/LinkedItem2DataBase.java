@@ -106,7 +106,7 @@ public class LinkedItem2DataBase extends AbstractXXX2DataBase {
         validator.validate(new DOMSource(document));
 
         // source is schema valid, but at this point we only support category files
-        if (document.getDocumentElement().getTagName().equals("linkeditem")) {
+        if (document.getDocumentElement().getLocalName().equals("linkeditem")) {
             id = document.getDocumentElement().getAttribute("id");
         } else {
             throw new Exception("File is valid BiBiServAbstraction file, but not a linked item");

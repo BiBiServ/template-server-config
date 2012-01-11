@@ -667,7 +667,7 @@
                     </classpath>
                 </taskdef>
                 <!-- put app to database -->
-                <runnableitem2database src="${app}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
+                <app2database src="${app}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set a linkeditem property (-Dapp=...) pointing to an existing BiBiServ archive (bar) file!"/>
