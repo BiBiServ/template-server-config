@@ -670,9 +670,44 @@
                 <app2database src="${app}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2"/>
             </contrib:then>
             <contrib:else>
-                <fail message="You must set a linkeditem property (-Dapp=...) pointing to an existing BiBiServ archive (bar) file!"/>
+                <fail message="You must set a app property (-Dapp=...) pointing to an existing BiBiServ archive (bar) file!"/>
             </contrib:else>
         </contrib:if>
     </target>
+    
+    <target name="install.structure" description="install a bibiserv structure to database - Attention : handle with care!">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        <contrib:if>
+            <and>
+                <isset property="structure"/>
+                <available file="${structure}"/>  
+            </and>
+            <contrib:then>
+                <!-- load tasks -->
+                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
+                    <classpath>
+                        <path  location="${dist}/appserver_config_task.jar"/> 
+                        <path refid="classpath"/>
+                    </classpath>
+                </taskdef>
+                <!-- put app to database -->
+                <structure2database src="${structure}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2" embedded="false"/>
+ 
+            </contrib:then>
+            <contrib:else>
+                <fail message="You must set a structure property (-Dstructure=...) pointing to an existing bibiserv structure file!"/>
+            </contrib:else>
+        </contrib:if>
+    </target>
+    
+    
     
 </project>

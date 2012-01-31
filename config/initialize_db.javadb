@@ -81,7 +81,13 @@ create table authorities (
 create table authority (
     value varchar(20) not null unique
 );
-    
+
+
+create table news (
+    id varchar(100) not null,
+    content clob,
+    expired timestamp
+);
     
 create view manager_auth as select id as role , password, enabled as authorized from users;
 
