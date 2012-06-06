@@ -140,7 +140,7 @@ insert into authorities values (
 --insert example standard awscredentials for testuser
 insert into awscredentials (id,accesskey,secretkey) values (
        'testuser',
-       'accesskey'
+       'accesskey',
        'secretkey');
 
 create view status_admin as select * from status where id='admin';
