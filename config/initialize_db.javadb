@@ -73,6 +73,12 @@ create table users (
     phone varchar(100)
 );
 
+create table awscredentials (
+   id varchar(100) not null,
+   accesskey varchar(150) not null,
+   secretkey varchar(150) not null
+);
+
 create table authorities (
     id varchar(100) not null,
     authority varchar(100) not null
@@ -130,6 +136,12 @@ insert into users (id,password, limitclass, enabled, name, surname, mail) values
 insert into authorities values (
     'testuser', 'ROLE_USER'
 );
+
+--insert example standard awscredentials for testuser
+insert into awscredentials (id,accesskey,secretkey) values (
+       'testuser',
+       'accesskey'
+       'secretkey');
 
 create view status_admin as select * from status where id='admin';
 
