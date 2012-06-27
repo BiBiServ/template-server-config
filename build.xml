@@ -478,7 +478,14 @@
               message="The Target &lt;install&gt; uses ssh key based authentication. Give the location of your private key as property 'ssh.key' and optional a passphrase as property 'ssh.passphrase' as argument to the ant call!"/>
 
         <!-- copy local ivy-rep to bibiserv using porta.techfak.uni-bielefeld.de -->
-        <scp   todir="${ssh.user}@${ssh.host}:${ssh.basedir}/resources" passphrase="${ssh.passphrase}"
+        
+        <!-- remove remote files -->
+        <sshexec host="${ssh.host}" username="${ssh.user}" keyfile="${ssh.key}"
+            passphrase="${ssh.passphrase}"
+            command="rm ${ssh.basedir}/resources/${ant.project.name}.*"/>
+        
+        <!-- install zip files -->
+        <scp todir="${ssh.user}@${ssh.host}:${ssh.basedir}/resources" passphrase="${ssh.passphrase}"
              keyfile="${ssh.key}">
             <fileset file="${ant.project.name}.zip"/>
             <fileset file="${ant.project.name}.zip.md5"/>
