@@ -82,7 +82,8 @@ create table awscredentials (
    marked varchar(3) not null,
    isused varchar(3) not null,
    sessiontoken varchar(500) not null,
-   keyname varchar(25) not null 
+   keyname varchar(25) not null,
+   creationdate varchar(20) not null
 );
 
 create table authorities (
@@ -144,7 +145,7 @@ insert into authorities values (
 );
 
 --insert example standard awscredentials for testuser
-insert into awscredentials (id,accesskey,secretkey,issessionkey,expirationtime,marked,isused,sessiontoken,keyname) values (
+insert into awscredentials (id,accesskey,secretkey,issessionkey,expirationtime,marked,isused,sessiontoken,keyname,creationdate) values (
        'testuser',
        'accesskey',
        'secretkey',
@@ -153,7 +154,8 @@ insert into awscredentials (id,accesskey,secretkey,issessionkey,expirationtime,m
 	'No',
 	'Yes',
 	'sessiontoken',
-	'testkey'
+	'testkey',
+	'2012-6-4 10:46:31'
 );
 
 create view status_admin as select * from status where id='admin';
