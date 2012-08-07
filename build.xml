@@ -25,14 +25,23 @@
     <property name="local.configuration" value="local.configuration"/>
     <property name="local.passwordfile" value="local.passwordfile"/>
 
-    <!-- jboss expression language library, necessary until standard
-    JSF (2.0) with its own EL is supported by ICEfaces -->
-    <property name="jboss_el" value="jboss_el.jar"/>
-
-    <!-- the web application archive of the bibi main app,
-    allowing for an instantly runnable bibi-server after running this
-    configuration -->
-    <property name="bibimainapp" value="bibimainapp.war"/>
+    <!--  java version check -->
+    
+    <fail
+        message="At least Java 7 is needed to compile '${ant.project.name}'. You are running ${java.version}, ${java.specification.version}, ${java.specification.name}">
+        <condition>
+            <not>
+                <or>
+                    <!-- any Java 7 release is supported -->
+                    <equals arg1="${java.specification.version}" arg2="1.7" trim="yes"
+                        casesensitive="no"/>
+                    <!-- upcoming Java 8 release also supported -->
+                    <equals arg1="${java.specification.version}" arg2="1.8" trim="yes"
+                        casesensitive="no"/>
+                </or>
+            </not>
+        </condition>
+    </fail>
 
     
     <!-- Script to calculate the java db port and set the variable ${db.port} from the given portbase -->
