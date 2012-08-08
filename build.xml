@@ -50,6 +50,8 @@
         <![CDATA[
         project.setNewProperty("db.port", (parseInt(attributes.get("portbase"))+27));
         project.setNewProperty("admin.port", (parseInt(attributes.get("portbase"))+48));
+        project.setNewProperty("http.port", (parseInt(attributes.get("portbase"))+80));
+        project.setNewProperty("https.port", (parseInt(attributes.get("portbase"))+81));
     ]]>
     </scriptdef>
 
@@ -63,6 +65,29 @@
         </fileset>
     </path>
 
+
+    <target name="_check_ports"
+        description="(internal task) fails if specified ports occupied by other processes!">
+        <fail message="_check_ports is an internal task that couldn't call directly">
+            <condition>
+                <not>
+                    <isset property="server.portbase"/>
+                </not>
+            </condition>
+        </fail>
+        <setPorts portbase="${server.portbase}"/>
+        <fail
+            message="At least one of the ports ${db.port}, ${admin.port}, ${http.port} or ${https.port} is used by another process! Abbort!">
+            <condition>
+                <or>
+                    <socket description="db port" server="localhost" port="${db.port}"/>
+                    <socket description="admin port" server="localhost" port="${db.port}"/>
+                    <socket description="http port" server="localhost" port="${http.port}"/>
+                    <socket description="https port" server="localhost" port="${https.port}"/>
+                </or>
+            </condition>
+        </fail>
+    </target>
 
     <target name="configure" description="check environment and configure an existing glassfish domain.">
 
@@ -179,6 +204,8 @@
         <property file="local.configuration"/>
         <!-- recompute port numbers for database and admin port -->
         <setPorts portbase="${server.portbase}"/>
+        <!-- check if port numbers are free -->
+        <antcall target="_check_ports"/>
         <!-- create basic domain with asadmin -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="--user=${admin.user}"/>
@@ -546,6 +573,8 @@
         </contrib:if>
         <!-- load configuration -->
         <property file="local.configuration"/>
+        <!-- check ports -->
+        <antcall target="_check_ports"/>
     </target>
     
     <target name="_test">
