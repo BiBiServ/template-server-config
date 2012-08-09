@@ -54,6 +54,21 @@
         project.setNewProperty("https.port", (parseInt(attributes.get("portbase"))+81));
     ]]>
     </scriptdef>
+    
+    
+    <macrodef name="check_port">
+        <attribute name="port"/>
+        <sequential>
+            
+            <fail message="Port @{port} is used by another process!">
+                <condition>
+                    <socket server="localhost" port="@{port}"/>
+                </condition>
+            </fail>
+        </sequential>
+        
+        
+    </macrodef>
 
     <!-- Make enviroment accessible by this script -->
     <property environment="env"/>
@@ -65,29 +80,9 @@
         </fileset>
     </path>
 
+    
 
-    <target name="_check_ports"
-        description="(internal task) fails if specified ports occupied by other processes!">
-        <fail message="_check_ports is an internal task that couldn't call directly">
-            <condition>
-                <not>
-                    <isset property="server.portbase"/>
-                </not>
-            </condition>
-        </fail>
-        <setPorts portbase="${server.portbase}"/>
-        <fail
-            message="At least one of the ports ${db.port}, ${admin.port}, ${http.port} or ${https.port} is used by another process! Abbort!">
-            <condition>
-                <or>
-                    <socket description="db port" server="localhost" port="${db.port}"/>
-                    <socket description="admin port" server="localhost" port="${db.port}"/>
-                    <socket description="http port" server="localhost" port="${http.port}"/>
-                    <socket description="https port" server="localhost" port="${https.port}"/>
-                </or>
-            </condition>
-        </fail>
-    </target>
+ 
 
     <target name="configure" description="check environment and configure an existing glassfish domain.">
 
@@ -205,7 +200,11 @@
         <!-- recompute port numbers for database and admin port -->
         <setPorts portbase="${server.portbase}"/>
         <!-- check if port numbers are free -->
-        <antcall target="_check_ports"/>
+        <check_port port="${admin.port}"/>
+        <check_port port="${http.port}"/>
+        <check_port port="${https.port}"/>
+        <check_port port="${db.port}"/>
+        
         <!-- create basic domain with asadmin -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="--user=${admin.user}"/>
@@ -384,6 +383,9 @@
     </target>
 
     <target name="_start_domain" depends="_load_config" description="start the Glassfish">
+        <check_port port="${admin.port}"/>
+        <check_port port="${http.port}"/>
+        <check_port port="${https.port}"/>
         <!-- start glassfish -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="--passwordfile=${local.passwordfile}"/>
@@ -543,6 +545,7 @@
     </target>
 
     <target name="_start_db" depends="_load_config" description="(internal task) start the database">
+        <check_port port="${db.port}"/>
         <!-- start database on localhost:${db.port} -->
         <exec executable="${catalina.home}/bin/asadmin">
             <arg value="start-database"/>
@@ -573,8 +576,10 @@
         </contrib:if>
         <!-- load configuration -->
         <property file="local.configuration"/>
-        <!-- check ports -->
-        <antcall target="_check_ports"/>
+        
+        <!-- recompute port numbers for database and admin port -->
+        <setPorts portbase="${server.portbase}"/>
+        
     </target>
     
     <target name="_test">
