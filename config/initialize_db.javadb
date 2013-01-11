@@ -218,7 +218,7 @@ CREATE TABLE stats_categoryclicks (
     
 CREATE TABLE stats_toolruntime (
     toolname character varying(45) NOT NULL,
-    id character varying(50) NOT NULL,
+    id character varying(100) NOT NULL,
     statuscode int NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     runtime bigint NOT NULL,
