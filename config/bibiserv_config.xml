@@ -31,6 +31,8 @@ Contributor(s):
     <entry key="executable.path.isrelativ">true</entry>                                     <!-- ATTENTION ! Change this! -->
     <entry key="spooldir.base">/vol/bibi/share/bibiserv2_testing/spool</entry>              <!-- ATTENTION ! Change this! -->
     <entry key="tmpdir.base">/vol/bibi/share/bibiserv2_testing/spool/tmp</entry>            <!-- ATTENTION ! Change this! -->
+    <!-- used by de.unibi.techfak.bibiserv.BiBiTools, location of executeables for aws -->
+    <entry key="aws.bin">/vol/bibi/share/bibiserv2_testing/bin/aws</entry>		    <!-- ATTENTION ! Change this! -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.CallFactoryImpl -->
     <entry key="DefaultCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
     <entry key="LocalCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
@@ -43,7 +45,7 @@ Contributor(s):
     <!-- entries used by de.unibi.techfak.bibiserv.impl.LocalCall && SGECALL-->
     <entry key="lsub.bin">/vol/bibi/share/bibiserv2_testing/bin/lsub</entry>                <!-- ATTENTION ! Change this! -->
     <entry key="lsub.maxcpu">30</entry> <!-- max. cputime in seconds -->
-    <entry key="lsub.maxmem">512</entry> <!-- max. memory consumption in MBytes -->
+    <entry key="lsub.maxmem">1024</entry> <!-- max. memory consumption in MBytes -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.SGECALL -->
     <entry key="sge.root">/opt/SUNWsge</entry>                                              <!-- ATTENTION ! Change this! -->
     <entry key="sge.cell">bibiws</entry>

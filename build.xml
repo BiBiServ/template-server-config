@@ -264,6 +264,7 @@
                     <entry key="spooldir.base" value="${spool.dir}"/>
                     <entry key="tmpdir.base" value="${spool.dir}/tmp"/>
                     <entry key="executable.rootpath" value="${executable.dir}"/>
+	            <entry key="aws.bin" value="${domain.dir}/${domain}/bin/aws/"/>
                 </propertyfile>
 
                 <prop2xml src="${basedir}/bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
@@ -299,6 +300,11 @@
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
+
+	<copydir src="bin/aws" dest="${domain.dir}/${domain}/bin/aws"/>
+        <chmod file="${domain.dir}/${domain}/bin/aws" perm="755" type="both"/>
+
+
 
         <!-- start server instance for live configuration -->
         <exec executable="${catalina.home}/bin/asadmin">
