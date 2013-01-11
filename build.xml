@@ -302,7 +302,7 @@
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
 
 	<copydir src="bin/aws" dest="${domain.dir}/${domain}/bin/aws"/>
-        <chmod file="${domain.dir}/${domain}/bin/aws" perm="755" type="both"/>
+        <chmod file="${domain.dir}/${domain}/bin/aws/**" perm="755" type="both"/>
 
 
 
