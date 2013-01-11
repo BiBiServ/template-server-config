@@ -229,8 +229,8 @@ CREATE TABLE stats_toolruntime (
 CREATE TABLE stats_toolsubmission (
     toolname character varying(50) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    example character varying(1) DEFAULT 'n',
-    stdparam character varying(1) DEFAULT 'y',
+    example character varying(5) DEFAULT 'n',
+    stdparam character varying(5) DEFAULT 'y',
     sessionid character varying(100)
 );
 disconnect BIBISERV2;
