@@ -45,7 +45,7 @@ Contributor(s):
     <!-- entries used by de.unibi.techfak.bibiserv.impl.LocalCall && SGECALL-->
     <entry key="lsub.bin">/vol/bibi/share/bibiserv2_testing/bin/lsub</entry>                <!-- ATTENTION ! Change this! -->
     <entry key="lsub.maxcpu">30</entry> <!-- max. cputime in seconds -->
-    <entry key="lsub.maxmem">2048</entry> <!-- max. memory consumption in MBytes -->
+    <entry key="lsub.maxmem">4096</entry> <!-- max. memory consumption in MBytes -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.SGECALL -->
     <entry key="sge.root">/opt/SUNWsge</entry>                                              <!-- ATTENTION ! Change this! -->
     <entry key="sge.cell">bibiws</entry>
