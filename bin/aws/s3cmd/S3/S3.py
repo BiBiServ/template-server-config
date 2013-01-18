@@ -709,19 +709,27 @@ class S3(object):
 				if self.config.progress_meter:
 					progress.update(delta_position = len(data))
 			conn.close()
+			stream.flush()
 		except Exception, e:
-			if self.config.progress_meter:
-				progress.done("failed")
-			if retries:
-				warning("Retrying failed request: %s (%s)" % (resource['uri'], e))
-				warning("Waiting %d sec..." % self._fail_wait(retries))
-				time.sleep(self._fail_wait(retries))
-				# Connection error -> same throttle value
-				return self.recv_file(request, stream, labels, current_position, retries - 1)
-			else:
-				raise S3DownloadError("Download failed for: %s" % resource['uri'])
+			#if self.config.progress_meter:
+			#	progress.done("failed")
+			#if retries:
+			#	warning("Retrying failed request: %s (%s)" % (resource['uri'], e))
+			#	warning("Waiting %d sec..." % self._fail_wait(retries))
+			#	time.sleep(self._fail_wait(retries))
+			#	# Connection error -> same throttle value
+			#	return self.recv_file(request, stream, labels, current_position, retries - 1)
+			#else:
+			#	raise S3DownloadError("Download failed for: %s" % resource['uri'])
+			if e.errno==32:
+				try:
+					conn.close()
+					stream.flush()
+				except Exception, e:
+					pass
+				raise S3PipeClosedError("Pipe close for: %s" % resource['uri'])
+			raise S3DownloadError("Download failed for: %s" % resource['uri'])
 
-		stream.flush()
 		timestamp_end = time.time()
 
 		if self.config.progress_meter:

@@ -81,3 +81,6 @@ class InvalidFileError(S3Exception):
 
 class ParameterError(S3Exception):
 	pass
+
+class S3PipeClosedError(S3Exception):
+	pass

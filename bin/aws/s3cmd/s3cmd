@@ -2021,6 +2021,9 @@ if __name__ == '__main__':
 		sys.stderr.write("See ya!\n")
 		sys.exit(1)
 
+	except S3PipeClosedError, e:
+		sys.exit(100);
+	
 	except Exception, e:
 		report_exception(e)
 		sys.exit(1)

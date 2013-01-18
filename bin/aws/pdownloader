@@ -1,0 +1,42 @@
+#!/usr/bin/python
+# Thomas Gatter 17.01.2013
+
+import sys
+import urllib2
+
+# Test if arguments are there
+
+if len(sys.argv) < 3:
+	sys.exit(1)
+
+url = sys.argv[1]
+name = sys.argv[2]
+
+try:
+	u = urllib2.urlopen(url)
+	f = open( name, 'wb')
+	meta = u.info()
+	file_size = int(meta.getheaders("Content-Length")[0])
+	sys.stdout.write("Downloading: {0} Bytes: {1}".format(url, file_size))
+
+	file_size_dl = 0
+	block_sz = 8192
+	while True:
+	    buffer = u.read(block_sz)
+	    if not buffer:
+		break
+
+	    file_size_dl += len(buffer)
+	    f.write(buffer)
+	    p = float(file_size_dl) / file_size
+	    status = r"{0}  [{1:.2%}]".format(file_size_dl, p)
+	    sys.stdout.write(status+"\n")
+
+	f.close()
+except Exception, e:
+	if e.errno==32: # ignore broken pipes as these are caused by validator or converter
+		sys.exit(100)
+	sys.stderr.write("Download error: {0}\n".format(str(e)))
+	sys.exit(1)
+sys.exit(0)
+
