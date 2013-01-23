@@ -658,7 +658,7 @@
         <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" classpath="${dist}/appserver_config_task.jar"/>
         <!-- put item to database -->
         
-        <item2database src="${config}/administration_team.xml" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
+        <item2database src="${config}/administration_team.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
         
     </target>
     
@@ -688,7 +688,7 @@
                 </taskdef>
                
                 <!-- put item to database -->
-                <item2database src="${item}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
+                <item2database src="${item}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set an item property (-Ditem=...) pointing to an existing item description file!"/>
@@ -720,7 +720,7 @@
                     </classpath>
                 </taskdef>
                 <!-- put item to database -->
-                <linkeditem2database src="${linkeditem}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
+                <linkeditem2database src="${linkeditem}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set a linkeditem property (-Dlinkeditem=...) pointing to an existing linkeditem description file!"/>
@@ -752,7 +752,7 @@
                     </classpath>
                 </taskdef>
                 <!-- put module to database -->
-                <module2database src="${module}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
+                <module2database src="${module}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set a module property (-Dmodule=...) pointing to an existing module archive (car file)!"/>
@@ -784,7 +784,7 @@
                     </classpath>
                 </taskdef>
                 <!-- put app to database -->
-                <app2database src="${app}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
+                <app2database src="${app}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
             </contrib:then>
             <contrib:else>
                 <fail message="You must set a app property (-Dapp=...) pointing to an existing BiBiServ archive (bar) file!"/>
@@ -816,7 +816,7 @@
                     </classpath>
                 </taskdef>
                 <!-- put app to database -->
-                <structure2database src="${structure}" dbURL="jdbc:derby://localhost:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
+                <structure2database src="${structure}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
  
             </contrib:then>
             <contrib:else>
