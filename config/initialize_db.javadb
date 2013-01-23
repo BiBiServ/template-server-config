@@ -1,6 +1,6 @@
 --DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 --
---Copyright 2010 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
+--Copyright 2010-2013 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
 --All rights reserved.
 --
 --The contents of this file are subject to the terms of the Common
@@ -14,11 +14,13 @@
 --below the License Header, with the fields enclosed by brackets [] replaced
 -- by your own identifying information:
 --
---"Portions Copyrighted [year] [name of copyright owner]"
+--"Portions Copyrighted 2010-2013 BiBiServ Curator Team"
 --
---Contributor(s):
+--Contributor(s): Jan Krueger, jkrueger(at)cebitec.uni-bielefeld.de
 
-connect 'jdbc:derby:bibiserv2;create=true' as BIBISERV2;
+connect 'jdbc:derby://DB.HOST:DB.PORT/bibiserv2;create=true;user=DB.USER;password=DB.PWD' as BIBISERV2;
+--DB.HOST, DB.PORT, DB.USER and DB.PWD are replaced by ant configure target, jkrueger 23.01.2013
+
 
 create table status (
     id varchar(100) primary key not null,

@@ -24,6 +24,7 @@
     <!-- configuration files -->
     <property name="local.configuration" value="local.configuration"/>
     <property name="local.passwordfile" value="local.passwordfile"/>
+   
 
     <!--  java version check -->
     
@@ -261,29 +262,50 @@
 
                 <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with tables 'status', 'structure', 'item and 'manager_auth'</echo>
 
+                <!-- create db base directory -->
                 <mkdir dir="${domain.dir}/${domain}/db"/>
-                <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
-                    <arg value="${basedir}/${config}/initialize_db.javadb"/>
+                
+                <!-- create derby.properties -->
+                
+                <propertyfile file="${domain.dir}/${domain}/db/derby.properties">
+                    <entry key="derby.connection.requireAuthentication" value="true"/>
+                    <entry key="derby.authentication.provider" value="BUILTIN"/>
+                    <entry key="derby.user.${db.user}" value="${db.pwd}"/>
+                </propertyfile>
+                <chmod file="${domain.dir}/${domain}/db/derby.properties" perm="600"/> 
+                
+
+                <!-- start database for live configuration -->
+                <antcall target="_start_db"/>
+
+                <!-- replace ${db.host}, ${db.port}, {db.user} and ${db.password} in initialize file -->
+                <delete file="${basedir}/local.initialize_db.javadb"/>
+                <copy file="${basedir}/${config}/initialize_db.javadb" tofile="${basedir}/local.initialize_db.javadb"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.HOST" value="${db.host}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.PORT" value="${db.port}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.USER" value="${db.user}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.PWD" value="${db.pwd}"/>
+                <chmod file="${basedir}/local.initialize_db.javadb" perm="600"/>
+                                
+                <exec executable="${catalina.home}/javadb/bin/ij">
+                    <arg value="${basedir}/local.initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
-                <echo>IMPORTANT: Created admin user with login 'testadmin' and password 'simplepassword'!</echo>
-                <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
                 
+                             
+                <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
+                
+                <!-- stop database - live configuration finished -->
+                <antcall target="_stop_db"/>
                 
                 
             </contrib:then>
             <contrib:else>
-                <echo> Database bibiserv2 exists. Check manually if database contains valid 'status', 'structure', 'item' and 'manager_auth' tables. </echo>
+                <echo> Database bibiserv2 exists. Check manually if database is valid! </echo>
             </contrib:else>
         </contrib:if>
             
-            <!-- create derby.properties -->
-            
-            <propertyfile file="${domain.dir}/${domain}/db/derby.properties">
-                <entry key="derby.connection.requireAuthentication" value="true"/>
-                <entry key="derby.authentication.provider" value="BUILTIN"/>
-                <entry key="derby.user.${db.user}" value="${db.pwd}"/>
-            </propertyfile>
+          
             
         
 
@@ -528,8 +550,9 @@
     </target>
 
     <target name="clean-all" depends="clean" description="clean really everything (Attention! Also, previous generated local appserver configuration files are deleted!)">
-        <delete file="${local.configuration}"/>
-        <delete file="${local.passwordfile}"/>
+        <delete>
+            <fileset file="local.*"/>
+        </delete>
     </target>
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
