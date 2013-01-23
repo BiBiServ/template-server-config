@@ -17,7 +17,6 @@ try:
 	f = open( name, 'wb')
 	meta = u.info()
 	file_size = int(meta.getheaders("Content-Length")[0])
-	sys.stdout.write("Downloading: {0} Bytes: {1}".format(url, file_size))
 
 	file_size_dl = 0
 	block_sz = 8192
@@ -29,7 +28,7 @@ try:
 	    file_size_dl += len(buffer)
 	    f.write(buffer)
 	    p = float(file_size_dl) / file_size
-	    status = r"{0}  [{1:.2%}]".format(file_size_dl, p)
+	    status = "{0} of {2}  [{1:.2%}]".format(file_size_dl, p, file_size)
 	    sys.stdout.write(status+"\n")
 
 	f.close()

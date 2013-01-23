@@ -39,6 +39,17 @@ create table status (
     memory int WITH DEFAULT 0           -- memory (MB) consumed by this job
 );
 
+create table downloaduploadstatus (
+    id varchar(100) primary key not null,
+    statusid varchar(100),
+    toolname varchar(100),              -- name of tool
+    index int, 				-- to identify from tool
+    history varchar(10000),             -- statusdescription that is visible all the time
+    state varchar(10000),		-- momentarily progress
+    created timestamp,
+    lastmod timestamp
+);
+
 create table item (
     id varchar(100),
     item clob,
