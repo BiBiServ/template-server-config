@@ -81,6 +81,15 @@
     </path>
 
     
+    <!-- get information about host -->
+    <hostinfo prefix="hostinfo"/>
+    
+    <target name="hostinfo" description="print information about host">
+        <echo>NAME   - ${hostinfo.NAME}</echo>
+        <echo>DOMAIN - ${hostinfo.DOMAIN}</echo>
+        <echo>IPv4   - ${hostinfo.ADDR4}</echo>
+        <echo>IPv6   - ${hostinfo.ADDR6}</echo>
+    </target>
 
  
 
@@ -131,6 +140,20 @@
                 <!-- compute port numbers for database and admin port -->
                 <setPorts portbase="${server.portbase}"/>
 
+
+                <!-- db host -->
+                <property name="db.host"  value="${hostinfo.NAME}"/>
+
+                <!-- db user -->
+                <property name="db.user" value="bibiserv2"/>
+                
+                <!-- db pwd -->
+                <script language="javascript">
+                    <![CDATA[
+    property = project.setProperty("db.pwd","db_"+Math.floor((new Date()).getTime()/1000));
+  ]]>
+                </script>
+
                 <!-- write local configuration file -->
                 <propertyfile file="${local.configuration}" comment="local bibiserv2 startup properties">
                     <entry key="catalina.home" value="${catalina.home}"/>
@@ -142,6 +165,9 @@
                     <entry key="server.portbase" value="${server.portbase}"/>
                     <entry key="db.port" value="${db.port}"/>
                     <entry key="admin.port" value="${admin.port}"/>
+                    <entry key="db.host"  value="${db.host}"/>
+                    <entry key="db.user" value="${db.user}"/>
+                    <entry key="db.pwd" value="${db.pwd}"/>
                 </propertyfile>
 
             </contrib:then>
@@ -159,7 +185,7 @@
                 <echo>Passwordfile not present. Create a new one ... </echo>
 
                 <!-- password -->
-                <input message="Enter admin user password [e.g. adminadmin] !" addproperty="admin.password"  defaultvalue="admin"/>
+                <input message="Enter admin user password [e.g. admin] !" addproperty="admin.password"  defaultvalue="admin"/>
 
                 <!-- master password -->
                 <input message="Enter Master password [e.g. changeit] !" addproperty="masterpassword" defaultvalue="changeit"/>
@@ -168,12 +194,19 @@
                 <propertyfile file="${local.passwordfile}">
                     <entry key="AS_ADMIN_PASSWORD" value="${admin.password}"/>
                     <entry key="AS_ADMIN_MASTERPASSWORD" value="${masterpassword}"/>
+                    <entry key="AS_ADMIN_DBPASSWORD" value="${db.pwd}"/>
                 </propertyfile>
 
                 <!-- change permission on password file -->
                 <chmod file="local.passwordfile" perm="600"/>
 
             </contrib:then>
+            <contrib:else>
+                <!-- update database password file -->
+                <propertyfile file="${local.passwordfile}">
+                    <entry key="AS_ADMIN_DBPASSWORD" value="${db.pwd}"/>
+                </propertyfile>
+            </contrib:else>
         </contrib:if>
 
         <!-- add appserver_config ant task -->
@@ -233,11 +266,24 @@
                 </exec>
                 <echo>IMPORTANT: Created admin user with login 'testadmin' and password 'simplepassword'!</echo>
                 <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby:${domain.dir}/${domain}/db/bibiserv2" embedded="true"/>
+                
+                
+                
             </contrib:then>
             <contrib:else>
                 <echo> Database bibiserv2 exists. Check manually if database contains valid 'status', 'structure', 'item' and 'manager_auth' tables. </echo>
             </contrib:else>
         </contrib:if>
+            
+            <!-- create derby.properties -->
+            
+            <propertyfile file="${domain.dir}/${domain}/db/derby.properties">
+                <entry key="derby.connection.requireAuthentication" value="true"/>
+                <entry key="derby.authentication.provider" value="BUILTIN"/>
+                <entry key="derby.user.${db.user}" value="${db.pwd}"/>
+            </propertyfile>
+            
+        
 
         
         <contrib:if>
@@ -264,7 +310,11 @@
                     <entry key="spooldir.base" value="${spool.dir}"/>
                     <entry key="tmpdir.base" value="${spool.dir}/tmp"/>
                     <entry key="executable.rootpath" value="${executable.dir}"/>
-	            <entry key="aws.bin" value="${domain.dir}/${domain}/bin/aws/"/>
+	                <entry key="aws.bin" value="${domain.dir}/${domain}/bin/aws/"/>
+                    <entry key="db.host" value="${db.host}"/>
+                    <entry key="db.port" value="${db.port}"/>
+                    <entry key="db.user" value="${db.user}"/>
+                    <entry key="db.pwd" value="${db.pwd}"/>
                 </propertyfile>
 
                 <prop2xml src="${basedir}/bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
@@ -281,8 +331,7 @@
             </contrib:then>
         </contrib:if>
 
-        <!-- copy jboss el - to ${domain.dir}/${domain}/lib -->
-        <!-- <copy file="${lib}/" todir="${domain.dir}/${domain}/lib"/> -->
+      
         <copy overwrite="true" tofile="${catalina.home}/glassfish/lib/endorsed/log4j.jar">
              <!--This must return only ONE file, otherwise the copy task breaks!-->
             <fileset dir="${lib}">
@@ -301,7 +350,11 @@
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
 
-	<copydir src="bin/aws" dest="${domain.dir}/${domain}/bin/aws"/>
+	    <!-- copy aws stuff -->
+        <copy todir="${domain.dir}/${domain}/bin/aws">
+            <fileset dir="bin/aws"/>
+        </copy>
+        <!-- <copydir src="bin/aws" dest="${domain.dir}/${domain}/bin/aws"/> -->
         <chmod file="${domain.dir}/${domain}/bin/aws/**" perm="755" type="both"/>
 
 
@@ -360,7 +413,7 @@
             <arg value="--validateatmostonceperiod=0"/>
             <arg value="--wrapjdbcobjects=false"/>
             <arg value="--property"/>
-            <arg value="TraceFileAppend=false:RetrieveMessageText=true:SecurityMechanism=4:DatabaseName=bibiserv2:Password=APP:LoginTimeout=0:User=APP:PortNumber=${db.port}:ServerName=localhost:TraceLevel=-1"/>
+            <arg value="TraceFileAppend=false:RetrieveMessageText=true:SecurityMechanism=3:DatabaseName=bibiserv2:Password=${db.pwd}:LoginTimeout=0:User=${db.user}:PortNumber=${db.port}:ServerName=${db.host}:TraceLevel=-1"/>
             <arg value="bibiserv2_derby"/>
         </exec>
 
@@ -557,6 +610,7 @@
             <arg value="start-database"/>
             <arg value="--dbhome=${domain.dir}/${domain}/db"/>
             <arg value="--dbport=${db.port}"/>
+            <arg value="--dbhost=${db.host}"/>
         </exec>
     </target>
 
@@ -564,9 +618,14 @@
     <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
         <!-- stop database -->
         <exec executable="${catalina.home}/bin/asadmin">
+            <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="stop-database"/>
             <arg value="--dbport=${db.port}"/>
+            <arg value="--dbhost=${db.host}"/>
+            <arg value="--dbuser=${db.user}"/>
         </exec>
+        
+      
     </target>
 
     <target name="_load_config" description="(internal task) load configuration from file">
