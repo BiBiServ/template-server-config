@@ -523,7 +523,7 @@
     <target name="build" depends="resolve" description="compile and build ant task needed to run this build script">
         <mkdir dir="${classes}"/>
         <mkdir dir="${dist}"/>
-        <javac srcdir="${src}" destdir="${classes}" debug="true" classpathref="classpath"/>
+        <javac srcdir="${src}" encoding="utf-8" destdir="${classes}" debug="true" classpathref="classpath"/>
         <copy file="${src}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" tofile="${classes}/de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties"/>
         <jar basedir="${classes}" destfile="${dist}/appserver_config_task.jar" includes="**/*"/>
     </target>
