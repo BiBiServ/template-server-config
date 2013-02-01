@@ -47,7 +47,7 @@ Contributor(s):
     <entry key="lsub.maxcpu">30</entry> <!-- max. cputime in seconds -->
     <entry key="lsub.maxmem">4096</entry> <!-- max. memory consumption in MBytes -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.SGECALL -->
-    <entry key="sge.root">/opt/SUNWsge</entry>                                              <!-- ATTENTION ! Change this! -->
+    <entry key="sge.root">/var/lib/gridengine</entry>                                              <!-- ATTENTION ! Change this! -->
     <entry key="sge.cell">bibiws</entry>
     <entry key="sge.debug"/>
     <entry key="sge.commd_port"/>
