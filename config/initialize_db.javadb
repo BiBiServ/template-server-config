@@ -87,7 +87,7 @@ create table users (
 );
 
 create table awscredentials (
-   keyname varchar(25) primary key not null,
+   keyname varchar(25) not null,
    userid varchar(100) not null,
    accesskey varchar(150) not null,
    secretkey varchar(250) not null,
