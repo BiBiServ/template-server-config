@@ -87,16 +87,12 @@ create table users (
 );
 
 create table awscredentials (
-   id varchar(100) not null,
+   keyname varchar(25) primary key not null,
+   userid varchar(100) not null,
    accesskey varchar(150) not null,
    secretkey varchar(250) not null,
-   issessionkey varchar(3) not null,
-   expirationtime varchar(6) not null,
-   marked varchar(3) not null,
-   isused varchar(3) not null,
    sessiontoken varchar(500) not null,
-   keyname varchar(25) not null,
-   creationdate varchar(20) not null
+   isset SMALLINT not null		-- 1 for active key, 0 for all other
 );
 
 create table authorities (
