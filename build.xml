@@ -849,5 +849,46 @@
     </target>
     
     
+    <target name="run.sql" description="Run an external sql [-Dsql=...] on database. Database server must run. Attention: Handle with care!">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        
+        <contrib:if>
+            <and>
+                <isset property="sql"/>
+                <available file="${sql}"/>  
+            </and>
+            <contrib:then>
+        
+                <delete file="${basedir}/local.sql"/>
+        
+        <copy file="${sql}" tofile="${basedir}/local.sql"/>
+        <replace file="${basedir}/local.sql" token="DB.HOST" value="${db.host}"/>
+        <replace file="${basedir}/local.sql" token="DB.PORT" value="${db.port}"/>
+        <replace file="${basedir}/local.sql" token="DB.USER" value="${db.user}"/>
+        <replace file="${basedir}/local.sql" token="DB.PWD" value="${db.pwd}"/>
+        <chmod file="${basedir}/local.sql" perm="600"/>
+        
+        <exec executable="${catalina.home}/javadb/bin/ij">
+            <arg value="${basedir}/local.sql"/>
+            <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
+        </exec>
+        
+        
+                
+                </contrib:then>
+                <contrib:else>
+                    <fail message="You must set a sql property (-Dsql=...) pointing to an existing sql file!"/>
+                </contrib:else>
+        </contrib:if>
+    </target>
+    
     
 </project>
