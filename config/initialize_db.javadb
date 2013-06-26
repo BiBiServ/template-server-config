@@ -25,6 +25,7 @@ connect 'jdbc:derby://DB.HOST:DB.PORT/bibiserv2;create=true;user=DB.USER;passwor
 create table status (
     id varchar(100) primary key not null,
     toolname varchar(100),              -- name of tool
+    functionname varchar(100),          -- name of function
     statuscode int,                     -- statuscode as defined by HOBIT statuscodes
     description varchar(10000),         -- statusdescription as defined by HOBIT statusdescription
     internaldescription varchar(10000), -- a more detailed internal description
@@ -156,19 +157,7 @@ insert into authorities values (
     'testuser', 'ROLE_USER'
 );
 
---insert example standard awscredentials for testuser
-insert into awscredentials (id,accesskey,secretkey,issessionkey,expirationtime,marked,isused,sessiontoken,keyname,creationdate) values (
-       'testuser',
-       'accesskey',
-       'secretkey',
-       'No',
-	'7200',
-	'No',
-	'Yes',
-	'sessiontoken',
-	'testkey',
-	'2012-6-4 10:46:31'
-);
+
 
 create view status_admin as select * from status where id='admin';
 
@@ -206,14 +195,14 @@ CREATE TABLE stats_clientinfo (
 );
 
 CREATE TABLE stats_toolclicks (
-    toolname character varying(50) NOT NULL,
+    toolname character varying(100) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     location character varying(50) NOT NULL,
     sessionid character varying(100)
 );
 
 CREATE TABLE stats_toolerrors (
-    toolname character varying(50) NOT NULL,
+    toolname character varying(100) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     location character varying(50) NOT NULL,
     ip character varying(15)
@@ -226,7 +215,7 @@ CREATE TABLE stats_categoryclicks (
 );
     
 CREATE TABLE stats_toolruntime (
-    toolname character varying(45) NOT NULL,
+    toolname character varying(100) NOT NULL,
     id character varying(100) NOT NULL,
     statuscode int NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -236,7 +225,7 @@ CREATE TABLE stats_toolruntime (
 );
 
 CREATE TABLE stats_toolsubmission (
-    toolname character varying(50) NOT NULL,
+    toolname character varying(100) NOT NULL,
     date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     example character varying(5) DEFAULT 'n',
     stdparam character varying(5) DEFAULT 'y',
