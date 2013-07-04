@@ -242,7 +242,7 @@
         <check_port port="${db.port}"/>
         
         <!-- create basic domain with asadmin -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--user=${admin.user}"/>
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="create-domain"/>
@@ -287,7 +287,7 @@
                 <replace file="${basedir}/local.initialize_db.javadb" token="DB.PWD" value="${db.pwd}"/>
                 <chmod file="${basedir}/local.initialize_db.javadb" perm="600"/>
                                 
-                <exec executable="${catalina.home}/javadb/bin/ij">
+                <exec executable="${catalina.home}/javadb/bin/ij" failifexecutionfails="true" failonerror="true">
                     <arg value="${basedir}/local.initialize_db.javadb"/>
                     <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
                 </exec>
@@ -384,7 +384,7 @@
 
 
         <!-- start server instance for live configuration -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--user=${admin.user}"/>
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="start-domain"/>
@@ -395,7 +395,7 @@
         <!-- modify configuration of glassfish domain -->
         <!-- append System Property : de.unibi.techfak.bibiserv.config -->
         
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--host=localhost"/>
             <arg value="--port=${admin.port}"/>
             <arg value="--user=${admin.user}"/>
@@ -405,7 +405,7 @@
         </exec>
 
         <!-- append Connection Pool for previously generated DB -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--host=localhost"/>
             <arg value="--port=${admin.port}"/>
             <arg value="--user=${admin.user}"/>
@@ -441,7 +441,7 @@
             <arg value="bibiserv2_derby"/>
         </exec>
 
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--host=localhost"/>
             <arg value="--port=${admin.port}"/>
             <arg value="--user=${admin.user}"/>
@@ -453,7 +453,7 @@
         </exec>
 
         <!-- live configuration done, stop server instance -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="stop-domain"/>
             <arg value="--domaindir=${domain.dir}"/>
             <arg value="${domain}"/>
@@ -470,7 +470,7 @@
         <check_port port="${http.port}"/>
         <check_port port="${https.port}"/>
         <!-- start glassfish -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="--user=${admin.user}"/>
             <arg value="start-domain"/>
@@ -485,7 +485,7 @@
     
     <target name="_debug_domain" depends="_load_config" description="start Glassfish appserver in debug mode">
         <!-- start glassfish in debug mode-->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--user=${admin.user}"/>
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="start-domain"/>
@@ -500,7 +500,7 @@
        
     <target name="_stop_domain" depends="_load_config" description="stop the Glassfish">
         <!-- stop glassfish -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="stop-domain"/>
             <arg value="--domaindir=${domain.dir}"/>
             <arg value="${domain}"/>
@@ -508,7 +508,7 @@
     </target>
     
     <target name="clean-db" depends="_load_config" description="clean up item entries within database">
-        <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db">
+        <exec executable="${catalina.home}/javadb/bin/ij" dir="${domain.dir}/${domain}/db" failifexecutionfails="true" failonerror="true">
             <arg value="${basedir}/${config}/clean_item.javadb"/>
             <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
         </exec>
@@ -618,11 +618,11 @@
 
     <!-- targets for internal use only -->
     <target name="_mercurial" description="get the latest tag name and revision number">
-        <exec executable="bash" outputproperty="HG.TAG">
+        <exec executable="bash" outputproperty="HG.TAG" failifexecutionfails="true" failonerror="true">
             <arg line="-c "/>
             <arg value="hg tags | head -n 2 | grep -v tip |  cut -f 1 -d ' '  "/>
         </exec>
-        <exec executable="bash" outputproperty="HG.REVISION">
+        <exec executable="bash" outputproperty="HG.REVISION" failifexecutionfails="true" failonerror="true">
             <arg line="-c "/>
             <arg value="hg tip | grep changeset: | cut -f 2 -d ':' | sed -e 's/^ *//' "/>
         </exec>
@@ -631,7 +631,7 @@
     <target name="_start_db" depends="_load_config" description="(internal task) start the database">
         <check_port port="${db.port}"/>
         <!-- start database on localhost:${db.port} -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="start-database"/>
             <arg value="--dbhome=${domain.dir}/${domain}/db"/>
             <arg value="--dbport=${db.port}"/>
@@ -642,7 +642,7 @@
 
     <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
         <!-- stop database -->
-        <exec executable="${catalina.home}/bin/asadmin">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="stop-database"/>
             <arg value="--dbport=${db.port}"/>
@@ -876,7 +876,7 @@
         <replace file="${basedir}/local.sql" token="DB.PWD" value="${db.pwd}"/>
         <chmod file="${basedir}/local.sql" perm="600"/>
         
-        <exec executable="${catalina.home}/javadb/bin/ij">
+                <exec executable="${catalina.home}/javadb/bin/ij" failifexecutionfails="true" failonerror="true">
             <arg value="${basedir}/local.sql"/>
             <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
         </exec>
