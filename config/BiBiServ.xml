@@ -33,13 +33,7 @@
     
     <categoryRepresentation id="bibiserv_representation">
         <title>BiBiServ - Bielefeld University Bioinformatics Server</title>
-        <customContent><microhtml:p><microhtml:strong>BiBiServ2 is currently in BETA
-                    DEVELOPMENT. SOME FUNCTIONALITIES MIGHT NOT WORK AS EXPECTED! Feel free to try
-                    out any parts of this site, and do not hesitate to <microhtml:a
-                        href="mailto:bibi-help@cebitec.uni-bielefeld.de?subject=BiBiServ2-Beta-Feedback"
-                        >contact the Curator staff</microhtml:a> with observations, requests,
-                    proposals, bug-reports, wishes and any other thoughts you have about the new
-                    system! </microhtml:strong></microhtml:p>
+        <customContent>
             <microhtml:p> The Bielefeld Bioinformatics Server (BiBiServ) is part of the <microhtml:a
                     href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Institute for
                     Bioinformatics</microhtml:a> (IFB) within the <microhtml:a
@@ -158,7 +152,7 @@
             <title >BiBiServ Administration</title>
             <customContent>This area of BiBiServ shows usage statistics and additional
                 administrative information.</customContent>
-        </categoryRepresentation>
+        </categoryRepresentation>    
     </category>
 </category>
 
