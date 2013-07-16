@@ -156,7 +156,7 @@
                 administrative information.</customContent>
         </categoryRepresentation>   
         <itemRef>impressum</itemRef>
-        <itemRef>licence</itemRef>
+        <itemRef>license</itemRef>
         <itemRef>wslinklist</itemRef>
         <itemRef>statuscodes</itemRef>
     </category>
