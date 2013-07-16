@@ -106,9 +106,11 @@
             <name>Evolutionary Relationships</name>
             <categoryDescription/>
         </category>
+        <!-- Other -->
         <category id="others">
             <name>Others</name>
             <categoryDescription>Tools that do not fit into the other categories</categoryDescription>
+            <itemRef>mt_pipeline</itemRef>
         </category>
     </category>
 
@@ -152,7 +154,11 @@
             <title >BiBiServ Administration</title>
             <customContent>This area of BiBiServ shows usage statistics and additional
                 administrative information.</customContent>
-        </categoryRepresentation>    
+        </categoryRepresentation>   
+        <itemRef>impressum</itemRef>
+        <itemRef>licence</itemRef>
+        <itemRef>wslinklist</itemRef>
+        <itemRef>statuscodes</itemRef>
     </category>
 </category>
 
