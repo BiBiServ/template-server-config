@@ -891,4 +891,63 @@
     </target>
     
     
+    <target name="config.OGE" description="Update previous configured domain to support native OGE DRMAA support. Server restart needed!">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        
+        <!-- check for DRMAA.jar -->
+        <contrib:if>
+            <not>
+            <and>
+                <isset property="drmaa.jar"/>
+                <available file="${drmaa.jar}"/>
+            </and>
+            </not>
+            <contrib:then>
+                <fail message="To configure OGE system property drmaa.jar must point to an existing drmaa library"/>
+            </contrib:then>
+        </contrib:if>
+        <!-- check for library path -->
+        <contrib:if>
+            <not>
+                <and>
+                    <isset property="drmaa.library.path"/>
+                    <available file="${drmaa.library.path}" type="dir"/>
+                </and>
+            </not>
+            <contrib:then>
+                <fail message="To configure OGE system property drmaa.library.path  must point to an existing drmaa library path"/>
+            </contrib:then>      
+        </contrib:if>
+        
+        <!-- add system property -->
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-jvm-options"/>
+            <arg value="-Djava.library.path=${drmaa.library.path}"/>
+        </exec>
+        
+        <!-- set native library path -->
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="set"/>
+            <arg value="server.java-config.native-library-path-prefix=${drmaa.library.path}"/>
+        </exec>
+        
+
+    </target>
+    
 </project>
