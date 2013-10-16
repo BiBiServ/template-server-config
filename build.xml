@@ -950,4 +950,26 @@
 
     </target>
     
+    <target name="config.64Bit" description="Update previous configured domain to start in 64 Bit mode (needs a 64 Bit capable Java Runtime Environment. Server restart needed!">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        
+        <!-- add system property -->
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-jvm-options"/>
+            <arg value="-d64"/>
+        </exec> 
+    </target>
+    
 </project>
