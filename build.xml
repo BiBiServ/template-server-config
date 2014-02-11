@@ -630,24 +630,51 @@
 
     <target name="_start_db" depends="_load_config" description="(internal task) start the database">
         <check_port port="${db.port}"/>
-        <!-- start database on localhost:${db.port} -->
-        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
-            <arg value="start-database"/>
-            <arg value="--dbhome=${domain.dir}/${domain}/db"/>
-            <arg value="--dbport=${db.port}"/>
-            <arg value="--dbhost=${db.host}"/>
-        </exec>
+        <!-- start database NOT using asadmin and run Java directly with SecurityManager explicity switched off 
+            
+            According to Java™ SE Development Kit 7, Update 51 Release Notes
+            Change in Default Socket Permissions
+
+            The default socket permissions assigned to all code including untrusted code have been changed 
+            in this release. Previously, all code was able to bind any socket type to any port number greater 
+            than or equal to 1024. It is still possible to bind sockets to the ephemeral port range on each 
+            system. The exact range of ephemeral ports varies from one operating system to another, but it is 
+            typically in the high range (such as from 49152 to 65535). The new restriction is that binding 
+            sockets outside of the ephemeral range now requires an explicit permission in the system security 
+            policy.
+
+            Most applications using client tcp sockets and a security manager will not see any problem, as these 
+            typically bind to ephemeral ports anyway. Applications using datagram sockets or server tcp sockets 
+            (and a security manager) may encounter security exceptions where none were seen before. If this occurs, 
+            users should review whether the port number being requested is expected, and if this is the case, a 
+            socket permission grant can be added to the local security policy, to resolve the issue.
+        
+        
+        -->        
+        <java classname="org.apache.derby.drda.NetworkServerControl" dir="${domain.dir}/${domain}/db" fork="true" spawn="true">
+            <arg line="start"/>
+            <arg line="-h 0.0.0.0"/>
+            <arg line="-p ${db.port}"/>
+            <arg line="-noSecurityManager"/>
+            <classpath>
+                <fileset dir="${catalina.home}/javadb/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+        
     </target>
 
 
     <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
         <!-- stop database -->
-        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true" >
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="stop-database"/>
             <arg value="--dbport=${db.port}"/>
             <arg value="--dbhost=${db.host}"/>
             <arg value="--dbuser=${db.user}"/>
+            
         </exec>
         
       
