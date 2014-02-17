@@ -667,7 +667,7 @@
             <socket server="${db.host}" port="${db.port}"/>
         </waitfor>
         <fail if="database.start.timeout" message="Database startup failed (timeout after 30 seconds)!"/>
-        <echo message="Database startet on host ${db.host}:${db:port}"/>
+        <echo message="Database startet on host ${db.host}:${db.port}"/>
     </target>
 
 
@@ -688,7 +688,7 @@
     
     <target name="_test_db" depends="_load_config" description="test task for database startup failure ...">
         
-        <!-- start database for live configuration -->
+        <!-- uncomment following -->
         <ant target="_start_db" inheritAll="false" />
         
         
@@ -696,13 +696,10 @@
             <arg value="${basedir}/local.initialize_db.javadb"/>
             <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
         </exec>
-         
-         <!--
-         
+                  
         <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
-        
-       
-        <ant target="_stop_db" inheritAll="false"/> -->
+
+        <ant target="_stop_db" inheritAll="false"/> 
        
     </target>
 
