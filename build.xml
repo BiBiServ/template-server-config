@@ -276,7 +276,7 @@
                 
 
                 <!-- start database for live configuration -->
-                <antcall target="_start_db"/>
+                <ant target="_start_db"/>
 
                 <!-- replace ${db.host}, ${db.port}, {db.user} and ${db.password} in initialize file -->
                 <delete file="${basedir}/local.initialize_db.javadb"/>
@@ -296,7 +296,7 @@
                 <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
                 
                 <!-- stop database - live configuration finished -->
-                <antcall target="_stop_db"/>
+                <ant target="_stop_db"/>
                 
                 
             </contrib:then>
@@ -651,9 +651,9 @@
         
         
         -->        
-        <java classname="org.apache.derby.drda.NetworkServerControl" dir="${domain.dir}/${domain}/db" fork="true" spawn="true">
+        <java classname="org.apache.derby.drda.NetworkServerControl" dir="${domain.dir}/${domain}/db" fork="true" spawn="true" >
             <arg line="start"/>
-            <arg line="-h 0.0.0.0"/>
+            <arg line="-h ${db.host}"/>
             <arg line="-p ${db.port}"/>
             <arg line="-noSecurityManager"/>
             <classpath>
@@ -662,13 +662,18 @@
                 </fileset>
             </classpath>
         </java>
-        
+        <!-- wait for db server startup -->
+        <waitfor maxwait="30" maxwaitunit="second"  checkevery="5" timeoutproperty="database.start.timeout">
+            <socket server="${db.host}" port="${db.port}"/>
+        </waitfor>
+        <fail if="database.start.timeout" message="Database startup failed (timeout after 30 seconds)!"/>
+        <echo message="Database startet on host ${db.host}:${db:port}"/>
     </target>
 
 
     <target name="_stop_db" depends="_load_config" description="(internal task) stop the database">
         <!-- stop database -->
-        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true" >
+        <exec executable="${catalina.home}/bin/asadmin"  >
             <arg value="--passwordfile=${local.passwordfile}"/>
             <arg value="stop-database"/>
             <arg value="--dbport=${db.port}"/>
@@ -678,6 +683,27 @@
         </exec>
         
       
+    </target>
+    
+    
+    <target name="_test_db" depends="_load_config" description="test task for database startup failure ...">
+        
+        <!-- start database for live configuration -->
+        <ant target="_start_db" inheritAll="false" />
+        
+        
+       <exec executable="${catalina.home}/javadb/bin/ij" failifexecutionfails="true" failonerror="true">
+            <arg value="${basedir}/local.initialize_db.javadb"/>
+            <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
+        </exec>
+         
+         <!--
+         
+        <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
+        
+       
+        <ant target="_stop_db" inheritAll="false"/> -->
+       
     </target>
 
     <target name="_load_config" description="(internal task) load configuration from file">
@@ -997,6 +1023,70 @@
             <arg value="create-jvm-options"/>
             <arg value="-d64"/>
         </exec> 
+    </target>
+    
+    <target name="_configure_db">
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        <!-- check if a database named bibiserv2 exist -->
+        <available file="${domain.dir}/${domain}/db/bibiserv2" type="dir" property="bibiserv2.present" value="true"/>
+        <contrib:if>
+            <not>
+                <isset property="bibiserv2.present"/>
+            </not>
+            <contrib:then>
+                
+                <echo> Database 'bibiserv2' does not exist, create database 'bibiserv2' with tables 'status', 'structure', 'item and 'manager_auth'</echo>
+                
+                <!-- create db base directory -->
+                <mkdir dir="${domain.dir}/${domain}/db"/>
+                
+                <!-- create derby.properties -->
+                
+                <propertyfile file="${domain.dir}/${domain}/db/derby.properties">
+                    <entry key="derby.connection.requireAuthentication" value="true"/>
+                    <entry key="derby.authentication.provider" value="BUILTIN"/>
+                    <entry key="derby.user.${db.user}" value="${db.pwd}"/>
+                </propertyfile>
+                <chmod file="${domain.dir}/${domain}/db/derby.properties" perm="600"/> 
+                
+                
+                <!-- start database for live configuration -->
+                <ant  target="_start_db"/>
+                
+                <!-- replace ${db.host}, ${db.port}, {db.user} and ${db.password} in initialize file -->
+                <delete file="${basedir}/local.initialize_db.javadb"/>
+                <copy file="${basedir}/${config}/initialize_db.javadb" tofile="${basedir}/local.initialize_db.javadb"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.HOST" value="${db.host}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.PORT" value="${db.port}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.USER" value="${db.user}"/>
+                <replace file="${basedir}/local.initialize_db.javadb" token="DB.PWD" value="${db.pwd}"/>
+                <chmod file="${basedir}/local.initialize_db.javadb" perm="600"/>
+                
+                <exec executable="${catalina.home}/javadb/bin/ij" failifexecutionfails="true" failonerror="true">
+                    <arg value="${basedir}/local.initialize_db.javadb"/>
+                    <env key="DERBY_HOME" value="${catalina.home}/javadb"/>
+                </exec>
+                
+                
+                <structure2database src="${basedir}/${config}/BiBiServ.xml" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" embedded="false"/>
+                
+                <!-- stop database - live configuration finished -->
+                <ant target="_stop_db"/>
+                
+                
+            </contrib:then>
+            <contrib:else>
+                <echo> Database bibiserv2 exists. Check manually if database is valid! </echo>
+            </contrib:else>
+        </contrib:if>
     </target>
     
 </project>
