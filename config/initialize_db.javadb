@@ -184,51 +184,20 @@ insert into resources values ('registered', 10, 10080, 50, -1);
 
     
 CREATE TABLE stats_clientinfo (
-    sessionid character varying(50) NOT NULL,
-    resolutionx integer,
-    resolutiony integer,
+    sessionid character varying(100) NOT NULL,
     browsername character varying(50),
     browserversion character varying(50),
+    device character varying(50),
+    ua character varying(200),
     os character varying(50),
-    ip character varying(15),
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
+    ip character varying(100),
+    country character varying(50)
 );
 
-CREATE TABLE stats_toolclicks (
-    toolname character varying(100) NOT NULL,
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    location character varying(50) NOT NULL,
-    sessionid character varying(100)
-);
-
-CREATE TABLE stats_toolerrors (
-    toolname character varying(100) NOT NULL,
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    location character varying(50) NOT NULL,
-    ip character varying(15)
-);
-
-CREATE TABLE stats_categoryclicks (
-    category character varying(50) NOT NULL,
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    sessionid character varying(100)
-);
-    
-CREATE TABLE stats_toolruntime (
-    toolname character varying(100) NOT NULL,
+CREATE TABLE stats_clicks (
+    sessionid character varying(100) NOT NULL,
     id character varying(100) NOT NULL,
-    statuscode int NOT NULL,
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    runtime bigint NOT NULL,
-    sessionid character varying(100),
-    description character varying(10000)
+    userid character varying(100) NOT NULL
 );
 
-CREATE TABLE stats_toolsubmission (
-    toolname character varying(100) NOT NULL,
-    date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    example character varying(5) DEFAULT 'n',
-    stdparam character varying(5) DEFAULT 'y',
-    sessionid character varying(100)
-);
 disconnect BIBISERV2;
