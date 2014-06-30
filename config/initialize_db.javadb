@@ -204,6 +204,6 @@ CREATE TABLE stats_clicks (
 CREATE TABLE stats_download (
     id character varying(100) NOT NULL,
     url character varying(1024) NOT NULL,
-    character varying(100) NOT NULL
+    name character varying(100) NOT NULL
  );
 disconnect BIBISERV2;
