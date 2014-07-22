@@ -35,9 +35,11 @@ create table status (
     stdout varchar(1000),
     stderr varchar(1000),
     userid varchar(100),                -- user started this job
-    cputime int WITH DEFAULT 0,         -- cputime (minutes) consumed by this job
-    diskspace int WITH DEFAULT 0,       -- spool diskspace (MB) used by this job
-    memory int WITH DEFAULT 0           -- memory (MB) consumed by this job
+    cputime int WITH DEFAULT -1,        -- cputime (ms) consumed by this job
+    diskspace int WITH DEFAULT -1,      -- spool diskspace (MB) used by this job
+    memory int WITH DEFAULT -1,         -- memory (KB) consumed by this job
+    interfacetype varchar(20),          -- interface which iniated call (WEB|REST)
+    callcmdline clob                    -- cmdline as clob
 );
 
 create table downloaduploadstatus (
@@ -209,4 +211,10 @@ CREATE TABLE stats_download (
     name character varying(100) NOT NULL,
     timestamp timestamp WITH DEFAULT CURRENT_TIMESTAMP
  );
+ 
+ CREATE TABLE stats_usage (
+    sessionid character varying(100) NOT NULL,
+    bibiservid character varying() NOT NULL
+ );
+    
 disconnect BIBISERV2;
