@@ -193,7 +193,7 @@ CREATE TABLE stats_clientinfo (
     ua character varying(200),
     os character varying(50),
     ip character varying(100),
-    country character varying(50),
+    country character varying(3),
     timestamp timestamp WITH DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -206,6 +206,7 @@ CREATE TABLE stats_clicks (
 
 
 CREATE TABLE stats_download (
+    sessionid character varying(100) NOT NULL,
     id character varying(100) NOT NULL,
     url character varying(1024) NOT NULL,
     name character varying(100) NOT NULL,
