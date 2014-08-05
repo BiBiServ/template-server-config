@@ -193,7 +193,7 @@ CREATE TABLE stats_clientinfo (
     ua character varying(200),
     os character varying(50),
     ip character varying(100),
-    country character varying(3),
+        country character varying(3),
     timestamp timestamp WITH DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -215,7 +215,7 @@ CREATE TABLE stats_download (
  
  CREATE TABLE stats_usage (
     sessionid character varying(100) NOT NULL,
-    bibiservid character varying() NOT NULL
+    bibiservid character varying(100) NOT NULL
  );
     
 disconnect BIBISERV2;
