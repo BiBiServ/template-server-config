@@ -191,6 +191,10 @@ public class StatisticTestData {
             System.out.println("Verbose is " + verbose);
             throw new Exception("running test mode");
         }
+        
+        if (System.getProperty("help") != null) {
+            throw new Exception("Help:");
+        }
 
     }
 
