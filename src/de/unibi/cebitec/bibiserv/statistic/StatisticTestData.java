@@ -23,11 +23,33 @@ import java.util.regex.Pattern;
 public class StatisticTestData {
 
     private Connection con = null;
-    private boolean verbose = true;
-
+    
+    private boolean verbose = false;
     private int n = 10;
     private Timestamp from = new Timestamp(114, 0, 1, 0, 0, 0, 0);
     private Timestamp to = new Timestamp(System.currentTimeMillis());
+
+    public void setCon(Connection con) {
+        this.con = con;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public void setFrom(String sfrom) throws Exception{
+        this.from = String2Timestamp(sfrom);
+    }
+
+    public void setTo(String sto) throws Exception {
+        this.to = String2Timestamp(sto);
+    }
+    
+    
 
     public enum USER {
 

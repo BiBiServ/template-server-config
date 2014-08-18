@@ -56,6 +56,39 @@ public class StatisticTest extends AbstractXXX2DataBase {
     public void checkFile(File src_file) throws Exception {
         // not needed
     }
+    
+    private boolean verbose = false;
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+    
+    private String from =  null;
+    
+    private String to = null;
+    
+    private int n = -1;
+    
+    private boolean help = false;
+
+    public void setHelp(boolean help) {
+        this.help = help;
+    }
+    
+    
+    
 
     @Override
     public void execute() throws BuildException {
@@ -65,9 +98,24 @@ public class StatisticTest extends AbstractXXX2DataBase {
         StatisticTestData std = new StatisticTestData();
         try {
             std.setConnection(createConnection());
-            std.checkProperties();
+            if (from != null) {
+                std.setFrom(from);
+            }
+            if (to != null) {
+                std.setTo(to);
+            }
+            if (verbose) {
+                std.setVerbose(true);
+            }           
+            if (n > 0) {
+                    std.setN(n);
+            }
+            if (help) {
+                std.help();
+            }
             std.run();
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             std.help();
             throw new BuildException(e);
         }
