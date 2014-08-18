@@ -42,13 +42,13 @@ public class StatisticTestData {
     }
 
     public void setFrom(String sfrom) throws Exception{
-        if (sfrom != null) {
+        if ((sfrom != null) && (sfrom.length() > 0)) {
             this.from = String2Timestamp(sfrom);
         }
     }
 
     public void setTo(String sto) throws Exception {
-        if (sto != null) {
+        if (sto != null && (sto.length() > 0)) {
             this.to = String2Timestamp(sto);
         }
     }
