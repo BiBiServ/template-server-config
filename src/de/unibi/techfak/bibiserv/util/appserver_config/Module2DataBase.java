@@ -70,7 +70,7 @@ public class Module2DataBase extends AbstractXXX2DataBase {
     public static final String INFO_SCHEMA = "http://bibiserv.cebitec.uni-bielefeld.de/xsd/bibiserv2/admin-module-info.xsd";
 
     @Override
-    public void insertSQL(Connection con, File src_file) throws FileNotFoundException, SQLException {
+    public void insertSQL(Connection con, File src_file) throws Exception, FileNotFoundException, SQLException {
         createConnection();
         stmt = con.prepareStatement("INSERT INTO MODULES (ID,INFO, FILE, ACTIVE) VALUES (?, ? , ? , ?)");
         stmt.setString(1, id);

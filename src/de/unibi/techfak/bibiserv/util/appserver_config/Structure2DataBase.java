@@ -64,7 +64,7 @@ public class Structure2DataBase extends AbstractXXX2DataBase {
     private PreparedStatement stmt = null;
 
     @Override
-    public void insertSQL(Connection con, File src_file) throws FileNotFoundException, SQLException {
+    public void insertSQL(Connection con, File src_file) throws Exception, FileNotFoundException, SQLException {
         createConnection();
         stmt = con.prepareStatement("INSERT INTO STRUCTURE (TIME, CONTENT) VALUES (CURRENT_TIMESTAMP, ? )");
         stmt.setClob(1, new BufferedReader(new FileReader(src_file)));

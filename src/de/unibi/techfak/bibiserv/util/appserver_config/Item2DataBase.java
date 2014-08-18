@@ -67,7 +67,7 @@ public class Item2DataBase extends AbstractXXX2DataBase {
     private String id = "unknown";
 
     @Override
-    public void insertSQL(Connection con, File src_file) throws FileNotFoundException, SQLException {
+    public void insertSQL(Connection con, File src_file) throws Exception,FileNotFoundException, SQLException {
         createConnection();
         stmt = con.prepareStatement("INSERT INTO ITEM (ID,TIME, ITEM,TYPE) VALUES (?,CURRENT_TIMESTAMP, ? ,?)");
         stmt.setString(1, id);
