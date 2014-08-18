@@ -98,10 +98,10 @@ public class StatisticTest extends AbstractXXX2DataBase {
         StatisticTestData std = new StatisticTestData();
         try {
             std.setConnection(createConnection());
-            if (from != null) {
+            if (from != null && from.length() > 0) {
                 std.setFrom(from);
             }
-            if (to != null) {
+            if (to != null && to.length() > 0) {
                 std.setTo(to);
             }
             if (verbose) {
@@ -112,6 +112,7 @@ public class StatisticTest extends AbstractXXX2DataBase {
             }
             if (help) {
                 std.help();
+                return;
             }
             std.run();
         } catch (Exception e) {
