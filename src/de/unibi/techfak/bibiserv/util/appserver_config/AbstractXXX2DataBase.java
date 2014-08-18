@@ -19,11 +19,8 @@
  *
  * Contributor(s): Jan Krueger
  *
- */ 
-
+ */
 package de.unibi.techfak.bibiserv.util.appserver_config;
-
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,11 +37,9 @@ import java.util.zip.ZipInputStream;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-
-
 /**
- * Abstract Ant task which insert XXX into a database. XXX must be
- * defined by the implementing classes.
+ * Abstract Ant task which insert XXX into a database. XXX must be defined by
+ * the implementing classes.
  *
  * @author Jan Krüger - jkrueger(at)cebitec.uni-bielefeld.de
  */
@@ -65,10 +60,11 @@ public abstract class AbstractXXX2DataBase extends Task {
     /**
      * Set the database url (jdbc-string), valid strings are:
      * <ul>
-     *  <li>jdbc:derby://localhost:1527/bibiserv2</li>
-     *  <li>jdbc:derby://localhost:1527/bibiserv2;user=me;password=mine;</li>
-     *  <li>jdbc:derby:bibiserv2 <pre>embedded only</pre></li>
-     *  <li> ... </li>
+     * <li>jdbc:derby://localhost:1527/bibiserv2</li>
+     * <li>jdbc:derby://localhost:1527/bibiserv2;user=me;password=mine;</li>
+     * <li>jdbc:derby:bibiserv2
+     * <pre>embedded only</pre></li>
+     * <li> ... </li>
      * </ul>
      *
      * @param dbURL - databasse url (see description above)
@@ -79,34 +75,32 @@ public abstract class AbstractXXX2DataBase extends Task {
     protected boolean embedded = false;
 
     /**
-     * Set the optional attribute embedded. Forces the task to use the embedded driver
-     * instead the network driver.
+     * Set the optional attribute embedded. Forces the task to use the embedded
+     * driver instead the network driver.
      *
      * @param embedded
      */
     public void setEmbedded(boolean embedded) {
         this.embedded = embedded;
     }
-    
-    
+
     /**
      * Check if given file contains the expected content.
-     * 
+     *
      * @param src_file
-     * @throws Exception in the case 
+     * @throws Exception in the case
      */
     public abstract void checkFile(File src_file) throws Exception;
-    
+
     /**
      * Insert src_file content into database
-     * 
+     *
      * @param con
-     * @param src_file 
+     * @param src_file
      */
     public abstract void insertSQL(Connection con, File src_file) throws Exception;
-    
+
     private Connection con = null;
-    
 
     @Override
     public void execute() throws BuildException {
@@ -122,13 +116,13 @@ public abstract class AbstractXXX2DataBase extends Task {
         }
         try {
             checkFile(src_file);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new BuildException(e);
         }
 
         try {
             createConnection();
-            insertSQL(con,src_file);
+            insertSQL(con, src_file);
         } catch (Exception ex) {
             Logger.getLogger(Structure2DataBase.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -138,18 +132,16 @@ public abstract class AbstractXXX2DataBase extends Task {
         }
     }
 
-    protected void createConnection() {
-        try {
-            if (embedded) {
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-            } else {
-                Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
-            }
-            //Get a connection
-            con = DriverManager.getConnection(dbURL);
-        } catch (Exception except) {
-            except.printStackTrace();
+    protected Connection createConnection() throws Exception {
+
+        if (embedded) {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+        } else {
+            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
         }
+        //Get a connection
+        con = DriverManager.getConnection(dbURL);
+        return con;
     }
 
     protected void shutdown() {
@@ -162,11 +154,11 @@ public abstract class AbstractXXX2DataBase extends Task {
         }
 
     }
-    
-      /**
-     * Extract (unzip) a specified entry from  zipped buffer.
+
+    /**
+     * Extract (unzip) a specified entry from zipped buffer.
      *
-     * @param in - The zipped  Inputstream  buffer
+     * @param in - The zipped Inputstream buffer
      * @param entry - Name of entry to be extract
      * @return Returns a byte [] buffer of the unzipped entry.
      * @throws Exception in a case the entry was not found.
@@ -195,7 +187,7 @@ public abstract class AbstractXXX2DataBase extends Task {
 
         return tmp;
     }
-    
+
     public static byte[] createChecksum(File filename) throws Exception {
         InputStream fis = new FileInputStream(filename);
 
@@ -216,10 +208,10 @@ public abstract class AbstractXXX2DataBase extends Task {
         byte[] b = createChecksum(filename);
         String result = "";
         for (int i = 0; i < b.length; i++) {
-            result +=
-                    Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+            result
+                    += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
         }
         return result;
     }
-    
+
 }
