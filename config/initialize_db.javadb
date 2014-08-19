@@ -208,7 +208,7 @@ CREATE TABLE stats_clientinfo (
 CREATE TABLE stats_clicks (
     sessionid character varying(100) NOT NULL,
     id character varying(100) NOT NULL,
-    userid character varying(100) triungNOT NULL,
+    userid character varying(100) NOT NULL,
     timestamp timestamp WITH DEFAULT CURRENT_TIMESTAMP
 );
 
