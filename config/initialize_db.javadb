@@ -107,9 +107,9 @@ create table authority (
     value varchar(20) not null unique
 );
 
-create table responsibility (           
+create table responsibilities (           
     id varchar(100) not null,           -- user id
-    itemid varchar(100) not null        
+    itemid varchar(100) not null        -- a valid (but not necessary intalled) item id
 );
 
 create table news (
@@ -122,15 +122,6 @@ create table news (
 create view manager_auth as select u.id, u.password from users u, authorities a where u.id = a.id and u.enabled=1 and a.authority='ROLE_ADMIN';
 
 
--- insert example admin user
-insert into users (id,password, limitclass, enabled, name, surname, mail) values (
-    'testadmin',
-    'b9dfac81fa1e0516aab7feef882c1f97d13ca2cc', -- SHA1 from simplepassword
-    'registered',
-    1,
-    'BiBi','Serv',
-    'bibiadm@cebitec.uni-bielefeld.de'
-);
 
 -- insert to authority values // DO NOT REMOVE THEM UNTIL YOUR ARE ABSOlUTELY SURE WHAT YOU ARE DOING!
 insert into authority values (
@@ -145,14 +136,59 @@ insert into authority values (
     'ROLE_USER'
 );
 
--- connect example admin user with
+
+
+-- insert example admin user
+insert into users (id,password, limitclass, enabled, name, surname, mail) values (
+    'testadmin',
+    'b9dfac81fa1e0516aab7feef882c1f97d13ca2cc', -- SHA1 from simplepassword
+    'registered',
+    1,
+    'BiBi','Serv',
+    'bibiadm@cebitec.uni-bielefeld.de'
+);
+
 insert into authorities values (
     'testadmin', 'ROLE_ADMIN'
 );
 
 insert into authorities values (
+    'testadmin', 'ROLE_DEVELOPER'
+);
+
+insert into authorities values (
     'testadmin', 'ROLE_USER'
 );
+
+-- insert example developer user
+insert into users (id,password, limitclass, enabled, name, surname, mail) values (
+    'testdev',
+    'b9dfac81fa1e0516aab7feef882c1f97d13ca2cc', -- simplepassword
+    'registered',
+    1,
+    'BiBi','Dev',
+    'bibidev@cebitec.uni-bielefeld.de');
+
+
+insert into authorities values (
+    'testdev', 'ROLE_DEVELOPER'
+);
+insert into authorities values (
+    'testdev', 'ROLE_USER'
+);
+insert into responsibilities values (
+    'testdev', 'rnahybrid'
+);
+insert into responsibilities values (
+    'testdev', 'dialign'
+);
+insert into responsibilities values (
+    'testdev', 'dca'
+);
+insert into responsibilities values (
+    'testdev', 'mmfind'
+);
+
 
 -- insert example standard user
 insert into users (id,password, limitclass, enabled, name, surname, mail) values (
