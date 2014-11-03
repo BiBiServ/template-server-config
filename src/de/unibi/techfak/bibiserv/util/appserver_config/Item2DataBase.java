@@ -46,7 +46,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * Ant task that inserts a bibiserv item file (as CLOB) in a table ITEM.
+ * Ant task that inserts a bibiserv item/linkeditem file (as CLOB) in a table ITEM.
  * The table is defined as follows :
  * <pre>
  * create table item (
@@ -104,10 +104,10 @@ public class Item2DataBase extends AbstractXXX2DataBase {
         validator.validate(new DOMSource(document));
 
         // source is schema valid, but at this point we only support category files
-        if (document.getDocumentElement().getLocalName().equals("item")) {
+        if (document.getDocumentElement().getLocalName().equals("item") || document.getDocumentElement().getLocalName().equals("linkeditem")) {
             id = document.getDocumentElement().getAttribute("id");
         } else {
-            throw new Exception("File is valid BiBiServAbstraction file, but not an item");
+            throw new Exception("File is valid BiBiServAbstraction file, but not an item nor linkeditem");
         }
 
     }

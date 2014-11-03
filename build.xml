@@ -734,7 +734,7 @@
         
     </target>
     
-    <target name="install.item" description="install an item (xml decsription file) to database">
+    <target name="install.item" description="install an  (linked) item (xml decsription file) to database">
         <contrib:if>
             <available file="local.configuration"/>
             <contrib:then>
@@ -769,35 +769,8 @@
     </target>
     
     <target name="install.linkeditem" description="install a linked item (xml description file) to database">
-        <contrib:if>
-            <available file="local.configuration"/>
-            <contrib:then>
-                <property file="local.configuration"/>
-            </contrib:then>
-            <contrib:else>
-                <fail message="You have to configure a domain/database to run target!"/>
-            </contrib:else>
-        </contrib:if>
-        <contrib:if>
-            <and>
-                <isset property="linkeditem"/>
-                <available file="${linkeditem}"/>  
-            </and>
-            <contrib:then>
-                <!-- load tasks -->
-                <taskdef resource="de/unibi/techfak/bibiserv/util/appserver_config/appserver_config.properties" >
-                    <classpath>
-                        <path  location="${dist}/appserver_config_task.jar"/> 
-                        <path refid="classpath"/>
-                    </classpath>
-                </taskdef>
-                <!-- put item to database -->
-                <linkeditem2database src="${linkeditem}" dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}"/>
-            </contrib:then>
-            <contrib:else>
-                <fail message="You must set a linkeditem property (-Dlinkeditem=...) pointing to an existing linkeditem description file!"/>
-            </contrib:else>
-        </contrib:if>
+        <echo>Target install.linkeditem is deprecated and will be removed in future releases. Use install.item instead</echo>
+        <ant target="install.item"/>
     </target>
     
     <target name="install.module" description="install a module (car file) to database">
