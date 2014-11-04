@@ -230,14 +230,14 @@ insert into resources values ('registered', 10, 10080, 50, -1);
 
     
 CREATE TABLE stats_clientinfo (
-    sessionid character varying(100) NOT NULL,
+    sessionid character varying(100) primary key NOT NULL,
     browsername character varying(50),
     browserversion character varying(50),
     device character varying(50),
     ua character varying(200),
     os character varying(50),
     ip character varying(100),
-        country character varying(3),
+    country character varying(3),
     timestamp timestamp WITH DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -261,5 +261,12 @@ CREATE TABLE stats_download (
     sessionid character varying(100) NOT NULL,
     bibiservid character varying(100) NOT NULL
  );
+ 
+ -- create indezies to speed up db access
+ 
+ CREATE INDEX statusIDX on status (created);
+ CREATE INDEX stats_usageIDX on stats_usage(bibiservid,sessionid);
+ 
+ 
     
 disconnect BIBISERV2;
