@@ -36,7 +36,7 @@ Contributor(s):
     <!-- entries used by de.unibi.techfak.bibiserv.impl.CallFactoryImpl -->
     <entry key="DefaultCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
     <entry key="LocalCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
-    <entry key="GridCallClass">de.unibi.techfak.bibiserv.impl.SGECall</entry>
+    <entry key="GridCallClass">de.unibi.techfak.bibiserv.impl.DRMAACall</entry>
     <!-- entries used by de.unibi.techfak.bibiserv.impl.CallImpl -->
     <entry key="batchfile.concat">&amp;&amp;</entry>
     <entry key="batchfile.shell">/bin/bash</entry>                                          <!-- ATTENTION ! Change this! -->

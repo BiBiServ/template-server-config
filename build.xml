@@ -339,6 +339,44 @@
                     <entry key="db.user" value="${db.user}"/>
                     <entry key="db.pwd" value="${db.pwd}"/>
                 </propertyfile>
+                
+                
+                <contrib:if>
+                    <isset property="enable.docker"/>
+                    <contrib:then>
+                        <propertyfile file="bibiserv_config.properties">
+                            <entry key="UseDocker" value="true" />
+                            
+                        </propertyfile>
+                    </contrib:then>  
+                </contrib:if>
+                
+                
+                
+                <!-- enable OGE if config.OGE is set -->
+                <!-- check for DRMAA.jar and library.path -->
+                <contrib:if>     
+                    <and>
+                        <isset property="config.oge"/>
+                        <isset property="drmaa.jar"/>
+                        <available file="${drmaa.jar}"/>
+                        <isset property="drmaa.library.path"/>
+                        <available file="${drmaa.library.path}" type="dir"/>
+                    </and>
+                    
+                    <contrib:then>
+                        <propertyfile file="bibiserv_config.properties">
+                            <entry key="DefaultCallClass" value="de.unibi.techfak.bibiserv.impl.DRMAACall" />      
+                        </propertyfile>
+                    </contrib:then>
+                        <contrib:else>
+                            <echo>To configure OGE system property drmaa.jar must point to an existing drmaa library and </echo>
+                            <echo>system property drmaa.library.path  must point to an existing drmaa library path</echo>
+                        </contrib:else>
+                </contrib:if>
+                
+                
+                
 
                 <prop2xml src="${basedir}/bibiserv_config.properties" dest="${domain.dir}/${domain}/config/bibiserv_config.xml"/>
 
@@ -435,7 +473,51 @@
             <arg value="--enabled=true"/>
             <arg value="jdbc/bibiserv2"/>
         </exec>
-
+        
+        <!-- enable 64 Bit if config.64 is set -->
+        <contrib:if>
+            <available property="config.64"/>
+            
+            <contrib:then>
+            
+            <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                <arg value="--host=localhost"/>
+                <arg value="--port=${admin.port}"/>
+                <arg value="--user=${admin.user}"/>
+                <arg value="--passwordfile=${local.passwordfile}"/>
+                <arg value="create-jvm-options"/>
+                <arg value="-d64"/>
+            </exec> 
+            </contrib:then>
+        </contrib:if>
+        
+        
+        <!-- enable OGE if config.OGE is set -->
+        <!-- check for DRMAA.jar and library.path -->
+        <contrib:if>     
+                <and>
+                    <isset property="config.oge"/>
+                    <isset property="drmaa.jar"/>
+                    <available file="${drmaa.jar}"/>
+                    <isset property="drmaa.library.path"/>
+                    <available file="${drmaa.library.path}" type="dir"/>
+                </and>
+            
+            <contrib:then>
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="create-jvm-options"/>
+                    <arg value="-Djava.library.path=${drmaa.library.path}"/>
+                </exec>
+            <contrib:else>
+                <echo>To configure OGE system property drmaa.jar must point to an existing drmaa library and </echo>
+                <echo>system property drmaa.library.path  must point to an existing drmaa library path</echo>
+            </contrib:else>
+        </contrib:if>
+        
         <!-- live configuration done, stop server instance -->
         <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="stop-domain"/>
@@ -979,6 +1061,8 @@
         </exec> 
     </target>
     
+    
+
     <target name="_configure_db">
         <contrib:if>
             <available file="local.configuration"/>
