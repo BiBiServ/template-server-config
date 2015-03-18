@@ -512,6 +512,7 @@
                     <arg value="create-jvm-options"/>
                     <arg value="-Djava.library.path=${drmaa.library.path}"/>
                 </exec>
+            </contrib:then>
             <contrib:else>
                 <echo>To configure OGE system property drmaa.jar must point to an existing drmaa library and </echo>
                 <echo>system property drmaa.library.path  must point to an existing drmaa library path</echo>
