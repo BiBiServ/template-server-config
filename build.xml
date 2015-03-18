@@ -354,21 +354,6 @@
             </contrib:then>
         </contrib:if>
 
-      
-        <copy overwrite="true" tofile="${catalina.home}/glassfish/lib/endorsed/log4j.jar">
-             <!--This must return only ONE file, otherwise the copy task breaks!-->
-            <fileset dir="${lib}">
-                <filename name="**/log4j*.jar"/>
-            </fileset>
-        </copy>
-
-        <!-- <copy overwrite="true" tofile="${catalina.home}/glassfish/lib/endorsed/xercesImpl.jar"> -->
-             <!--This must return only ONE file, otherwise the copy task breaks!-->
-         <!--   <fileset dir="${lib}">
-                <filename name="**/xercesImpl*.jar"/>
-            </fileset>
-        </copy> -->
-
         <!-- copy lsub command to ${domain.dir}/${domain}/bin/lsub -->
         <copy file="bin/lsub" todir="${domain.dir}/${domain}/bin"/>
         <chmod file="${domain.dir}/${domain}/bin/lsub" perm="755"/>
