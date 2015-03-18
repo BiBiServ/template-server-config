@@ -476,7 +476,7 @@
         
         <!-- enable 64 Bit if config.64 is set -->
         <contrib:if>
-            <available property="config.64"/>
+            <isset property="config.64"/>
             
             <contrib:then>
             
