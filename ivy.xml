@@ -16,7 +16,8 @@
     <dependencies>
         <dependency org="com.sun.java" name="sun-domain_jaxb" rev="" revConstraint="1.3_+"/>
         <dependency org="org.apache" name="embedded-derby" rev="" revConstraint="latest.integration"/>
-        <dependency org="org.apache" name="xerces" rev="" revConstraint="latest.integration"/>
+        <dependency org="org.apache" name="xerces" rev="2.11.+" />
+	<dependency org="org.apache" name="xml-api" rev="1.4.+"/>
         <dependency org="org.apache" name="log4j" rev="" revConstraint="latest.integration"/>
     </dependencies>
 
