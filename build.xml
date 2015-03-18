@@ -504,6 +504,7 @@
                 </and>
             
             <contrib:then>
+                
                 <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
                     <arg value="--host=localhost"/>
                     <arg value="--port=${admin.port}"/>
@@ -512,10 +513,23 @@
                     <arg value="create-jvm-options"/>
                     <arg value="-Djava.library.path=${drmaa.library.path}"/>
                 </exec>
+                <!-- set native library path -->
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="set"/>
+                    <arg value="server.java-config.native-library-path-prefix=${drmaa.library.path}"/>
+                </exec>
             </contrib:then>
             <contrib:else>
-                <echo>To configure OGE system property drmaa.jar must point to an existing drmaa library and </echo>
-                <echo>system property drmaa.library.path  must point to an existing drmaa library path</echo>
+                <echo>##############################################################</echo>
+                <echo>To configure OGE system : </echo>
+                <echo> -property config.oge</echo>
+                <echo> -property drmaa.jar must point to an existing drmaa library</echo>
+                <echo> -system property drmaa.library.path  must point to an existing drmaa library path</echo>
+                <echo>##############################################################</echo>
             </contrib:else>
         </contrib:if>
         
