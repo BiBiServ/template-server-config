@@ -342,6 +342,16 @@
                 
                 
                 <contrib:if>
+                    <isset property="enable.ritc"/>
+                    <contrib:then>
+                        <propertyfile file="bibiserv_config.properties">
+                            <entry key="RITC" value="true" />
+                        </propertyfile>
+                    </contrib:then>  
+                    
+                </contrib:if>
+                
+                <contrib:if>
                     <isset property="enable.docker"/>
                     <contrib:then>
                         <propertyfile file="bibiserv_config.properties">
