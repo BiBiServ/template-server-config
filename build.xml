@@ -376,7 +376,8 @@
                     
                     <contrib:then>
                         <propertyfile file="bibiserv_config.properties">
-                            <entry key="DefaultCallClass" value="de.unibi.techfak.bibiserv.impl.DRMAACall" />      
+                            <entry key="DefaultCallClass" value="de.unibi.techfak.bibiserv.impl.DRMAACall" />
+                            <entry key="drmaa.grid_only" value="true"/>
                         </propertyfile>
                     </contrib:then>
                         <contrib:else>
