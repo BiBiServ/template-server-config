@@ -1202,6 +1202,7 @@
             <contrib:then>
                 <get src="http://bibiserv.cebitec.uni-bielefeld.de/resources/bibigrid_latest.zip" dest="${domain.dir}/${domain}/bin"/>
                 <unzip src="${domain.dir}/${domain}/bin/bibigrid_latest.zip" dest="${domain.dir}/${domain}/bin"/>
+                <chmod file="${domain.dir}/${domain}/bin/bibigrid" perm="ugo+rx"/>
                 <delete file="${domain.dir}/${domain}/bin/bibigrid_latest.zip"/>
             </contrib:then>
             <contrib:else>
