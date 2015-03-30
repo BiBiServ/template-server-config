@@ -334,6 +334,7 @@
                     <entry key="tmpdir.base" value="${spool.dir}/tmp"/>
                     <entry key="executable.rootpath" value="${executable.dir}"/>
 	                <entry key="aws.bin" value="${domain.dir}/${domain}/bin/aws/"/>
+                    <entry key="bibigrid.bin" value="${domain.dir}/${domain}/bin/bibigrid/"/>
                     <entry key="db.host" value="${db.host}"/>
                     <entry key="db.port" value="${db.port}"/>
                     <entry key="db.user" value="${db.user}"/>
@@ -411,11 +412,12 @@
         <copy todir="${domain.dir}/${domain}/bin/aws">
             <fileset dir="bin/aws"/>
         </copy>
-        <!-- <copydir src="bin/aws" dest="${domain.dir}/${domain}/bin/aws"/> -->
         <chmod file="${domain.dir}/${domain}/bin/aws/**" perm="755" type="both"/>
 
 
-
+        <!-- install bibigrid (if available) -->    
+        <antcall target="install.bibigrid"/>
+        
         <!-- start server instance for live configuration -->
         <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="--user=${admin.user}"/>
@@ -1179,6 +1181,37 @@
         <!-- add  -->
         <statistictest  dbURL="jdbc:derby://${db.host}:${db.port}/bibiserv2;user=${db.user};password=${db.pwd}" verbose="${verbose}" from="${from}" to="${to}" n="${n}" help="${help}" />
  
+    </target>
+    
+    
+    <target name="install.bibigrid" description="install/upgrade bibigrid">
+        
+        <contrib:if>
+            <available file="local.configuration"/>
+            <contrib:then>
+                <property file="local.configuration"/>
+            </contrib:then>
+            <contrib:else>
+                <fail message="You have to configure a domain/database to run target!"/>
+            </contrib:else>
+        </contrib:if>
+        
+        <!-- install bibigrid (if available) -->
+        <contrib:if>
+            <http url="http://bibiserv.cebitec.uni-bielefeld.de/resources/bibigrid_latest.zip" requestmethod="HEAD"/>
+            <contrib:then>
+                <get src="http://bibiserv.cebitec.uni-bielefeld.de/resources/bibigrid_latest.zip" dest="${domain.dir}/${domain}/bin"/>
+                <unzip src="${domain.dir}/${domain}/bin/bibigrid_latest.zip" dest="${domain.dir}/${domain}/bin"/>
+                <delete file="${domain.dir}/${domain}/bin/bibigrid_latest.zip"/>
+            </contrib:then>
+            <contrib:else>
+                <echo>###################################### ATTENTION! ######################################
+                    Can't get and install bibigrid from 'http://bibiserv.cebitec.uni-bielefeld.de/resources/bibigrid_latest.zip'.
+                    This may only a problem if wan't to use and support the 'RunInTheCloud' feature. Please install latest
+                    bibigrid distribution to ${domain.dir}/${domain}/bin (see http://wiki.techfak.uni-bielefeld.de/bibiserv/bibigrid).
+                </echo>
+            </contrib:else>        
+        </contrib:if>
     </target>
     
 </project>
