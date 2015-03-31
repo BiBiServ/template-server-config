@@ -1204,6 +1204,7 @@
                 <unzip src="${domain.dir}/${domain}/bin/bibigrid_latest.zip" dest="${domain.dir}/${domain}/bin"/>
                 <chmod file="${domain.dir}/${domain}/bin/bibigrid/bibigrid" perm="ugo+rx"/>
                 <delete file="${domain.dir}/${domain}/bin/bibigrid_latest.zip"/>
+                <copy file="bin/bibigrid/logback-test.xml" toDir="${domain.dir}/${domain}/bin/bibigrid"/>
             </contrib:then>
             <contrib:else>
                 <echo>###################################### ATTENTION! ######################################
