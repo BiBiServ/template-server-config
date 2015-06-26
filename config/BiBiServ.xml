@@ -2,7 +2,7 @@
 <!--
     DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
     
-    Copyright 2010-2013 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
+    Copyright 2010-2015 BiBiServ Curator Team, http://bibiserv.cebitec.uni-bielefeld.de,
     All rights reserved.
     
     The contents of this file are subject to the terms of the Common
@@ -16,7 +16,7 @@
     below the License Header, with the fields enclosed by brackets [] replaced
     by your own identifying information:
     
-    "Portions Copyrighted 2010-2013 BiBiServ Curator Team"
+    "Portions Copyrighted 2010-2015 BiBiServ Curator Team"
     
     Contributor(s):  Jan Krueger , jkrueger(at)cebitec.uni-bielefeld.de
     
@@ -34,17 +34,12 @@
     <categoryRepresentation id="bibiserv_representation">
         <title>BiBiServ - Bielefeld University Bioinformatics Server</title>
         <customContent>
-            <microhtml:p> The Bielefeld Bioinformatics Server (BiBiServ) is part of the <microhtml:a
-                    href="http://www.cebitec.uni-bielefeld.de/cebitec/ifb/ifb.html">Institute for
-                    Bioinformatics</microhtml:a> (IFB) within the <microhtml:a
-                    href="http://www.cebitec.uni-bielefeld.de">Center for
-                    Biotechnology</microhtml:a> (CeBiTec). It is dedicated to provide persistent
-                service to the life-science community by hosting bioinformatics tools which emerge
-                from the research of the Bielefeld groups and close collaborators. </microhtml:p>
-            <microhtml:p>This site is the home of <microhtml:em>BiBiServ2</microhtml:em>, a total
-                re-implementation of the BiBiServ system. Goals of the new version include
-                simplified tool development, better usability and easier extensibility of the
-                offered tools, while adding more access interfaces and better documentation.
+            <microhtml:p> The Bielefeld Bioinformatics Server (BiBiServ) is one of the <microhtml:a
+                href="http://www.cebitec.uni-bielefeld.de/index.php/technology-platforms">Technology Platforms</microhtml:a>  
+                within the <microhtml:a href="http://www.cebitec.uni-bielefeld.de">Center for Biotechnology</microhtml:a>
+                (CeBiTec). It is dedicated to provide persistent service to the life-science
+                community by hosting bioinformatics tools which emerge from the research of the
+                Bielefeld groups and close collaborators. 
             </microhtml:p>
         </customContent>
         
