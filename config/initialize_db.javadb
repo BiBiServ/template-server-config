@@ -103,9 +103,25 @@ create table authorities (
     authority varchar(100) not null     -- a valid value from table authority
 );
 
+-- when a user is deleted, delete also corresponding entries in authorities
+create trigger users_trigger
+	after delete on users
+	referencing old as deletedrow
+	for each row mode db2sql
+	delete from authorities where id=deletedrow.id;
+
+
 create table authority (
-    value varchar(20) not null unique
+    value varchar(100) not null unique
 );
+
+-- when a authority is deleted, delete also corresponding entries in authorities
+create trigger authority_trigger 
+	after delete on authority 
+	referencing old as deletedrow 
+	for each row mode db2sql
+	delete from authorities where authority=deletedrow.value;
+
 
 create table responsibilities (           
     id varchar(100) not null,           -- user id

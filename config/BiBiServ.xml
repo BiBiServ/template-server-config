@@ -30,7 +30,7 @@
     id="bibiserv">
     <name>BiBiServ</name>
     <categoryDescription >Welcome to BiBiServ -  the Bielefeld University Bioinformatics Server.</categoryDescription>
-    
+    <order>natural</order>
     <categoryRepresentation id="bibiserv_representation">
         <title>BiBiServ - Bielefeld University Bioinformatics Server</title>
         <customContent>
@@ -40,39 +40,42 @@
                 (CeBiTec). It is dedicated to provide persistent service to the life-science
                 community by hosting bioinformatics tools which emerge from the research of the
                 Bielefeld groups and close collaborators. 
-            </microhtml:p>
-        </customContent>
-        
+            </microhtml:p>           
+            <microhtml:a href="https://www.youtube.com/watch?v=Y0CpjK1isX4&amp;feature=youtu.be">
+                <microhtml:img src="/misc/images/video.jpg" alt="BiBiServ Video introdruction"/>
+            </microhtml:a>
+        </customContent>     
     </categoryRepresentation>
 
     <category id="tools">
-        <name>Tools</name>
-        
-        
-        <categoryDescription>The BiBiServ Tool section offers bioinformatics tools for a large variety of tasks</categoryDescription>
-       
+        <name>Tools</name>  
+        <categoryDescription>The BiBiServ Tool section offers bioinformatics tools for a large variety of tasks</categoryDescription>    
+        <order>lexicographical_separate</order>
         <categoryRepresentation id="tools_representation">
-            <title>BiBiServ Tool Section</title>
-           
-            <customContent> The tools on BiBiServ cover a variety of bioinformatics
-                areas, sorted into the categories below. </customContent>
-            
+            <title>BiBiServ Tool Section</title>          
+            <customContent> The tools on BiBiServ cover a variety of bioinformatics areas, sorted into the categories below. </customContent>         
         </categoryRepresentation>
+
 
         <!-- Genome Comparison -->
         <category id="genomeComparison">
             <name>Genome Comparison</name>
             <categoryDescription>Several Tools for Genome Comparison</categoryDescription>
+            <order>lexicographical_separate</order>
             <categoryRepresentation id="genomeComparison_representation">
                 <title>Genome Comparison</title>
+            
                 <customContent/>
+            
             </categoryRepresentation>
+            
         </category>
 
         <!-- RNA Studio -->
         <category id="rna">
             <name>RNA Studio</name>
             <categoryDescription>RNA processing tools</categoryDescription>
+            <order>lexicographical_separate</order>
             <categoryRepresentation id="rna_representation">
                 <title>RNA Studio</title>
                 <customContent>The tools within this category work on RNA data and provide i.a.
@@ -84,6 +87,7 @@
         <category id="alignment">
             <name>Alignment</name>
             <categoryDescription>Alignment-tools</categoryDescription>
+            <order>lexicographical_separate</order>
             <categoryRepresentation id="alignmnet_representation">
                 <title>Alignment tools</title>
                 <customContent>Tools for aligning sequences and shapes</customContent>
@@ -94,34 +98,77 @@
         <category id="primerDesign">
             <name>Primer Design</name>
             <categoryDescription>Tools for PCR Primer Design</categoryDescription>
+            <order>lexicographical_separate</order>
         </category>
 
         <!-- Evolutionary Relationships -->
         <category id="evolutionaryRelationship">
             <name>Evolutionary Relationships</name>
             <categoryDescription/>
+            <order>lexicographical_separate</order>
         </category>
         <!-- Other -->
         <category id="others">
             <name>Others</name>
             <categoryDescription>Tools that do not fit into the other categories</categoryDescription>
+            <order>lexicographical_separate</order>
             <itemRef>mt_pipeline</itemRef>
         </category>
     </category>
 
-    <!-- ++++++++++++++++++
-        ++   Education  ++
-        ++++++++++++++++++ -->
+    <!-- ++++++++ Previous results +++++++++ -->
+    <itemRef>prevres</itemRef>
+    
+    <!-- ++++++++ BiBiCloud Framework +++++++++ -->
+    <category id="framework"> 
+        <name>Framework/Cloud</name>
+        <categoryDescription></categoryDescription>
+        <categoryRepresentation id="framework_representation">
+            <title>BiBiServ Framework / BiBiCloud</title>
+            <customContent>
+                <microhtml:p>
+                    The BiBiServ Framework can be set up the complete BiBiServ easily on your local infrastructure. 
+                    Cloud based infrastructure can be used directly from BiBiServ (using RITC) or manually (using BiBiGrid).
+                </microhtml:p> 
+                <microhtml:img src="/misc/images/framework.png" alt="BiBiCloud"/>
+                <microhtml:p>
+                When thinking of a bioInformatics service provider like the BiBiServ, one must have in mind that the data to be analyzed 
+                is very huge and is growing day by day. The problem is not only to provide the necessary computing power to analyze all 
+                the data but also provide storage and bandwidth capacity. One possible solution to solve this problem is to move the 
+                bioinformatic tools itself to the data instead of moving the big amount of data to the tools. In other words: if your 
+                data is already stored in the cloud it is faster (and normally also cheaper) to run your bioinformatics applications 
+                near to the data instead of moving/copying all the data to your analyze pipeline.
+                </microhtml:p>
+                <microhtml:img src="/misc/images/workflow.png" alt="BiBiCloud AWS workflow"/>
+                <microhtml:p>
+                Since 2012 Illumina offers BaseSpace to store and analyze sequence data in a cloud computing environment. BaseSpace 
+                offers the possibility to run (your own) applications (with limitation to compute power) but also have REST access 
+                to all data stored. BaseSpace is powered by AWS and therefore running a bioinformatic pipeline within AWS should be 
+                optimal to access them.
+                </microhtml:p>
+                <microhtml:p>Feel free to use our framework for your own projects. It's published under the conditions of the <microhtml:a href="/license">CDDL</microhtml:a>
+                Please do not hesitate to contact us in case of any questions.</microhtml:p>
+            </customContent>
+        </categoryRepresentation>
+    </category>
+
+    <!-- ++++++++ Education  ++++++++++ -->
     <category id="education">
         <name>Education</name>
         <categoryDescription>Educational media dealing with bioinformatics are provided here.</categoryDescription>
+        <order>lexicographical</order>
         <categoryRepresentation id="education_representation">
             <title >BiBiServ-Courses and Education</title>
-            <customContent >Bioinformatics is a young and dynamic field. The
+            <customContent>Bioinformatics is a young and dynamic field. The
                 integration of knowledge from biology and computer science requires a significant
                 educational effort. Our Distance Education and Training Department prepares, runs
                 and publishes online courses on certain bioinformatical subjects. </customContent>
         </categoryRepresentation>
+
+        <category id="sa">
+            <name>Sequence Analysis</name>
+            <categoryDescription>This category contains online courses in the area of Sequence Analysis</categoryDescription>
+        </category>
 
         <category id="dp">
             <name>Dynamic Programming</name>
@@ -131,29 +178,25 @@
             </categoryDescription>
         </category>
 
-        <category id="sa">
-            <name>Sequence Analysis</name>
-            <categoryDescription>This category contains online courses in the area of Sequence Analysis</categoryDescription>
-        </category>
+        
     </category>
 
     <!-- ++++++++++++++++++++++
         ++   Administration  ++
         +++++++++++++++++++++++ -->
     <category id="administration">
-        <name>Administration</name>
-        
+        <name>Administration</name>   
         <categoryDescription>Administration and Statistics</categoryDescription>
-        
+        <order>lexicographical</order>
         <categoryRepresentation id="administration_representation">
             <title >BiBiServ Administration</title>
             <customContent>This area of BiBiServ shows usage statistics and additional
                 administrative information.</customContent>
-        </categoryRepresentation>   
-        <itemRef>impressum</itemRef>
+        </categoryRepresentation>         
         <itemRef>license</itemRef>
         <itemRef>wslinklist</itemRef>
         <itemRef>statuscodes</itemRef>
+        <itemRef>impressum</itemRef>
     </category>
 </category>
 
