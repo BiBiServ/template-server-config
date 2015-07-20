@@ -89,6 +89,12 @@ create table users (
     phone varchar(100)
 );
 
+create table resetpassword (
+	accesskey  varchar(100) primary key not null,
+	id varchar(100),
+	expired timestamp
+);
+
 create table awscredentials (
    keyname varchar(25) not null,
    userid varchar(100) not null,
