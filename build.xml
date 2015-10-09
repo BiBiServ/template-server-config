@@ -546,6 +546,17 @@
             </contrib:else>
         </contrib:if>
         
+        
+        <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+            <arg value="--host=localhost"/>
+            <arg value="--port=${admin.port}"/>
+            <arg value="--user=${admin.user}"/>
+            <arg value="--passwordfile=${local.passwordfile}"/>
+            <arg value="create-jvm-options"/>
+            <arg value="-Xmx768m"/>
+        </exec>
+        
+        
         <!-- live configuration done, stop server instance -->
         <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
             <arg value="stop-domain"/>
