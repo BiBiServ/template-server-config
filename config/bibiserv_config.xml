@@ -22,17 +22,17 @@ Contributor(s):
 -->
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-    <comment>BiBiServ global properties</comment>
+    <comment>global properties</comment>
     <!-- used by many classes within the package de.unibi.techfak.bibiserv.* -->
     <entry key="chmod.bin">chmod</entry>
     <entry key="chmod.param">2777</entry>
     <!-- used by de.unibi.techfak.bibiserv.BiBiTools -->
-    <entry key="executable.rootpath">/vol/bibi/share/bibiserv2_testing/</entry>             <!-- ATTENTION ! Change this! -->
+    <entry key="executable.rootpath">/tmp/service/share/service_testing/</entry>             <!-- ATTENTION ! Change this! -->
     <entry key="executable.path.isrelativ">true</entry>                                     <!-- ATTENTION ! Change this! -->
-    <entry key="spooldir.base">/vol/bibi/share/bibiserv2_testing/spool</entry>              <!-- ATTENTION ! Change this! -->
-    <entry key="tmpdir.base">/vol/bibi/share/bibiserv2_testing/spool/tmp</entry>            <!-- ATTENTION ! Change this! -->
+    <entry key="spooldir.base">/tmp/service/share/service_testing/spool</entry>              <!-- ATTENTION ! Change this! -->
+    <entry key="tmpdir.base">/tmp/service/share/service_testing/spool/tmp</entry>            <!-- ATTENTION ! Change this! -->
     <!-- used by de.unibi.techfak.bibiserv.BiBiTools, location of executeables for aws -->
-    <entry key="aws.bin">/vol/bibi/share/bibiserv2_testing/bin/aws</entry>		    <!-- ATTENTION ! Change this! -->
+    <entry key="aws.bin">/tmp/service/share/service_testing/bin/aws</entry>		    <!-- ATTENTION ! Change this! -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.CallFactoryImpl -->
     <entry key="DefaultCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
     <entry key="LocalCallClass">de.unibi.techfak.bibiserv.impl.LocalCall</entry>
@@ -43,7 +43,7 @@ Contributor(s):
     <entry key="batchfile.prefix">BatchFile_</entry>
     <entry key="batchfile.suffix">.sh</entry>
     <!-- entries used by de.unibi.techfak.bibiserv.impl.LocalCall && SGECALL-->
-    <entry key="lsub.bin">/vol/bibi/share/bibiserv2_testing/bin/lsub</entry>                <!-- ATTENTION ! Change this! -->
+    <entry key="lsub.bin">/tmp/service/share/service_testing/bin/lsub</entry>                <!-- ATTENTION ! Change this! -->
     <entry key="lsub.maxcpu">30</entry> <!-- max. cputime in seconds -->
     <entry key="lsub.maxmem">4096</entry> <!-- max. memory consumption in MBytes -->
     <!-- entries used by de.unibi.techfak.bibiserv.impl.SGECALL -->
@@ -94,7 +94,7 @@ Contributor(s):
     <entry key="GeoIP2.database.url">http://bibiserv.cebitec.uni-bielefeld.de/resources/GeoLite2-Country.mmdb.gz</entry>
     <!-- docker -->
     <entry key="UseDocker">false</entry>
-    <entry key="DockerHubOrganization">bibiserv</entry>
+    <entry key="DockerHubOrganization">service</entry>
     <!-- support "RunInTheCloud" tab for runnable items - default is false for now -->
     <entry key="RITC">false</entry>
     
