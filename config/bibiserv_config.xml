@@ -91,7 +91,7 @@ Contributor(s):
     <!-- used by de.unibi.cebitec.bibiserv.server.manager -->
     <entry key="de.unibi.cebitec.bibiserv.server.manager.apppath"></entry>
     <!-- GeoIP URL  -->
-    <entry key="GeoIP2.database.url">http://bibiserv.cebitec.uni-bielefeld.de/resources/GeoLite2-Country.mmdb.gz</entry>
+    <entry key="GeoIP2.database.url">https://bibiserv.cebitec.uni-bielefeld.de/resources/GeoLite2-Country.mmdb.gz</entry>
     <!-- docker -->
     <entry key="UseDocker">false</entry>
     <entry key="DockerHubOrganization">service</entry>
