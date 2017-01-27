@@ -25,6 +25,8 @@ Contributor(s):
     <comment>global properties</comment>
     <!-- used by many classes within the package de.unibi.techfak.bibiserv.* -->
     <entry key="chmod.bin">chmod</entry>
+    <entry key="mem.max">4096</entry>
+    <entry key="cores.max">4</entry>
     <entry key="chmod.param">2777</entry>
     <!-- used by de.unibi.techfak.bibiserv.BiBiTools -->
     <entry key="executable.rootpath">/tmp/service/share/service_testing/</entry>             <!-- ATTENTION ! Change this! -->
