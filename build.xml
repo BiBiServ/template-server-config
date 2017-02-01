@@ -503,7 +503,48 @@
             </exec> 
             </contrib:then>
         </contrib:if>
-        
+
+
+        <!-- set proxy if necessary -->
+        <contrib:if>
+            <isset property="proxy.enabled"/>
+
+            <contrib:then>
+
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="create-jvm-options"/>
+                    <arg value="-Dhttp.proxyHost=${httpHost}"/>
+                </exec>
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="create-jvm-options"/>
+                    <arg value="-Dhttp.proxyPort=${httpPort}"/>
+                </exec>
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="create-jvm-options"/>
+                    <arg value="-Dhttps.proxyHost=${httpsHost}"/>
+                </exec>
+                <exec executable="${catalina.home}/bin/asadmin" failifexecutionfails="true" failonerror="true">
+                    <arg value="--host=localhost"/>
+                    <arg value="--port=${admin.port}"/>
+                    <arg value="--user=${admin.user}"/>
+                    <arg value="--passwordfile=${local.passwordfile}"/>
+                    <arg value="create-jvm-options"/>
+                    <arg value="-Dhttps.proxyPort=${httpsPort}"/>
+                </exec>
+            </contrib:then>
+        </contrib:if>
         
         <!-- enable OGE if config.OGE is set -->
         <!-- check for DRMAA.jar and library.path -->
